@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'xawaash.views.home', name='home'),
     # url(r'^xawaash/', include('xawaash.foo.urls')),
     url(r'^polls/', include('polls.urls', namespace="polls")),
+    url(r'^post_gen/', include('post_generator.urls', namespace="post_generator")),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

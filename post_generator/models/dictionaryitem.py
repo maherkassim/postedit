@@ -6,6 +6,7 @@ class DictionaryItem(models.Model):
     somali = models.CharField(max_length=250, null=True, blank=True)
     french = models.CharField(max_length=250, null=True, blank=True)
     french_plural = models.CharField(max_length=250, null=True, blank=True)
+    french_male = models.NullBooleanField()
     arabic = models.CharField(max_length=250, null=True, blank=True)
     image = models.URLField(null=True, blank=True)
     link = models.URLField(null=True, blank=True)
