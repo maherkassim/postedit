@@ -5,18 +5,76 @@ from post_generator.models.header import Header
 
 class Ingredient(models.Model):
     post = models.ForeignKey(Post)
+    
     header = models.ForeignKey(Header)
-    name = models.ForeignKey(DictionaryItem, related_name="name")
-    size = models.ForeignKey(DictionaryItem, related_name="size", null=True, blank=True)
-    quantity = models.CharField(max_length=20, null=True, blank=True)
-    quant_units = models.ForeignKey(DictionaryItem, related_name="quant_units", null=True, blank=True)
-    intl = models.CharField(max_length=20, null=True, blank=True)
-    intl_units = models.ForeignKey(DictionaryItem, related_name="intl_units", null=True, blank=True)
-    prep_style = models.ForeignKey(DictionaryItem, related_name="prep_style", null=True, blank=True)
-    english_comment = models.CharField(max_length=250, null=True, blank=True)
-    somali_comment = models.CharField(max_length=250, null=True, blank=True)
-    french_comment = models.CharField(max_length=250, null=True, blank=True)
-    arabic_comment = models.CharField(max_length=250, null=True, blank=True)
+    
+    name = models.ForeignKey(
+        DictionaryItem,
+        related_name="name",
+    )
+    
+    size = models.ForeignKey(
+        DictionaryItem,
+        related_name="size",
+        blank=True,
+    )
+    
+    quantity = models.CharField(
+        'Quantity',
+        max_length=20,
+        blank=True,
+    )
+    
+    quantity_units = models.ForeignKey(
+        DictionaryItem,
+        related_name="quantity_units",
+        blank=True,
+    )
+    
+    intl = models.CharField(
+        'International Quantity',
+        max_length=20,
+        blank=True,
+    )
+    
+    intl_units = models.ForeignKey(
+        DictionaryItem,
+        related_name="intl_units",
+        verbose_name="International Units",
+        blank=True,
+    )
+    
+    prep_style = models.ForeignKey(
+        DictionaryItem,
+        related_name="prep_style",
+        verbose_name="Preparation/Style",
+        blank=True,
+    )
+    
+    english_comment = models.CharField(
+        'English Comment',
+        max_length=250,
+        blank=True,
+    )
+    
+    somali_comment = models.CharField(
+        'Somali Comment',
+        max_length=250,
+        blank=True,
+    )
+    
+    french_comment = models.CharField(
+        'French Comment',
+        max_length=250,
+        blank=True,
+    )
+    
+    arabic_comment = models.CharField(
+        'Arabic Comment',
+        max_length=250,
+        blank=True,
+    )
+    
     optional = models.BooleanField()
     
     class Meta:

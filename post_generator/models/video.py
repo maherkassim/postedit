@@ -2,11 +2,23 @@ from django.db import models
 from post_generator.models.post import Post
 
 class Video(models.Model):
-    tab_index = models.PositiveIntegerField()
     post = models.ForeignKey(Post)
-    link = models.URLField()
-    width = models.PositiveSmallIntegerField()
-    height = models.PositiveSmallIntegerField()
+    
+    tab_index = models.PositiveIntegerField(
+        'Tab Index',
+    )
+    
+    link = models.URLField(
+        'Video URL',
+    )
+    
+    width = models.PositiveSmallIntegerField(
+        'Video Width',
+    )
+    
+    height = models.PositiveSmallIntegerField(
+        'Video Height',
+    )
     
     class Meta:
         app_label = 'post_generator'

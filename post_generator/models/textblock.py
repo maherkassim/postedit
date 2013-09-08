@@ -4,10 +4,21 @@ from post_generator.models.tab import Tab
 
 class TextBlock(models.Model):
     post = models.ForeignKey(Post)
-    post_intro = models.BooleanField()
+    
+    post_intro = models.BooleanField(
+        'Introduction Paragraph?',
+    )
+    
     tab = models.ForeignKey(Tab)
-    tab_index = models.PositiveIntegerField()
-    text = models.CharField(max_length=1000)
+    
+    tab_index = models.PositiveIntegerField(
+        'Tab Index',
+    )
+    
+    text = models.CharField(
+        'Text/Paragraph',
+        max_length=1000,
+    )
     
     class Meta:
         app_label = 'post_generator'

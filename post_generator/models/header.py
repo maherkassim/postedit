@@ -4,9 +4,16 @@ from post_generator.models.tab import Tab
 
 class Header(models.Model):
     tab = models.ForeignKey(Tab)
-    tab_index = models.PositiveIntegerField()
+    
+    tab_index = models.PositiveIntegerField(
+        'Tab Index',
+    )
+    
     text = models.ForeignKey(DictionaryItem)
-    level = models.PositiveSmallIntegerField()
+    
+    level = models.PositiveSmallIntegerField(
+        'Header Level',
+    )
     
     class Meta:
         app_label = 'post_generator'
