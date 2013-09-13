@@ -1,3 +1,7 @@
+{% extends "post_generator/base.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
 {% if latest_post_list %}
     <ul>
     {% for post in latest_post_list %}
@@ -7,3 +11,4 @@
 {% else %}
     <p>No posts are available.</p>
 {% endif %}
+{% endblock %}

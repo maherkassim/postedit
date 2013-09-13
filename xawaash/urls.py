@@ -1,19 +1,15 @@
+from django.views.generic import TemplateView
 from django.conf.urls import patterns, include, url
-
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'xawaash.views.home', name='home'),
-    # url(r'^xawaash/', include('xawaash.foo.urls')),
     url(r'^polls/', include('polls.urls', namespace="polls")),
-    url(r'^post_gen/', include('post_generator.urls', namespace="post_generator")),
+    url(r'^post/', include('post_generator.urls', namespace="post_generator")),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
+    url(r'^crossdomain\.xml$', TemplateView.as_view(template_name='crossdomain.xml')),
 )
