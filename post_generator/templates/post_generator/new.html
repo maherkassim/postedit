@@ -1,0 +1,195 @@
+{% extends "post_generator/base.html" %}
+{% load post_filters %}
+{% block title %}Create New Post - Xawaash Post Generator{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+{% endblock css %}
+
+{% block content %}
+<form action="{% url 'post_generator:update' post.id %}" method="post">
+{% csrf_token %}
+<label for="main-img">Main Image URL:</label>
+<input name="main-img" id="main-img" type="url" />
+<div id="parent" style="width: 100%;">
+
+<h3>Embedded Video</h3>
+<div>
+<label for="vid-link">URL:</label>
+<input name="vid-link" id="vid-link" type="url" /><br />
+
+<label for="vid-width">Width:</label>
+<input name="vid-width" id="vid-width" type="text" value="810" />
+<i> X </i>
+<label for="vid-height">Height:</label>
+<input name="vid-height" id="vid-height" type="text" value="456" />
+</div>
+
+<table>
+<tr>
+{% for side in tab_sides %}
+<td><div id="{{ side }}-tabs">
+
+  <ul>
+{% for lang in lang_list %}
+    <li><a href="#{{ side }}-{{ lang }}-tab">{{ lang|title }}</a></li>
+{% endfor %}
+  </ul>
+
+{% for lang in lang_list %}
+  <div id="{{ side }}-{{ lang }}-tab">
+    <p>Title: <input name="{{ lang }}-title" type="text" placeholder="Enter {{ lang|title }} recipe title..." /></p>
+    <p><input name="{{ lang }}-include" type="checkbox">Include language in post?</input></p>
+    <div id="{{ side }}-{{ lang }}-accordion">
+      <h3>Introduction</h3>
+      <div>
+        <table id="{{ side }}-{{ lang }}-intro-table">
+          <tr><td>
+            <input name="{{ lang }}-intro-0" type="text" />
+          </td></tr>
+          <tr><td>
+            <button id="{{ side }}-add-intro">Add paragraph</button>
+          </td></tr>
+        </table><br />
+      </div>
+      
+      <h3>Printing Options</h3>
+      <div>
+        <input name="{{ lang }}-print" type="text" value="{{ print_def|get_val:lang }}" /><br />
+        <input name="{{ lang }}-print-img" type="text" value="{{ print_img_def|get_val:lang }}" /><br />
+      </div>
+
+      <h3>Add Paragraph/Text</h3>
+      <div>
+        <table id="{{ side }}-{{ lang }}-para-table">
+          <tr><td>
+            <input name="{{ lang }}-para-print-1" id="{{ side }}-{{ lang }}-para-print-1" type="checkbox" />
+            <label for="{{ lang }}-para-print-1">Printable?</label>
+          </td></tr>
+          <tr><td>
+            <input name="{{ lang }}-para-1" type="text" />
+          </td></tr>
+    	  <tr><td>
+    	    <button id="{{ side }}-add-para">Add Paragraph</button>
+    	  </td></tr>
+		</table><br />
+	  </div>
+
+	  <h3>Add Image</h3>
+	  <div>
+	    <table id="{{ side }}-{{ lang }}-img-table">
+	      <tr>
+	        <td>
+	          <input name="{{ lang }}-img-print-1" id="{{ side }}-{{ lang }}-img-print-1" type="checkbox" />
+		      <label for="{{ lang }}-img-print-1">Printable?</label>
+		    </td>
+		    <td>
+		      <input name="{{ lang }}-img-1" type="url" /><br />
+		    </td>
+		  </tr>
+		  <tr><td>
+	        <button id="add-img">Add Image</button>
+		  </td></tr>
+		</table>
+	  </div>
+
+	  <h3>Ingredients</h3>
+	  <div>
+	    <table id="{{ side }}-{{ lang }}-ing-table">
+	      <tr>
+	        <td>
+	            <label for="{{ side }}-{{ lang }}-ing-header-1">Section Header (eg. Recipe #1):</label>
+	            <input name="{{ lang }}-ing-header-1" id="{{ side }}-{{ lang }}-ing-header-1" type="text" /><br />
+	        </td>
+	        <td><table id="{{ side }}-{{ lang }}-ing-sec-1-table">
+	          <tr><td>
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-quant">Quantity:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-quant" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-quant" type="text" />
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-meas">Measure:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-meas" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-meas" type="text" /><br />
+        		
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-intl">Int'l Quantity:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-intl" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-intl" type="text" />
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-unit">Unit:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-unit" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-unit" type="text" /><br />
+        		
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-name">Ingredient:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-name" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-name" type="text" /><br />
+        		
+        		<table id="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-table">
+        		  <tr><td>
+        		    <label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-1">Preparation/Style:</label>
+        		    <input name="{{ lang }}-ing-sec-1-num-1-prep-1" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-1" type="text" /><br />
+        		  </td></tr>
+        		  <tr><td>
+        		    <button id="{{ side }}-add-prep">Add Preparation/Style</button>
+        		  </td></tr>
+        		</table><br />
+        		
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-text">Text/Comment:</label>
+        		<input name="{{ lang }}-ing-sec-1-num-1-text" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-text" type="text" /><br />
+        	  </td></tr>
+        	  <tr><td>
+        	    <button id="{{ side }}-add-ing">Add Ingredient</button>
+              </td></tr>
+            </table>                
+          </td></tr>
+          <tr><td>
+            <button id="{{ side }}-add-sec">Add Section Header</button>
+          </td></tr>
+        </table>
+      </div>
+
+	  <h3>Directions</h3>
+	  <div>
+		<table id="{{ side }}-{{ lang }}-dir-table">
+		  <tr><td>
+			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-1" type="text" /></li>
+		  </td></tr>
+		  <tr><td>
+			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-2" type="text" /></li>
+		  </td></tr>
+		  <tr><td>
+			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-3" type="text" /></li>
+		  </td></tr>
+		  <tr><td>
+		    <button id="{{ side }}-add-dir">Add Direction</button>
+		  </td></tr>
+        </table>
+	  </div>
+	</div>
+  </div>
+{% endfor %}{# languages for loop #}
+</div>
+</td>
+{% endfor %}{# languages for side #}
+</tr>
+</table>
+<input type="submit" value="Generate HTML" />
+</form>
+{% endblock content %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+{% endblock javascript_library %}
+
+{% block javascript %}
+  <script>
+  $(function() {
+    // jQuery UI elements initialized
+    //		- tabs for languages
+    //		- accordions for sections
+
+{% for side in tab_sides %}
+    $( "#{{ side }}-tabs" ).tabs();
+{% for lang in lang_list %}
+    $( "#{{ side }}-{{ lang }}-accordion" ).accordion({
+      heightStyle: "content"
+    });
+{% endfor %}
+{% endfor %}
+  });
+  </script>
+{% endblock javascript %}

@@ -3,9 +3,18 @@ from django.conf.urls import patterns, url
 from post_generator import views
 
 urlpatterns = patterns('',
-    # ex: /post_gen/
-    url(r'^$', views.index, name='index'),
+    # ex: /post/
+    url(r'^$', views.IndexView.as_view(), name='index'),
 
-    # ex: /post_gen/post/5/
-    url(r'^post/(?P<post_id>\d+)/$', views.post, name='post'),
+    # ex: /post/new/
+    url(r'^new/$', views.NewPost, name='new'),
+
+    # ex: /post/5/
+    url(r'^(?P<post_id>\d+)/$', views.PostDetailView.as_view(), name='post'),
+    
+    # ex: /post/5/edit/
+    url(r'^(?P<post_id>\d+)/edit/$', views.EditPost, name='edit'),
+
+    # ex: /post/5/update/
+    url(r'^(?P<post_id>\d+)/update/$', views.UpdatePost, name='update'),
 )
