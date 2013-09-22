@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     url(r'^new/$', views.NewPost, name='new'),
 
     # ex: /post/5/
-    url(r'^(?P<post_id>\d+)/$', views.PostDetailView.as_view(), name='post'),
+    url(r'^(?P<pk>\d+)/$', views.PostDetailView.as_view(), name='post'),
     
     # ex: /post/5/edit/
     url(r'^(?P<post_id>\d+)/edit/$', views.EditPost, name='edit'),

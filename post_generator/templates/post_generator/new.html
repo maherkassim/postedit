@@ -10,10 +10,13 @@
 {% block content %}
 <form action="{% url 'post_generator:update' post.id %}" method="post">
 {% csrf_token %}
-<label for="main-img">Main Image URL:</label>
-<input name="main-img" id="main-img" type="url" />
-<div id="parent" style="width: 100%;">
+<label for="post-url">Xawaash Post URL:</label>
+<input name="post-url" id="post-url" type="url" /><br />
 
+<label for="main-img">Main Image URL:</label>
+<input name="main-img" id="main-img" type="url" /><br />
+
+<div id="parent" style="width: 100%;">
 <h3>Embedded Video</h3>
 <div>
 <label for="vid-link">URL:</label>
@@ -46,7 +49,7 @@
       <div>
         <table id="{{ side }}-{{ lang }}-intro-table">
           <tr><td>
-            <input name="{{ lang }}-intro-0" type="text" />
+            <textarea name="{{ lang }}-para-intro-1" rows="4" cols="50"></textarea>
           </td></tr>
           <tr><td>
             <button id="{{ side }}-add-intro">Add paragraph</button>
@@ -64,13 +67,13 @@
       <div>
         <table id="{{ side }}-{{ lang }}-para-table">
           <tr><td>
-            <input name="{{ lang }}-para-print-1" id="{{ side }}-{{ lang }}-para-print-1" type="checkbox" />
-            <label for="{{ lang }}-para-print-1">Printable?</label>
+            <input name="{{ lang }}-para-1-print" id="{{ side }}-{{ lang }}-para-1-print" type="checkbox" />
+            <label for="{{ lang }}-para-1-print">Printable?</label>
+          </td>
+          <td>
+            <textarea name="{{ lang }}-para-1" rows="4" cols="50"></textarea>
           </td></tr>
-          <tr><td>
-            <input name="{{ lang }}-para-1" type="text" />
-          </td></tr>
-    	  <tr><td>
+    	  <tr><td colspan="2">
     	    <button id="{{ side }}-add-para">Add Paragraph</button>
     	  </td></tr>
 		</table><br />
@@ -81,8 +84,8 @@
 	    <table id="{{ side }}-{{ lang }}-img-table">
 	      <tr>
 	        <td>
-	          <input name="{{ lang }}-img-print-1" id="{{ side }}-{{ lang }}-img-print-1" type="checkbox" />
-		      <label for="{{ lang }}-img-print-1">Printable?</label>
+	          <input name="{{ lang }}-img-1-print" id="{{ side }}-{{ lang }}-img-1-print" type="checkbox" />
+		      <label for="{{ lang }}-img-1-print">Printable?</label>
 		    </td>
 		    <td>
 		      <input name="{{ lang }}-img-1" type="url" /><br />
@@ -99,41 +102,41 @@
 	    <table id="{{ side }}-{{ lang }}-ing-table">
 	      <tr>
 	        <td>
-	            <label for="{{ side }}-{{ lang }}-ing-header-1">Section Header (eg. Recipe #1):</label>
-	            <input name="{{ lang }}-ing-header-1" id="{{ side }}-{{ lang }}-ing-header-1" type="text" /><br />
+	            <label for="{{ side }}-{{ lang }}-ingsec-1">Section Header (eg. Recipe #1):</label>
+	            <input name="{{ lang }}-ingsec-1" id="{{ side }}-{{ lang }}-ingsec-1" type="text" /><br />
 	        </td>
-	        <td><table id="{{ side }}-{{ lang }}-ing-sec-1-table">
+	        <td><table id="{{ side }}-{{ lang }}-ingsec-1-table">
 	          <tr><td>
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-quant">Quantity:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-quant" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-quant" type="text" />
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-meas">Measure:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-meas" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-meas" type="text" /><br />
+        		<label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-quant">Quantity:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-quant" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-quant" type="text" />
+        		<label for="{{ side }}-{{ lang }}-ing-sec-1-ing-1-meas">Measure:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-meas" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-meas" type="text" /><br />
         		
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-intl">Int'l Quantity:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-intl" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-intl" type="text" />
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-unit">Unit:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-unit" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-unit" type="text" /><br />
+        		<label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-intl">Int'l Quantity:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-intl" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-intl" type="text" />
+        		<label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-unit">Unit:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-unit" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-unit" type="text" /><br />
         		
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-name">Ingredient:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-name" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-name" type="text" /><br />
+        		<label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-name">Ingredient:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-name" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-name" type="text" /><br />
         		
-        		<table id="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-table">
+        		<table id="{{ side }}-{{ lang }}-ingsec-1-ing-1-prep-table">
         		  <tr><td>
-        		    <label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-1">Preparation/Style:</label>
-        		    <input name="{{ lang }}-ing-sec-1-num-1-prep-1" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-prep-1" type="text" /><br />
+        		    <label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-prep-1">Preparation/Style:</label>
+        		    <input name="{{ lang }}-ingsec-1-ing-1-prep-1" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-prep-1" type="text" /><br />
         		  </td></tr>
         		  <tr><td>
         		    <button id="{{ side }}-add-prep">Add Preparation/Style</button>
         		  </td></tr>
         		</table><br />
         		
-        		<label for="{{ side }}-{{ lang }}-ing-sec-1-num-1-text">Text/Comment:</label>
-        		<input name="{{ lang }}-ing-sec-1-num-1-text" id="{{ side }}-{{ lang }}-ing-sec-1-num-1-text" type="text" /><br />
+        		<label for="{{ side }}-{{ lang }}-ingsec-1-ing-1-text">Text/Comment:</label>
+        		<input name="{{ lang }}-ingsec-1-ing-1-text" id="{{ side }}-{{ lang }}-ingsec-1-ing-1-text" type="text" /><br />
         	  </td></tr>
         	  <tr><td>
         	    <button id="{{ side }}-add-ing">Add Ingredient</button>
               </td></tr>
-            </table>                
+            </table>
           </td></tr>
           <tr><td>
             <button id="{{ side }}-add-sec">Add Section Header</button>
@@ -145,13 +148,13 @@
 	  <div>
 		<table id="{{ side }}-{{ lang }}-dir-table">
 		  <tr><td>
-			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-1" type="text" /></li>
+			<input name="{{ lang }}-dir-sec-1-num-1" type="text" /></li>
 		  </td></tr>
 		  <tr><td>
-			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-2" type="text" /></li>
+			<input name="{{ lang }}-dir-sec-1-num-2" type="text" /></li>
 		  </td></tr>
 		  <tr><td>
-			<input name="{{ side }}-{{ lang }}-dir-sec-1-num-3" type="text" /></li>
+			<input name="{{ lang }}-dir-sec-1-num-3" type="text" /></li>
 		  </td></tr>
 		  <tr><td>
 		    <button id="{{ side }}-add-dir">Add Direction</button>
@@ -186,7 +189,7 @@
     $( "#{{ side }}-tabs" ).tabs();
 {% for lang in lang_list %}
     $( "#{{ side }}-{{ lang }}-accordion" ).accordion({
-      heightStyle: "content"
+      heightStyle: "fill"
     });
 {% endfor %}
 {% endfor %}

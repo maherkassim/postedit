@@ -20,6 +20,10 @@ class TextBlock(models.Model):
         max_length=1000,
     )
     
+    printable = models.BooleanField(
+    	'Add to print option?',	
+    )
+    
     class Meta:
         app_label = 'post_generator'
     
