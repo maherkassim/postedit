@@ -10,13 +10,21 @@
 {% block content %}
 <form action="{% url 'post_generator:update' post.id %}" method="post">
 {% csrf_token %}
+<div id="parent" style="width: 100%;">
 <label for="post-url">Xawaash Post URL:</label>
 <input name="post-url" id="post-url" type="url" /><br />
 
+<h3>Embedded Video</h3>
+<div>
 <label for="main-img">Main Image URL:</label>
 <input name="main-img" id="main-img" type="url" /><br />
+<label for="main-img-width">Width:</label>
+<input name="main-img-width" id="main-img-width" type="text" value="820" />
+<i> X </i>
+<label for="main-img-height">Height:</label>
+<input name="main-img-height" id="main-img-height" type="text" value="543" />
+</div>
 
-<div id="parent" style="width: 100%;">
 <h3>Embedded Video</h3>
 <div>
 <label for="vid-link">URL:</label>
@@ -49,7 +57,7 @@
       <div>
         <table id="{{ side }}-{{ lang }}-intro-table">
           <tr><td>
-            <textarea name="{{ lang }}-para-intro-1" rows="4" cols="50"></textarea>
+            <textarea name="{{ lang }}-intro-1" rows="4" cols="50"></textarea>
           </td></tr>
           <tr><td>
             <button id="{{ side }}-add-intro">Add paragraph</button>
@@ -68,7 +76,7 @@
         <table id="{{ side }}-{{ lang }}-para-table">
           <tr><td>
             <input name="{{ lang }}-para-1-print" id="{{ side }}-{{ lang }}-para-1-print" type="checkbox" />
-            <label for="{{ lang }}-para-1-print">Printable?</label>
+            <label for="{{ side }}-{{ lang }}-para-1-print">Printable?</label>
           </td>
           <td>
             <textarea name="{{ lang }}-para-1" rows="4" cols="50"></textarea>
@@ -79,20 +87,28 @@
 		</table><br />
 	  </div>
 
-	  <h3>Add Image</h3>
-	  <div>
-	    <table id="{{ side }}-{{ lang }}-img-table">
-	      <tr>
-	        <td>
-	          <input name="{{ lang }}-img-1-print" id="{{ side }}-{{ lang }}-img-1-print" type="checkbox" />
-		      <label for="{{ lang }}-img-1-print">Printable?</label>
-		    </td>
-		    <td>
-		      <input name="{{ lang }}-img-1" type="url" /><br />
+      <h3>Add Image</h3>
+      <div>
+        <table id="{{ side }}-{{ lang }}-img-table">
+          <tr>
+            <td>
+              <label for="{{ side }}-{{ lang }}-img-1-print">Printable?</label><br />
+              <input name="img-1-print" id="{{ side }}-{{ lang }}-img-1-print" type="checkbox" />
+              <label for="{{ side }}-{{ lang }}-img-1-url">URL:</label>
+              <input name="img-1-url" id="{{ side }}-{{ lang }}-img-1-url" type="url" /><br />
+              <label for="{{ side }}-{{ lang }}-img-1-wpid">Wordpress Image ID (if applicable):</label>
+              <input name="img-1-wpid" id="{{ side }}-{{ lang }}-img-1-wpid" type="url" /><br />
+              <label for="{{ side }}-{{ lang }}-img-1-width">Width:</label>
+              <input name="img-1-width" id="{{ side }}-{{ lang }}-img-1-width" type="text" value="820" />
+              <i> X </i>
+              <label for="{{ side }}-{{ lang }}-img-1-height">Height:</label>
+              <input name="img-1-height" id="{{ side }}-{{ lang }}-img-1-height" type="text" value="543" /><br />
+              <label for="{{ side }}-{{ lang }}-img-1-caption">{{ lang|title }} Caption:</label>
+              <input name="img-1-{{ lang }}" id="{{ side }}-{{ lang }}-img-1-caption" type="text" placeholder="Enter {{ lang|title }} Caption" /><br />
 		    </td>
 		  </tr>
 		  <tr><td>
-	        <button id="add-img">Add Image</button>
+	        <button id="add-img" colspan=2>Add Image</button>
 		  </td></tr>
 		</table>
 	  </div>
