@@ -14,15 +14,21 @@
 <label for="post-url">Xawaash Post URL:</label>
 <input name="post-url" id="post-url" type="url" /><br />
 
-<h3>Embedded Video</h3>
+<h3>Embedded Image</h3>
 <div>
-<label for="main-img">Main Image URL:</label>
-<input name="main-img" id="main-img" type="url" /><br />
+<label for="main-img-link">Main Image URL:</label>
+<input name="main-img-link" id="main-img-link" type="url" /><br />
+<label for="main-img-wpid">Wordpress Image ID (if applicable):</label>
+<input name="main-img-wpid" id="main-img-wpid" type="text"/><br />
 <label for="main-img-width">Width:</label>
 <input name="main-img-width" id="main-img-width" type="text" value="820" />
 <i> X </i>
 <label for="main-img-height">Height:</label>
-<input name="main-img-height" id="main-img-height" type="text" value="543" />
+<input name="main-img-height" id="main-img-height" type="text" value="543" /><br />
+{% for lang in lang_list %}
+<label for="{{ lang }}-main-img-caption">{{ lang|title }} Caption:</label>
+<input name="main-img-{{ lang }}" id="{{ lang }}-main-img-caption" type="text" placeholder="Enter {{ lang|title }} Caption" /><br />
+{% endfor %}
 </div>
 
 <h3>Embedded Video</h3>
@@ -97,7 +103,7 @@
               <label for="{{ side }}-{{ lang }}-img-1-url">URL:</label>
               <input name="img-1-url" id="{{ side }}-{{ lang }}-img-1-url" type="url" /><br />
               <label for="{{ side }}-{{ lang }}-img-1-wpid">Wordpress Image ID (if applicable):</label>
-              <input name="img-1-wpid" id="{{ side }}-{{ lang }}-img-1-wpid" type="url" /><br />
+              <input name="img-1-wpid" id="{{ side }}-{{ lang }}-img-1-wpid" type="text" /><br />
               <label for="{{ side }}-{{ lang }}-img-1-width">Width:</label>
               <input name="img-1-width" id="{{ side }}-{{ lang }}-img-1-width" type="text" value="820" />
               <i> X </i>

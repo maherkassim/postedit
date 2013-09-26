@@ -22,11 +22,14 @@ from post_generator.models.dictionaryitem import DictionaryItem
 PRINT_ID = 1
 PRINT_IMG_ID = 2
 
-def create_lang_objects():
-    languages = []
-    for lang in ['english', 'somali', 'french', 'arabic']:
-        languages.append(Language.objects.create(full_name=lang))
-    return languages
+def get_lang_objects():
+    lang_objs = []
+    lang_list = ['english', 'somali', 'french', 'arabic']
+    for index in range(0, len(lang_list)):
+        lang_obj = Language(id=index+1, full_name=lang_list[index])
+        lang_obj.save()
+        lang_objs.append(lang_obj)
+    return lang_objs
 
 def create_print_objs():
     print_defaults = {
@@ -54,7 +57,7 @@ def get_print_obj(print_id):
     return print_obj
 
 def NewPost(request):
-    languages = Language.objects.all()
+    languages = get_lang_objects()
     lang_list = []
     for lang in languages:
         lang_list.append(lang.full_name)
@@ -113,9 +116,10 @@ def update_dictionaryitem(request, lang_obj_list, field_name, item_id=0):
     update_args = {}
     for lang_obj in lang_obj_list:
         item_field = lang_obj.full_name + field_name
-        item_text = request.POST[item_field]
-        query_args = query_args | Q(**{lang_obj.full_name: item_text})
-        update_args[lang_obj.full_name] = item_text
+        item_text = request.POST.get(item_field, False)
+        if item_text:
+            query_args = query_args | Q(**{lang_obj.full_name: item_text})
+            update_args[lang_obj.full_name] = item_text
     try:
         if item_id:
             item_obj = DictionaryItem.objects.get(id=item_id)
@@ -124,6 +128,9 @@ def update_dictionaryitem(request, lang_obj_list, field_name, item_id=0):
     except DictionaryItem.DoesNotExist:
         item_obj = DictionaryItem.objects.create(**update_args)
     else:
+        for lang_obj in lang_obj_list:
+            if not lang_obj.full_name in update_args.keys():
+                update_args[lang_obj.full_name] = item_obj.__dict__[lang_obj.full_name]
         item_obj = DictionaryItem(id=item_obj.id, **update_args)
     
     item_obj.save()
@@ -131,13 +138,14 @@ def update_dictionaryitem(request, lang_obj_list, field_name, item_id=0):
 
 def update_post_title(request, post_obj, lang_obj_list):
     # Update Post object with new link and title
-    title_obj = update_dictionaryitem(request, lang_obj_list, '-title', post_obj.title.id)
-    post_url = request.POST['post-url']
-    title_obj.link = post_url
-    title_obj.save()
-    
-    post_obj.link = post_url
-    post_obj.save()
+    title_obj = update_dictionaryitem(request, lang_obj_list,
+                    '-title', post_obj.title.id)
+    post_url = request.POST.get('post-url', False)
+    if post_url:
+        title_obj.link = post_url
+        title_obj.save()
+        post_obj.link = post_url
+        post_obj.save()
 
 def update_post_tabs(request, post_obj, lang_obj_list):
     # Create Tab objects
@@ -211,37 +219,41 @@ def update_post_textblocks(request, post_obj, lang_obj,
             block_obj.text = block_text
             block_obj.printable = block_print
 
-def update_post_images(request, post_obj, lang_obj_list, main_img_bool):
-    regex = re.compile('^img-(?P<tab_ind>\d+)$')
-    img_dict = sub_dict(request.POST, regex)
-    for img in img_dict.keys():
-        match = regex.match(img)
-        tab_ind_str = match.group('tab_ind')
-        tab_ind = int(tab_ind_str)
-        img_base = 'img-' + tab_ind_str + '-'
-        img_link = request.POST[img_base + 'link']
-        img_width = request.POST[img_base + 'width']
-        img_height = request.POST[img_base + 'height']
-        wp_img_id = request.POST.get(img_base + 'wpid', False)
-        
-        try:
-            img_obj = post_obj.image_set.get(tab_index=tab_ind)
-        except Image.DoesNotExist:
-            img_obj = post_obj.image_set.create(
-                tab_index=tab_ind,
-                post_main=main_img_bool,
-                link=img_link,
-                width=img_width,
-                height=img_height,
-            )
-        if wp_img_id:
-            img_obj.wordpress_img_id=wp_img_id
-        
-        for lang_obj in lang_obj_list:
-            caption_key = lang_obj.full_name + '_caption'
-            caption_field = base_pattern + '-' + lang_obj.full_name
-            caption_text = request.POST[caption_field]
-            img_obj.__dict__[caption_key]=caption_text
+def update_post_images(request, post_obj, lang_obj_list):
+    for pattern in ['main-img', 'img-(?P<tab_ind>\d+)']:
+        regex = re.compile('^' + pattern + '-link$')
+        img_dict = sub_dict(request.POST, regex)
+        for img in img_dict.keys():
+            tab_ind = 0
+            img_base = pattern
+            if not pattern=='main-img':
+                match = regex.match(img)
+                tab_ind_str = match.group('tab_ind')
+                tab_ind = int(tab_ind_str)
+                img_base = 'img-' + tab_ind_str
+            img_link = request.POST[img_base + '-link']
+            img_width = request.POST[img_base + '-width']
+            img_height = request.POST[img_base + '-height']
+            wp_img_id = request.POST.get(img_base + '-wpid', False)
+            
+            try:
+                img_obj = post_obj.image_set.get(tab_index=tab_ind)
+            except Image.DoesNotExist:
+                img_obj = post_obj.image_set.create(
+                    tab_index=tab_ind,
+                    post_main=(pattern == 'main-img'),
+                    link=img_link,
+                    width=img_width,
+                    height=img_height,
+                )
+            if wp_img_id:
+                img_obj.wordpress_img_id=wp_img_id
+            
+            for lang_obj in lang_obj_list:
+                caption_key = lang_obj.full_name + '_caption'
+                caption_field = img_base + '-' + lang_obj.full_name
+                caption_text = request.POST[caption_field]
+                img_obj.__dict__[caption_key] = caption_text
 
 def UpdatePost(request, post_id):
     post_obj = get_object_or_404(Post, pk=post_id)
@@ -258,7 +270,7 @@ def UpdatePost(request, post_id):
         update_post_textblocks(request, post_obj, lang_obj,
             tab_obj, 'intro')
     
-    update_post_images(request, post_obj, lang_obj_list, True)
+    update_post_images(request, post_obj, lang_obj_list)
     return HttpResponseRedirect(reverse('post_generator:post',
                                         args=(post_obj.id,)))
 
