@@ -8,26 +8,26 @@
 {% endblock css %}
 
 {% block content %}
-<form action="{% url 'post_generator:update' post.id %}" method="post">
-{% csrf_token %}
+<form action="{% url 'post_generator:update' post.id %}" method="post">{% csrf_token %}
 <div id="parent" style="width: 100%;">
-<label for="post-url">Xawaash Post URL:</label>
-<input name="post-url" id="post-url" type="url" /><br />
+{{ post_form.link.errors }}
+{{ post_form.link.label_tag }}{{ post_form.link }}<br />
 
 <h3>Embedded Image</h3>
 <div>
-<label for="main-img-link">Main Image URL:</label>
-<input name="main-img-link" id="main-img-link" type="url" /><br />
-<label for="main-img-wpid">Wordpress Image ID (if applicable):</label>
-<input name="main-img-wpid" id="main-img-wpid" type="text"/><br />
-<label for="main-img-width">Width:</label>
-<input name="main-img-width" id="main-img-width" type="text" value="820" />
-<i> X </i>
-<label for="main-img-height">Height:</label>
-<input name="main-img-height" id="main-img-height" type="text" value="543" /><br />
-{% for lang in lang_list %}
-<label for="{{ lang }}-main-img-caption">{{ lang|title }} Caption:</label>
-<input name="main-img-{{ lang }}" id="{{ lang }}-main-img-caption" type="text" placeholder="Enter {{ lang|title }} Caption" /><br />
+{{ main_img_form.link.errors }}
+{{ main_img_form.link.label_tag }}{{ main_img_form.link }}<br />
+{{ main_img_form.wordpress_image_id.errors }}
+{{ main_img_form.wordpress_image_id.label_tag }}{{ main_img_form.wordpress_image_id }}<br />
+{{ main_img_form.width.errors }}
+{{ main_img_form.width.label_tag }}{{ main_img_form.width }}<i> X </i>
+{{ main_img_form.height.errors }}
+{{ main_img_form.height.label_tag }}{{ main_img_form.height }}<br />
+{% for field in main_img_form %}
+  {{% if field.label|contains:"Caption" %}}
+    {{ field.errors }}
+    {{ field.label_tag }}{{ field }}<br />
+    <strong>Note: need to add placeholder="Enter (Lang) Caption"</strong>
 {% endfor %}
 </div>
 
@@ -37,12 +37,12 @@
 <td><div id="{{ side }}-tabs">
 
   <ul>
-{% for lang in lang_list %}
+{% for lang in tab_dict|get_val:side %}
     <li><a href="#{{ side }}-{{ lang }}-tab">{{ lang|title }}</a></li>
 {% endfor %}
   </ul>
 
-{% for lang in lang_list %}
+{% for lang in tab_dict|get_val:side %}
   <div id="{{ side }}-{{ lang }}-tab">
     <p>Title: <input name="{{ lang }}-title" type="text" placeholder="Enter {{ lang|title }} recipe title..." /></p>
     <p><input name="{{ lang }}-include" type="checkbox">Include language in post?</input></p>

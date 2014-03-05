@@ -255,6 +255,10 @@ def update_post_images(request, post_obj, lang_obj_list):
                 caption_text = request.POST[caption_field]
                 img_obj.__dict__[caption_key] = caption_text
 
+def update_post_video(request):
+    base_pattern = 'video-'
+    regex = re.compile('^' + base_pattern + '(?P<tab_ind>\d+)$')
+
 def UpdatePost(request, post_id):
     post_obj = get_object_or_404(Post, pk=post_id)
     
@@ -262,6 +266,7 @@ def UpdatePost(request, post_id):
     update_post_title(request, post_obj, lang_obj_list)
     lang_dict = update_post_tabs(request, post_obj, lang_obj_list)
     update_post_print_opts(request, lang_obj_list)
+    update_post_video(request)
     
     for lang_obj in lang_obj_list:
         if not lang_dict[lang_obj.full_name]:
