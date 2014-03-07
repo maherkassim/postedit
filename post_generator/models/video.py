@@ -1,11 +1,12 @@
 from django.db import models
-from post_generator.models.post import Post
+from post_generator.models import Post
 
 class Video(models.Model):
     post = models.ForeignKey(Post)
     
-    tab_index = models.PositiveIntegerField(
-        'Tab Index',
+    _loc_index = models.PositiveIntegerField(
+        'Relative location on page',
+        default=0,
     )
     
     link = models.URLField(
@@ -14,10 +15,12 @@ class Video(models.Model):
     
     width = models.PositiveSmallIntegerField(
         'Video Width',
+        default=810,
     )
     
     height = models.PositiveSmallIntegerField(
         'Video Height',
+        default=456,
     )
     
     class Meta:

@@ -1,5 +1,5 @@
 from django.db import models
-from post_generator.models.dictionaryitem import DictionaryItem
+from post_generator.models import DictionaryItem
 
 class Post(models.Model):
     link = models.URLField(

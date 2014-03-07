@@ -1,17 +1,5 @@
 from django.contrib import admin
-from post_generator.models.language import Language
-from post_generator.models.dictionaryitem import DictionaryItem
-from post_generator.models.post import Post
-from post_generator.models.tab import Tab
-from post_generator.models.textblock import TextBlock
-from post_generator.models.header import Header
-from post_generator.models.ingredient import Ingredient
-from post_generator.models.direction import Direction
-from post_generator.models.image import Image
-from post_generator.models.video import Video
-
-class TabInline(admin.TabularInline):
-    model = Tab
+from post_generator.models import Language, DictionaryItem, Post, TextBlock, Image, Video, IngredientBlock, DirectionBlock, Ingredient, Direction
 
 class VideoInline(admin.TabularInline):
     model = Video
@@ -23,29 +11,32 @@ class ImageInline(admin.TabularInline):
 class TextBlockInline(admin.TabularInline):
     model = TextBlock
 
-class HeaderInline(admin.TabularInline):
-    model = Header
-
 class IngredientInline(admin.TabularInline):
     model = Ingredient
     extra = 3
 
+class IngredientBlockInline(admin.TabularInline):
+    model = IngredientBlock
+    inlines = [ IngredientInline, ]
+
 class DirectionInline(admin.TabularInline):
     model = Direction
     extra = 3
+
+class DirectionBlockInline(admin.TabularInline):
+    model = DirectionBlock
+    inlines = [ DirectionInline, ]
 
 class PostAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,  {'fields': []}),
     ]
     inlines = [
-        TabInline,
         VideoInline,
         ImageInline,
         TextBlockInline,
-        HeaderInline,
-        IngredientInline,
-        DirectionInline,
+        IngredientBlockInline,
+        DirectionBlockInline,
     ]
     list_display = ('title','link')
     list_filter = ['pub_date']
@@ -53,10 +44,10 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Language)
 admin.site.register(DictionaryItem)
 admin.site.register(Post)
-admin.site.register(Tab)
 admin.site.register(TextBlock)
-admin.site.register(Header)
+admin.site.register(IngredientBlock)
 admin.site.register(Ingredient)
+admin.site.register(DirectionBlock)
 admin.site.register(Direction)
 admin.site.register(Image)
 admin.site.register(Video)

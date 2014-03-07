@@ -1,45 +1,64 @@
 from django.db import models
 
 class DictionaryItem(models.Model):
+    TYPE_CHOICES = (
+        ('Noun', 'Noun'),
+        ('Verb', 'Verb'),
+        ('Adj.', 'Adjective'),
+    )
+
+    word_type = models.CharField('Word Type',
+                                 max_length=4,
+                                 choices=TYPE_CHOICES,
+                                 default='Noun')
+
     english = models.CharField(
-        'English Text',
+        'English',
         max_length=250,
     )
-
+    
     english_plural = models.CharField(
-        'Pluralized English Text',
-        max_length=250,
-        blank=True,
-    )
-
-    somali = models.CharField(
-        'Somali Text',
-        max_length=250,
-        blank=True,
-    )
-
-    french = models.CharField(
-        'French Text',
+        'English - pluralized',
         max_length=250,
         blank=True,
     )
     
-    french_plural = models.CharField(
-        'Pluralized French Text',
+    somali = models.CharField(
+        'Somali',
         max_length=250,
         blank=True,
     )
-
-    french_female = models.NullBooleanField(
-        'French Gender (True:f, False:m)',
+    
+    french_masculine = models.CharField(
+        'French masculine',
+        max_length=250,
+        blank=True,
     )
-
+    
+    french_masculine_plural = models.CharField(
+        'French - pluralized masculine',
+        max_length=250,
+        blank=True,
+    )
+    
+    french_feminine = models.CharField(
+        'French - feminine',
+        max_length=250,
+        blank=True,
+    )
+    
+    french_feminine_plural = models.CharField(
+        'French - pluralized feminine',
+        max_length=250,
+        blank=True,
+    )
+    
     arabic = models.CharField(
-        'Arabic Text',
+        'Arabic',
         max_length=250,
         blank=True,
     )
-
+    
     image = models.URLField(
         'Image URL',
         blank=True,
@@ -47,7 +66,7 @@ class DictionaryItem(models.Model):
     
     link = models.URLField(
         'Recipe URL',
-        blank=True
+        blank=True,
     )
     
     class Meta:

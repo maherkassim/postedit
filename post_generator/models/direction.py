@@ -1,17 +1,13 @@
 from django.db import models
-from post_generator.models.post import Post
+from post_generator.models import DirectionBlock
 
 class Direction(models.Model):
-    post = models.ForeignKey(Post)
+    direction_block = models.ForeignKey(DirectionBlock)
     
-    tab_index = models.PositiveIntegerField(
-        'Tab Index',
+    item_number = models.PositiveIntegerField(
+        'Index in set of directions',
     )
     
-    list_index = models.PositiveSmallIntegerField(
-        'Direction List Index',
-    )
-
     english_text = models.CharField(
         'English Direction',
         max_length=250,
@@ -28,7 +24,7 @@ class Direction(models.Model):
         max_length=500,
         blank=True,
     )
-
+    
     arabic_text = models.CharField(
         'Arabic Direction',
         max_length=500,

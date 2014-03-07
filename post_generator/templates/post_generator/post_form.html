@@ -1,0 +1,55 @@
+<form method="post" action="">
+{% csrf_token %}
+{{ form }}
+
+<h2>Images</h2>
+    <table>
+    {{ image_fs }}
+    </table>
+
+<h2>Videos</h2>
+    <table>
+    {{ video_fs }}
+    </table>
+
+<h2>Text Blocks</h2>
+    <table>
+    {{ text_block_fs }}
+    </table>
+
+<h2>Ingredients</h2>
+
+{{ ingredient_block_fs.management_form }}
+{% for ingredient_block in ingredient_block_fs.forms %}
+
+  {{ ingredient_block }}
+
+  {% if ingredient_block.nested %}
+  {% for ingredient in ingredient_block.nested %}
+    <table>
+  {{ ingredient.as_table }}
+    </table>
+  {% endfor %}
+  {% endif %}
+
+{% endfor %}
+
+<h2>Directions</h2>
+
+{{ direction_block_fs.management_form }}
+{% for direction_block in direction_block_fs.forms %}
+
+  {{ direction_block }}
+
+  {% if direction_block.nested %}
+  {% for direction in direction_block.nested %}
+    <table>
+  {{ direction.as_table }}
+    </table>
+  {% endfor %}
+  {% endif %}
+
+{% endfor %}
+
+<input type="submit" value="Submit">
+</form>

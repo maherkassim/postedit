@@ -7,16 +7,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 
-from post_generator.models.tab import Tab
-from post_generator.models.post import Post
-from post_generator.models.image import Image
-from post_generator.models.video import Video
-from post_generator.models.header import Header
-from post_generator.models.language import Language
-from post_generator.models.direction import Direction
-from post_generator.models.textblock import TextBlock
-from post_generator.models.ingredient import Ingredient
-from post_generator.models.dictionaryitem import DictionaryItem
+from post_generator.models import Language, DictionaryItem, Post, Image, Video, TextBlock, IngredientBlock, Ingredient, DirectionBlock, Direction
 
 # Defaults for first two items of DictionaryItem database
 PRINT_ID = 1
@@ -76,7 +67,7 @@ def NewPost(request):
     for lang in lang_list:
         print_img_dict[lang] = print_img_obj.__dict__[lang]
     
-    # Create new Post object initialized with placeholder title
+    # Create new Post object initialized with placeholder title using date & time
     temp_title = "New Post " + timezone.now().strftime("%s %s" % ("%Y-%m-%d",
                                                                   "%H:%M:%S"))
     title_obj = DictionaryItem.objects.create(english=temp_title)

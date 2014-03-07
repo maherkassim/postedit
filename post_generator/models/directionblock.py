@@ -1,25 +1,21 @@
 from django.db import models
-from post_generator.models import Post
+from post_generator.models import Post, DictionaryItem
 
-class TextBlock(models.Model):
+class DirectionBlock(models.Model):
     post = models.ForeignKey(Post)
+    header = models.ForeignKey(DictionaryItem)
     
     _loc_index = models.PositiveIntegerField(
         'Relative location on page',
         default=0,
     )
     
-    text = models.CharField(
-        'Text/Paragraph',
-        max_length=1000,
-    )
-    
     printable = models.BooleanField(
-        'Make this text block printable?',
+        'Make this block of directions printable?',
     )
     
     class Meta:
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.text
+        return self.header.english

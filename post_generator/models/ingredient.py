@@ -1,12 +1,8 @@
 from django.db import models
-from post_generator.models.dictionaryitem import DictionaryItem
-from post_generator.models.post import Post
-from post_generator.models.header import Header
+from post_generator.models import DictionaryItem, IngredientBlock
 
 class Ingredient(models.Model):
-    post = models.ForeignKey(Post)
-    
-    header = models.ForeignKey(Header)
+    ingredient_block = models.ForeignKey(IngredientBlock)
     
     name = models.ForeignKey(
         DictionaryItem,
@@ -47,7 +43,7 @@ class Ingredient(models.Model):
     prep_style = models.ForeignKey(
         DictionaryItem,
         related_name="prep_style",
-        verbose_name="Preparation/Style",
+        verbose_name="Preparation Methods/Styles",
         blank=True,
     )
     

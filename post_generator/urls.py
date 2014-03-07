@@ -6,6 +6,12 @@ urlpatterns = patterns('',
     # ex: /post/
     url(r'^$', views.IndexView.as_view(), name='index'),
 
+    # ex: /post/form/
+    url(r'^form/$', views.ManagePosts, name='create'),
+    
+    # ex: /post/form/5/
+    url(r'^form/(?P<post_id>\d+)/$', views.ManagePosts, name='manage'),
+    
     # ex: /post/new/
     url(r'^new/$', views.NewPost, name='new'),
 

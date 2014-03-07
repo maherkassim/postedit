@@ -1,18 +1,13 @@
 from django.db import models
-from post_generator.models.post import Post
+from post_generator.models import Post
 
 class Image(models.Model):
-    tab_index = models.PositiveIntegerField(
-        'Tab Index',
-        null=True,
-        blank=True,
+    _loc_index = models.PositiveIntegerField(
+        'Relative location on page',
+        default=0,
     )
     
     post = models.ForeignKey(Post)
-    
-    post_main = models.BooleanField(
-        'Main Image in Post?',
-    )
     
     link = models.URLField(
         'Image URL',
@@ -26,16 +21,17 @@ class Image(models.Model):
     
     width = models.PositiveSmallIntegerField(
         'Image Width',
+        default=820,
     )
     
     height = models.PositiveSmallIntegerField(
         'Image Height',
+        default=543,
     )
     
     english_caption = models.CharField(
         'English Caption',
         max_length=250,
-        blank=True,
     )
     
     somali_caption = models.CharField(
