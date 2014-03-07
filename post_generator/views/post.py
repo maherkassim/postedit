@@ -8,6 +8,12 @@ def ManagePosts(request, post_id=False):
        post = get_object_or_404(Post, id=post_id)
     else:
        post=Post()
+    form = None
+    image_fs = None
+    video_fs = None
+    text_block_fs = None
+    ingredient_block_fs = None
+    direction_block_fs = None
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():

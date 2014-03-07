@@ -2,6 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from post_generator.models import Language, DictionaryItem, Post, Image, Video, TextBlock, IngredientBlock, Ingredient, DirectionBlock, Direction
+from django.forms.formsets import DELETION_FIELD_NAME
 
 class PostForm(ModelForm):
     class Meta:

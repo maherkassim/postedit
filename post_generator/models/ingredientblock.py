@@ -18,4 +18,4 @@ class IngredientBlock(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.header
+        return self.header.english

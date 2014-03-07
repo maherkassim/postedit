@@ -27,6 +27,7 @@
   {% if ingredient_block.nested %}
   {% for ingredient in ingredient_block.nested %}
     <table>
+  {{ ingredient.management_form }}
   {{ ingredient.as_table }}
     </table>
   {% endfor %}
@@ -44,6 +45,7 @@
   {% if direction_block.nested %}
   {% for direction in direction_block.nested %}
     <table>
+  {{ direction.management_form }}
   {{ direction.as_table }}
     </table>
   {% endfor %}

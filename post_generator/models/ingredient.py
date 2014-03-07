@@ -12,6 +12,7 @@ class Ingredient(models.Model):
     size = models.ForeignKey(
         DictionaryItem,
         related_name="size",
+        null=True,
         blank=True,
     )
     
@@ -24,7 +25,6 @@ class Ingredient(models.Model):
     quantity_units = models.ForeignKey(
         DictionaryItem,
         related_name="quantity_units",
-        blank=True,
     )
     
     intl = models.CharField(
@@ -44,6 +44,7 @@ class Ingredient(models.Model):
         DictionaryItem,
         related_name="prep_style",
         verbose_name="Preparation Methods/Styles",
+        null=True,
         blank=True,
     )
     
