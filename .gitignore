@@ -1,3 +1,6 @@
+dev_env/
+migrations/
+
 # Compiled source #
 ###################
 *.com
