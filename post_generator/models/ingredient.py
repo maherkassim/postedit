@@ -25,6 +25,8 @@ class Ingredient(models.Model):
     quantity_units = models.ForeignKey(
         DictionaryItem,
         related_name="quantity_units",
+        null=True,
+        blank=True,
     )
     
     intl = models.CharField(
@@ -37,6 +39,7 @@ class Ingredient(models.Model):
         DictionaryItem,
         related_name="intl_units",
         verbose_name="International Units",
+        null=True,
         blank=True,
     )
     
@@ -48,29 +51,12 @@ class Ingredient(models.Model):
         blank=True,
     )
     
-    english_comment = models.CharField(
-        'English Comment',
-        max_length=250,
+    comment = models.ForeignKey(
+        DictionaryItem,
+        related_name="comment",
+        null=True,
         blank=True,
-    )
-    
-    somali_comment = models.CharField(
-        'Somali Comment',
-        max_length=250,
-        blank=True,
-    )
-    
-    french_comment = models.CharField(
-        'French Comment',
-        max_length=250,
-        blank=True,
-    )
-    
-    arabic_comment = models.CharField(
-        'Arabic Comment',
-        max_length=250,
-        blank=True,
-    )
+    ) 
     
     optional = models.BooleanField()
     

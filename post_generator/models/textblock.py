@@ -6,12 +6,30 @@ class TextBlock(models.Model):
     
     _loc_index = models.PositiveIntegerField(
         'Relative location on page',
-        default=0,
+        default=-1,
     )
     
-    text = models.CharField(
-        'Text/Paragraph',
+    english = models.CharField(
+        'English Text/Paragraph',
         max_length=1000,
+    )
+    
+    french = models.CharField(
+        'French Text/Paragraph',
+        max_length=1000,
+        blank=True,
+    )
+    
+    somali = models.CharField(
+        'Somali Text/Paragraph',
+        max_length=1000,
+        blank=True,
+    )
+    
+    arabic = models.CharField(
+        'Arabic Text/Paragraph',
+        max_length=1000,
+        blank=True,
     )
     
     printable = models.BooleanField(

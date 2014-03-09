@@ -6,7 +6,7 @@ class Video(models.Model):
     
     _loc_index = models.PositiveIntegerField(
         'Relative location on page',
-        default=0,
+        default=-1,
     )
     
     link = models.URLField(

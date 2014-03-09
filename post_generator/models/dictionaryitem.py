@@ -14,48 +14,48 @@ class DictionaryItem(models.Model):
 
     english = models.CharField(
         'English',
-        max_length=250,
+        max_length=1000,
     )
     
     english_plural = models.CharField(
         'English - pluralized',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
     somali = models.CharField(
         'Somali',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
-    french_masculine = models.CharField(
+    french = models.CharField(
         'French masculine',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
     french_masculine_plural = models.CharField(
         'French - pluralized masculine',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
     french_feminine = models.CharField(
         'French - feminine',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
     french_feminine_plural = models.CharField(
         'French - pluralized feminine',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     
     arabic = models.CharField(
         'Arabic',
-        max_length=250,
+        max_length=1000,
         blank=True,
     )
     

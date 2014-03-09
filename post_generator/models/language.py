@@ -1,8 +1,13 @@
 from django.db import models
 
 class Language(models.Model):
-    full_name = models.CharField(
+    name = models.CharField(
         'Language Name',
+        max_length=20,
+    )
+    
+    display_name = models.CharField(
+        'Language Name (for display eg. post tab titles)',
         max_length=20,
     )
     
@@ -10,4 +15,4 @@ class Language(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.full_name
+        return self.display_name

@@ -1,13 +1,19 @@
 from django.db import models
-from post_generator.models import Post
+from post_generator.models import Post, DictionaryItem
 
 class Image(models.Model):
     _loc_index = models.PositiveIntegerField(
         'Relative location on page',
-        default=0,
+        default=-1,
     )
     
     post = models.ForeignKey(Post)
+    
+    caption = models.ForeignKey(
+        DictionaryItem,
+        related_name="image_caption",
+        verbose_name="Image Caption",
+    )
     
     link = models.URLField(
         'Image URL',
@@ -27,29 +33,6 @@ class Image(models.Model):
     height = models.PositiveSmallIntegerField(
         'Image Height',
         default=543,
-    )
-    
-    english_caption = models.CharField(
-        'English Caption',
-        max_length=250,
-    )
-    
-    somali_caption = models.CharField(
-        'Somali Caption',
-        max_length=250,
-        blank=True,
-    )
-    
-    french_caption = models.CharField(
-        'French Caption',
-        max_length=250,
-        blank=True,
-    )
-    
-    arabic_caption = models.CharField(
-        'Arabic Caption',
-        max_length=250,
-        blank=True,
     )
     
     class Meta:

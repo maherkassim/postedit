@@ -7,11 +7,14 @@ urlpatterns = patterns('',
     url(r'^$', views.IndexView.as_view(), name='index'),
 
     # ex: /post/form/
-    url(r'^form/$', views.ManagePosts, name='create'),
+    url(r'^form/$', views.ManagePost, name='create'),
     
     # ex: /post/form/5/
-    url(r'^form/(?P<post_id>\d+)/$', views.ManagePosts, name='manage'),
-    
+    url(r'^form/(?P<post_id>\d+)/$', views.ManagePost, name='manage'),
+
+    # ex: /post/view/5    
+    url(r'^view/(?P<post_id>\d+)/$', views.ViewPost, name='view'),
+
     # ex: /post/new/
     url(r'^new/$', views.NewPost, name='new'),
 
