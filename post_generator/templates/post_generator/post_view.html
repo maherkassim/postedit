@@ -1,5 +1,14 @@
+{% extends "post_generator/base.html" %}
 {% load custom_filters %}
 
+{% block title %}{{ post_title }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+{% endblock css %}
+
+{% block content %}
 <a href="{{ post.link }}" target="_blank"><h1>{{ post_title }}</h1></a>
 <span>Date: {{ post.pub_date }}</span>
 
@@ -14,9 +23,8 @@
 <div id="tabs-{{ lang.name }}">
 {% for block in blocks %}
 {% with lang_name=lang.name %}
-{{ lang_name }}
   {% if block|class_name == 'Image' %}
-  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]
+  <!-- [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"] -->
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{{ block.caption|dict_val:lang_name }}[/caption]
   {% endif %}
 
@@ -24,7 +32,7 @@
   <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
   {% endif %}
 
-  {% if block|dict_val:class_name == 'TextBlock' %}
+  {% if block|class_name == 'TextBlock' %}
   <p>{{ block|dict_val:lang_name }}</p>
   {% endif %}
 
@@ -73,3 +81,22 @@
 {% endfor %}
 </div>
 {% endfor %}
+</div>
+{% endblock content %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+{% endblock javascript_library %}
+
+{% block javascript %}
+  <script>
+  $(function() {
+    // jQuery UI elements initialized
+    //          - tabs for languages
+
+    $( ".tabs" ).tabs();
+  });
+  </script>
+{% endblock javascript %}
+ 

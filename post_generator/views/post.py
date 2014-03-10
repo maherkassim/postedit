@@ -29,7 +29,7 @@ def ManagePost(request, post_id=False):
                 text_block_fs.save()
                 ingredient_block_fs.save_all()
                 direction_block_fs.save_all()
-                return redirect('post_generator:post', pk=post.id)
+                return redirect('post_generator:post_view', pk=post.id)
     
     else:
         form = PostForm(instance=post)

@@ -5,7 +5,7 @@
 {% if latest_post_list %}
     <ul>
     {% for post in latest_post_list %}
-        <li><a href="{% url 'post_generator:post' post.id %}">{{ post.title.english }}</a></li>
+        <li><a href="{% url 'post_generator:post_view' post.id %}">{{ post.title.english }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
