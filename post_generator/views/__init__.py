@@ -1,2 +1,3 @@
-from post import ManagePost
-from post import ViewPost
+from post import PostIndex
+from post import PostManage
+from post import PostView

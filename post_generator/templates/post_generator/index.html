@@ -2,10 +2,10 @@
 {% block title %}Post List - Xawaash Post Generator{% endblock %}
 
 {% block content %}
-{% if latest_post_list %}
+{% if posts %}
     <ul>
-    {% for post in latest_post_list %}
-        <li><a href="{% url 'post_generator:post_view' post.id %}">{{ post.title.english }}</a></li>
+    {% for post in posts %}
+        <li><a href="{% url 'post_generator:post_view' post.id %}">{{ post.title.english|title }}</a> - {{ post.pub_date }}</li>
     {% endfor %}
     </ul>
 {% else %}

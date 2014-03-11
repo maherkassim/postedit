@@ -35,4 +35,4 @@ class Direction(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.english
+        return self.direction_block.post.title.english.title() + ' - ' + str(self.item_number) + '. ' + self.english

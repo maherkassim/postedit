@@ -9,6 +9,10 @@ class Video(models.Model):
         default=-1,
     )
     
+    _tabbed = models.BooleanField(
+        default=True,
+    )
+    
     link = models.URLField(
         'Video URL',
     )

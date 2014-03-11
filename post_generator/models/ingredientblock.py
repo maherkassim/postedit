@@ -10,6 +10,10 @@ class IngredientBlock(models.Model):
         default=-1,
     )
     
+    _tabbed = models.BooleanField(
+        default=True,
+    )
+    
     printable = models.BooleanField(
         'Make this block of ingredients printable?',
     )

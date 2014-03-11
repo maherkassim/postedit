@@ -1,5 +1,5 @@
 from django.db import models
-from post_generator.models import DictionaryItem, IngredientBlock
+from post_generator.models import DictionaryItem, IngredientBlock, TextBlock
 
 class Ingredient(models.Model):
     ingredient_block = models.ForeignKey(IngredientBlock)
@@ -52,7 +52,7 @@ class Ingredient(models.Model):
     )
     
     comment = models.ForeignKey(
-        DictionaryItem,
+        TextBlock,
         related_name="comment",
         null=True,
         blank=True,
@@ -64,4 +64,4 @@ class Ingredient(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.name.english
+        return self.ingredient_block.post.title.english.title() + ' - ' + self.ingredient_block.header.english.title() + ' - ' + self.name.english

@@ -11,6 +11,18 @@
 {% block content %}
 <a href="{{ post.link }}" target="_blank"><h1>{{ post_title }}</h1></a>
 <span>Date: {{ post.pub_date }}</span>
+<br />
+{% for block in blocks_pretab %}
+  {% if block|class_name == 'Image' %}
+  <!-- [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"] -->
+  <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
+  {% for lang in languages %}
+    {% if lang.name == 'somali' %}({% endif %}{{ block.caption|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
+  {% endfor %}[/caption]
+  {% endif %}
+<br />
+{% endfor %}
+ 
 
 <div class="tabs">
 <ul>
@@ -21,11 +33,12 @@
 
 {% for lang in languages %}
 <div id="tabs-{{ lang.name }}">
-{% for block in blocks %}
+{% for block in blocks_tabbed %}
 {% with lang_name=lang.name %}
   {% if block|class_name == 'Image' %}
   <!-- [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"] -->
-  <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{{ block.caption|dict_val:lang_name }}[/caption]
+  <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
+  {{ block.caption|dict_val:lang_name }}[/caption]
   {% endif %}
 
   {% if block|class_name == 'Video' %}
@@ -37,28 +50,28 @@
   {% endif %}
 
   {% if block|class_name == 'IngredientBlock' %}
-  <h3>{{ block.header|dict_val:lang_name }}:</h3>
+  <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.ingredients|dict_val:lang_name }}:</h3>
   <ul>
   {% for ing in block.ingredient_set.all %}
     <li>
       {{ ing.quantity }}
       
       {% if ing.intl %}
-        {{ ing.quantity_units }}
+        {{ ing.quantity_units|dict_val:lang_name }}
       {% endif %}
 
       {% if ing.intl %}
-        ({{ ing.intl }} {{ ing.intl_units }})
+        ({{ ing.intl }} {{ ing.intl_units|dict_val:lang_name }})
       {% endif %}
       
       {% if ing.size %}
-        {{ ing.size }}
+        {{ ing.size|dict_val:lang_name }}
       {% endif %}
       
-      {{ ing.name }}
+      {{ ing.name|dict_val:lang_name }}
       
-      {% if ing.prep_style %}
-        ({{ ing.prep_style }})
+      {% if ing.prep_style and ing.prep_style|dict_val:lang_name %}
+        ({{ ing.prep_style|dict_val:lang_name }})
       {% endif %}
       
       {% if ing.comment and ing.comment|dict_val:lang_name %}
@@ -70,7 +83,7 @@
   {% endif %}
 
   {% if block|class_name == 'DirectionBlock' %}
-  <h3>{{ block.header|dict_val:lang_name }}:</h3>
+  <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.directions|dict_val:lang_name }}:</h3>
   <ol>
   {% for dir in block.direction_set.all %}
     <li>{{ dir|dict_val:lang_name }}</li>

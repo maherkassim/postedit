@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from post_generator.models import Post, Language
+from post_generator.models import Post, Language, DictionaryItem
 from post_generator.forms import PostForm, ImageFormSet, VideoFormSet, TextBlockFormSet, IngredientBlockFormSet, DirectionBlockFormSet
 from django.template import RequestContext
 
-def ManagePost(request, post_id=False):
+def PostIndex(request):
+    posts = Post.objects.all().order_by('-pub_date')
+    return render(request, 'post_generator/index.html',
+                              {'posts':posts,})
+
+def PostManage(request, post_id=False):
     post = Post()
     form = None
     image_fs = None
@@ -48,12 +53,14 @@ def ManagePost(request, post_id=False):
                                'direction_block_fs':direction_block_fs,
                                })
 
-def ViewPost(request, post_id):
+def PostView(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     post_title = "%s (%s) %s %s" % (post.title.english,
                                     post.title.somali,
                                     post.title.french,
                                     post.title.arabic)
+    
+    # Sort blocks into defined array indices
     block_count = post.image_set.count()
     block_count += post.video_set.count()
     block_count += post.textblock_set.count()
@@ -67,10 +74,26 @@ def ViewPost(request, post_id):
                       post.directionblock_set.all()):
         for block in query_set:
             blocks[block._loc_index]=block
-
+    
+    # filter blocks 
+    blocks_pretab = []
+    blocks_tabbed = []
+    for block in blocks:
+        if block and block._tabbed:
+            blocks_tabbed.append(block)
+        else:
+            blocks_pretab.append(block)
+    
+    headers = {}
+    headers['directions'] = DictionaryItem.objects.get(english="Directions")
+    headers['ingredients'] = DictionaryItem.objects.get(english="Ingredients")
+    
     return render(request, 'post_generator/post_view.html',
                               {'post':post,
                                'post_title':post_title.title,
-                               'blocks':blocks,
+                               'blocks_pretab':blocks_pretab,
+                               'blocks_tabbed':blocks_tabbed,
                                'languages':Language.objects.all(),
+                               'headers':headers,
                               })
+

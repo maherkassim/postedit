@@ -1,5 +1,5 @@
 from django.db import models
-from post_generator.models import Post, DictionaryItem
+from post_generator.models import Post, TextBlock
 
 class Image(models.Model):
     _loc_index = models.PositiveIntegerField(
@@ -7,10 +7,14 @@ class Image(models.Model):
         default=-1,
     )
     
+    _tabbed = models.BooleanField(
+        default=True,
+    )
+    
     post = models.ForeignKey(Post)
     
     caption = models.ForeignKey(
-        DictionaryItem,
+        TextBlock,
         related_name="image_caption",
         verbose_name="Image Caption",
     )
@@ -39,4 +43,4 @@ class Image(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.link
+        return self.link + ' -  ' + self.caption.english

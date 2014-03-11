@@ -2,11 +2,19 @@ from django.db import models
 from post_generator.models import Post
 
 class TextBlock(models.Model):
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(
+        Post,
+        null=True,
+        blank=True,
+    )
     
     _loc_index = models.PositiveIntegerField(
         'Relative location on page',
         default=-1,
+    )
+    
+    _tabbed = models.BooleanField(
+        default=True,
     )
     
     english = models.CharField(
@@ -40,4 +48,4 @@ class TextBlock(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.text
+        return self.english

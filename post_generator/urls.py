@@ -4,14 +4,14 @@ from post_generator import views
 
 urlpatterns = patterns('',
     # ex: /post/
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.PostIndex, name='post_index'),
 
     # ex: /post/form/
-    url(r'^form/$', views.ManagePost, name='post_new'),
+    url(r'^form/$', views.PostManage, name='post_new'),
     
     # ex: /post/form/5/
-    url(r'^form/(?P<post_id>\d+)/$', views.ManagePost, name='post_manage'),
+    url(r'^form/(?P<post_id>\d+)/$', views.PostManage, name='post_manage'),
 
     # ex: /post/5    
-    url(r'^(?P<post_id>\d+)/$', views.ViewPost, name='post_view'),
+    url(r'^(?P<post_id>\d+)/$', views.PostView, name='post_view'),
 )
