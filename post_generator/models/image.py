@@ -11,7 +11,11 @@ class Image(models.Model):
         default=True,
     )
     
-    post = models.ForeignKey(Post)
+    post = models.ForeignKey(
+        Post,
+        null=True,
+        blank=True,
+    )
     
     caption = models.ForeignKey(
         TextBlock,

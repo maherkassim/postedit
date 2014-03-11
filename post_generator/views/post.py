@@ -5,7 +5,7 @@ from django.template import RequestContext
 
 def PostIndex(request):
     posts = Post.objects.all().order_by('-pub_date')
-    return render(request, 'post_generator/index.html',
+    return render(request, 'post_generator/post_index.html',
                               {'posts':posts,})
 
 def PostManage(request, post_id=False):
@@ -75,6 +75,14 @@ def PostView(request, post_id):
         for block in query_set:
             blocks[block._loc_index]=block
     
+    languages = [] 
+    languages.append(Language.objects.get(name="english"))
+    if post.include_somali:
+        languages.append(Language.objects.get(name="somali"))
+    if post.include_french:
+        languages.append(Language.objects.get(name="french"))
+    if post.include_arabic:
+        languages.append(Language.objects.get(name="arabic"))
     # filter blocks 
     blocks_pretab = []
     blocks_tabbed = []
@@ -93,7 +101,7 @@ def PostView(request, post_id):
                                'post_title':post_title.title,
                                'blocks_pretab':blocks_pretab,
                                'blocks_tabbed':blocks_tabbed,
-                               'languages':Language.objects.all(),
+                               'languages':languages,
                                'headers':headers,
                               })
 

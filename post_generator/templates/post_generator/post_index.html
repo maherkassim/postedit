@@ -1,0 +1,16 @@
+{% extends "post_generator/base.html" %}
+{% block title %}Post List - Xawaash Post Generator{% endblock %}
+
+{% block content %}
+{% if posts %}
+    <table>
+    {% for post in posts %}
+      <tr><td><a href="{% url 'post_generator:post_view' post.id %}"><img width="{{ post.featured_image.width }}" height="{{ post.featured_image.height }}" src="{{ post.featured_image.link }}" alt="{{ post.title.english|title }}" title="{{ post.title.english|title }}" /></a></td>
+            <td><a href="{% url 'post_generator:post_view' post.id %}">{{ post.title.english|title }}<br />{{ post.pub_date }}</a></td>
+      </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No posts are available.</p>
+{% endif %}
+{% endblock %}
