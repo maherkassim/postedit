@@ -9,12 +9,15 @@
 {% endblock css %}
 
 {% block content %}
-<a href="{{ post.link }}" target="_blank"><h1>{{ post_title }}</h1></a>
+<div class="main-container">
+<h1><a href="{{ post.link }}" target="_blank">{{ post_title }}</a></h1>
 <span>Date: {{ post.pub_date }}</span>
+<button><a href="{% url 'post_generator:post_manage' post.id %}">Edit This Post</a></button>
 <br />
+
 {% for block in blocks_pretab %}
   {% if block|class_name == 'Image' %}
-  <!-- [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"] -->
+  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
   {% for lang in languages %}
     {% if lang.name == 'somali' %}({% endif %}{{ block.caption|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
@@ -36,7 +39,7 @@
 {% for block in blocks_tabbed %}
 {% with lang_name=lang.name %}
   {% if block|class_name == 'Image' %}
-  <!-- [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"] -->
+  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
   {{ block.caption|dict_val:lang_name }}[/caption]
   {% endif %}
@@ -90,10 +93,13 @@
   {% endfor %}
   </ol>
   {% endif %}
+
+<br />
 {% endwith %}
 {% endfor %}
 </div>
 {% endfor %}
+</div>
 </div>
 {% endblock content %}
 

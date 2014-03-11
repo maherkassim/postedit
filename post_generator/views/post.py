@@ -44,7 +44,7 @@ def PostManage(request, post_id=False):
         ingredient_block_fs = IngredientBlockFormSet(instance=post)
         direction_block_fs = DirectionBlockFormSet(instance=post)
     
-    return render(request, 'post_generator/post_form.html',
+    return render(request, 'post_generator/post_manage.html',
                               {'form':form,
                                'image_fs':image_fs,
                                'video_fs':video_fs,

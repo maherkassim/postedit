@@ -13,7 +13,7 @@
         <meta name="author" content="{% block meta_author %}Maher Kassim{% endblock %}" />
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/main.custom.css" />
         {% block css %}{% endblock %}
 
         <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
@@ -26,16 +26,7 @@
         <![endif]-->
         {% block header %}
         <div class="header-container">
-            <header class="wrapper clearfix">
-                <h1 class="title">h1.title</h1>
-                <nav>
-                    <ul>
-                        <li><a href="#">nav ul li a 1</a></li>
-                        <li><a href="#">nav ul li a 2</a></li>
-                        <li><a href="#">nav ul li a 3</a></li>
-                    </ul>
-                </nav>
-            </header>
+          <a href="{% url 'post_generator:post_index' %}"><img src="{{ STATIC_URL }}img/xawaash-header.png" width="100%" alt="Xawaash Post Generator"></a>
         </div>
         {% endblock header %}
         
@@ -72,11 +63,6 @@
         {% endblock content %}
         
         {% block footer %}
-        <div class="footer-container">
-            <footer class="wrapper">
-                <h3>footer</h3>
-            </footer>
-        </div>
         {% endblock footer %}
 
         {% block javascript_library %}

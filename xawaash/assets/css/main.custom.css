@@ -62,6 +62,13 @@ textarea {
 
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    width: 1130px;
+    margin: 0px auto;
+    border: 1px solid #a3a3a3;
+}
+
+.main-container {
+    margin: 0px 20px;
 }
 
 .wrapper {
@@ -74,18 +81,18 @@ body {
    =================== */
 
 .header-container {
-    border-bottom: 20px solid #e44d26;
+    border-bottom: 20px;
 }
 
 .footer-container,
 .main aside {
-    border-top: 20px solid #e44d26;
+    border-top: 20px;
 }
 
 .header-container,
 .footer-container,
 .main aside {
-    background: #f16529;
+    background: #a3a3a3;
 }
 
 .title {
