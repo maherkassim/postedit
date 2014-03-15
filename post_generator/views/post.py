@@ -16,8 +16,12 @@ def PostManage(request, post_id=False):
     text_block_fs = None
     ingredient_block_fs = None
     direction_block_fs = None
+    blocks = []
+    pretab_fs = []
+    tabbed_fs = []
+    fs_manage = []
     if post_id:
-       post = get_object_or_404(Post, id=post_id)
+        post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -35,7 +39,6 @@ def PostManage(request, post_id=False):
                 ingredient_block_fs.save_all()
                 direction_block_fs.save_all()
                 return redirect('post_generator:post_view', pk=post.id)
-    
     else:
         form = PostForm(instance=post)
         image_fs = ImageFormSet(instance=post)
@@ -43,14 +46,32 @@ def PostManage(request, post_id=False):
         text_block_fs = TextBlockFormSet(instance=post)
         ingredient_block_fs = IngredientBlockFormSet(instance=post)
         direction_block_fs = DirectionBlockFormSet(instance=post)
-    
+    block_count = len(image_fs.forms)
+    block_count += len(video_fs.forms)
+    block_count += len(text_block_fs.forms)
+    block_count += len(ingredient_block_fs.forms)
+    block_count += len(direction_block_fs.forms)
+    blocks = [None] * block_count
+    for block_formset in image_fs, video_fs, text_block_fs, ingredient_block_fs, direction_block_fs:
+        for block_form in block_formset.forms:
+            block_index = block_form['_loc_index'].value()
+            blocks[block_index] = block_form
+    for block_form in blocks:
+        if block_form and block_form['_tabbed'].value():
+            tabbed_fs.append(block_form)
+        else:
+            pretab_fs.append(block_form)
+    fs_manage.append(image_fs.management_form)
+    fs_manage.append(video_fs.management_form)
+    fs_manage.append(text_block_fs.management_form)
+    fs_manage.append(ingredient_block_fs.management_form)
+    fs_manage.append(direction_block_fs.management_form)
+     
     return render(request, 'post_generator/post_manage.html',
                               {'form':form,
-                               'image_fs':image_fs,
-                               'video_fs':video_fs,
-                               'text_block_fs':text_block_fs,
-                               'ingredient_block_fs':ingredient_block_fs,
-                               'direction_block_fs':direction_block_fs,
+                               'pretab_fs':pretab_fs,
+                               'tabbed_fs':tabbed_fs,
+                               'fs_manage':fs_manage,
                                })
 
 def PostView(request, post_id):
@@ -66,7 +87,7 @@ def PostView(request, post_id):
     block_count += post.textblock_set.count()
     block_count += post.ingredientblock_set.count()
     block_count += post.directionblock_set.count()
-    blocks = [None] * (block_count);
+    blocks = [None] * block_count;
     for query_set in (post.image_set.all(),
                       post.video_set.all(),
                       post.textblock_set.all(),

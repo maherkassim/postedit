@@ -1,57 +1,227 @@
+{% extends "post_generator/base.html" %}
+{% load custom_filters %}
+
+{% block title %}Post Content Management{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+    <style>
+      span {
+        padding-left:10px;
+      }
+      table {
+        width:100%;
+      }
+      ol {
+        padding:0 0 0 25px;
+      }
+      ol li {
+        margin:10px 0px;
+        border:1px solid gainsboro;
+        border-radius:10px;
+      }
+      ol li:nth-child(even){
+        border:1px solid black;
+        background-color:gainsboro;
+        border-radius:5px;
+      }
+      ol li:nth-child(even) table {
+        border-top:1px solid black;
+        border-radius:5px;
+      }
+      td {
+        padding:0px 5px;
+      }
+      </style>
+{% endblock css %}
+
+{% block content %}
 <form method="post" action="">
 {% csrf_token %}
-{{ form }}
 
-<h2>Images</h2>
-    <table>
-    {{ image_fs }}
-    </table>
+<div id="post-general">
+  <h2>General Post Info</h2>
+  {{ form.non_field_erros }}
+  <table>
+    <tr>
+      <td>Post Title: {{ form.title }}{{ form.title.errors }}</td>
+      <td>{{ form.include_somali }} Include Somali Tab</td>
+    </tr>
+    <tr>
+      <td>Post URL: {{ form.link }} <input type="button" value="Generate New...">{{ form.link.errors }}</td>
+      <td>{{ form.include_french }} Include French Tab</td>
+    </tr>
+    <tr>
+      <td>Publication Date: {{ form.pub_date }}{{ form.pub_date.errors }}</td>
+      <td>{{ form.include_arabic }} Include Arabic Tab</td>
+    </tr>
+    <tr>
+      <td>Featured Image: {{ form.featured_image }}{{ form.featured_image.errors }}</td>
+      <td>Servings: {{ form.servings }}{{ form.servings.errors }}</td>
+    </tr>
+  </table>
+</div>
 
-<h2>Videos</h2>
-    <table>
-    {{ video_fs }}
-    </table>
-
-<h2>Text Blocks</h2>
-    <table>
-    {{ text_block_fs }}
-    </table>
-
-<h2>Ingredients</h2>
-
-{{ ingredient_block_fs.management_form }}
-{% for ingredient_block in ingredient_block_fs.forms %}
-
-  {{ ingredient_block }}
-
-  {% if ingredient_block.nested %}
-  {% for ingredient in ingredient_block.nested %}
-    <table>
-  {{ ingredient.management_form }}
-  {{ ingredient.as_table }}
-    </table>
-  {% endfor %}
-  {% endif %}
-
+{% for management_form in fs_manage %}
+{{ management_form }}
 {% endfor %}
 
-<h2>Directions</h2>
-
-{{ direction_block_fs.management_form }}
-{% for direction_block in direction_block_fs.forms %}
-
-  {{ direction_block }}
-
-  {% if direction_block.nested %}
-  {% for direction in direction_block.nested %}
-    <table>
-  {{ direction.management_form }}
-  {{ direction.as_table }}
-    </table>
+<div id="pre-tab">
+  <h2 style="border:2px solid gainsboro;border-radius:7px">Pre-Tab Content</h2>
+  <ol id="pretab-list" class="block-list">
+  {% for block_form in pretab_fs %}
+    {% if block_form|model_name == 'image' %}
+    <li>Add/Edit Image:<table>
+    <tr>
+      <td rowspan="3"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value }}" /></td>
+      <td>Image URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
+      <td rowspan="3">Caption: {{ block_form.caption }}{{ block_form.caption.errors }}</td>
+    </tr>
+    <tr>
+      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
+    </tr>
+    <tr>
+      <td>WordPress ID: {{ block_form.wordpress_image_id }} {{ block_form.wordpress_image_id.errors }}</td>
+    </tr>
+    </table></li>
+    {% endif %}
   {% endfor %}
-  {% endif %}
+  </ol>
+</div>
 
-{% endfor %}
+<div id="tabbed">
+  <h2 style="border:2px solid gainsboro;border-radius:7px;">Tabbed Content</h2>
+  <ol id="tabbed-list" class="block-list">
+  {% for block_form in tabbed_fs %}
+    <li>
+    {% if block_form|model_name == 'image' %}
+    <span>Add/Edit Image:</span>
+    <table>
+    <tr>
+      <td rowspan="3"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value }}" /></td>
+      <td>Image URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
+      <td rowspan="3">Caption: {{ block_form.caption }}{{ block_form.caption.errors }}</td>
+    </tr>
+    <tr>
+      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
+    </tr>
+    <tr>
+      <td>WordPress ID: {{ block_form.wordpress_image_id }} {{ block_form.wordpress_image_id.errors }}</td>
+    </tr>
+    </table>
+
+    {% elif block_form|model_name == 'video' %}
+    <span>Add/Edit Video:</span>
+    <table>
+    <tr>
+      <td rowspan="2"><iframe src="{{ block_form.link.value }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
+      <td>Video URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
+    </tr>
+    <tr>
+      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
+    </tr>
+    </table>
+
+    {% elif block_form|model_name == 'textblock' %}
+    <span>Add/Edit Text/Paragraph:</span>
+    <table>
+    <tr>
+      <td>{{ block_form.english }}{{ block_form.english.errors }}</td>
+      <td>
+        <div class="tabs">
+        {% with loc_index=block_form|get_loc %}
+          <ul>
+	    <li><a href="#text-{{ loc_index }}-french">Français</a></li>
+            <li><a href="#text-{{ loc_index }}-somali">Af-Somaali</a></li>
+            <li><a href="#text-{{ loc_index }}-arabic">عربي</a></li>
+          </ul>
+          <div id="text-{{ loc_index }}-french">
+            {{ block_form.french }}{{ block_form.french.errors }}
+          </div>
+          <div id="text-{{ loc_index }}-somali">
+            {{ block_form.somali }}{{ block_form.somali.errors }}
+          </div>
+          <div id="text-{{ loc_index }}-arabic">
+            {{ block_form.arabic }}{{ block_form.arabic.errors }}
+          </div>
+        {% endwith %}
+        </div>
+      </td>
+    </tr>
+    </table>
+
+    {% elif block_form|model_name == 'ingredientblock' %}
+    <span>Add/Edit Ingredient Set:</span>
+      <br /><span>Ingredient Set Header: {{ block_form.header }}{{ block_form.header.errors }}</span>
+      <ol>
+      {% for query_set in block_form.nested %}
+        {% for ingredient_form in query_set %}
+        {{ ingredient_form.management_form }}
+      <li>
+      <table>
+        <tr>
+          <td>Quantity:</td>
+          <td>Units:</td>
+          <td>Size:</td>
+          <td>Name:</td>
+          <td>Comment:</td>
+        </tr>
+        <tr>
+          <td>{{ ingredient_form.quantity }}</td>
+          <td>{{ ingredient_form.quantity_units }}</td>
+          <td>{{ ingredient_form.size }}</td>
+          <td>{{ ingredient_form.name }}</td>
+          <td rowspan="3">{{ ingredient_form.comment }}</td>
+        </tr>
+        <tr>
+          <td>Int'l:</td>
+          <td>Units:</td>
+          <td rowspan="2" style="text-align:right">Preparation/Types:</td>
+          <td rowspan="2">{{ ingredient_form.prep_style }}</td>
+        </tr>
+        <tr>
+          <td>{{ ingredient_form.intl }}</td>
+          <td>{{ ingredient_form.intl_units }}</td>
+        </tr>
+      </table>
+      </li>
+      {% endfor %}
+      {% endfor %}
+      </ol>
+    {% endif %}
+      <span style="display:none">
+        Location Index:{{ block_form|loc_field }}<br />
+        {{ block_form|tab_field }} Tabbed?
+      </span>
+    </li>
+  {% endfor %}
+  </ol>
+</div>
 
 <input type="submit" value="Submit">
 </form>
+{% endblock content %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+{% endblock javascript_library %}
+
+{% block javascript %}
+  <script>
+  $(function() {
+    // jQuery UI elements initialized
+    //          - tabs for languages
+    //          - sortable for reordering blocks
+    $( ".tabs" ).tabs();
+    $( "#tabbed-list" ).sortable({
+      connectWith:'.block-list'
+    }).disableSelection();
+    $( "#pretab-list" ).sortable({
+      connectWith:'.block-list'
+    }).disableSelection();
+  });
+  </script>
+{% endblock javascript %}
+

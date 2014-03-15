@@ -34,6 +34,10 @@ class Post(models.Model):
         default=True,
     )
     
+    servings = models.IntegerField(
+        'Number of servings',
+    )
+    
     class Meta:
         app_label = 'post_generator'
     

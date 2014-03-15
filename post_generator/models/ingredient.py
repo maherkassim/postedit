@@ -7,6 +7,7 @@ class Ingredient(models.Model):
     name = models.ForeignKey(
         DictionaryItem,
         related_name="name",
+        limit_choices_to={'_set':'General'},
     )
     
     size = models.ForeignKey(
@@ -14,6 +15,7 @@ class Ingredient(models.Model):
         related_name="size",
         null=True,
         blank=True,
+        limit_choices_to={'_set':'Size'},
     )
     
     quantity = models.CharField(
@@ -27,6 +29,7 @@ class Ingredient(models.Model):
         related_name="quantity_units",
         null=True,
         blank=True,
+        limit_choices_to={'_set':'Quant_Unit'},
     )
     
     intl = models.CharField(
@@ -41,14 +44,16 @@ class Ingredient(models.Model):
         verbose_name="International Units",
         null=True,
         blank=True,
+        limit_choices_to={'_set':'Intl_Unit'},
     )
     
-    prep_style = models.ForeignKey(
+    prep_style = models.ManyToManyField(
         DictionaryItem,
-        related_name="prep_style",
-        verbose_name="Preparation Methods/Styles",
+        related_name='prep_style',
+        verbose_name='Preparation Methods/Styles',
         null=True,
         blank=True,
+        limit_choices_to={'_set':'Prep_Type'},
     )
     
     comment = models.ForeignKey(

@@ -129,11 +129,11 @@ class BaseDirectionBlockFormSet(RequiredInlineFormSet):
                             instance=instance,
                             prefix='dir_%s' % pk_value)]
 
-ImageFormSet = inlineformset_factory(Post, Image, extra=1)
-VideoFormSet = inlineformset_factory(Post, Video, extra=1)
-TextBlockFormSet = inlineformset_factory(Post, TextBlock, extra=1)
-IngredientBlockFormSet = inlineformset_factory(Post, IngredientBlock, formset=BaseIngredientBlockFormSet, extra=1)
-DirectionBlockFormSet = inlineformset_factory(Post, DirectionBlock, formset=BaseDirectionBlockFormSet, extra=1)
-IngredientFormSet = inlineformset_factory(IngredientBlock, Ingredient, extra=1)
-DirectionFormSet = inlineformset_factory(DirectionBlock, Direction, extra=1)
+ImageFormSet = inlineformset_factory(Post, Image)
+VideoFormSet = inlineformset_factory(Post, Video)
+TextBlockFormSet = inlineformset_factory(Post, TextBlock)
+IngredientBlockFormSet = inlineformset_factory(Post, IngredientBlock, formset=BaseIngredientBlockFormSet)
+DirectionBlockFormSet = inlineformset_factory(Post, DirectionBlock, formset=BaseDirectionBlockFormSet)
+IngredientFormSet = inlineformset_factory(IngredientBlock, Ingredient)
+DirectionFormSet = inlineformset_factory(DirectionBlock, Direction)
 

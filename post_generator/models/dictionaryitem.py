@@ -6,11 +6,24 @@ class DictionaryItem(models.Model):
         ('Verb', 'Verb'),
         ('Adj.', 'Adjective'),
     )
-
+    
+    SET_CHOICES = (
+         ('General', 'General'),
+         ('Quant_Unit', 'Ingredient Quantity Unit'),
+         ('Intl_Unit', 'Ingredient International Unit'),
+         ('Size', 'Ingredient Size'),
+         ('Prep_Type', 'Preparation/Type'),
+    )
+    
+    _set = models.CharField('Set Type',
+                            max_length=10,
+                            choices=SET_CHOICES,
+                            default='General',)
+    
     word_type = models.CharField('Word Type',
                                  max_length=4,
                                  choices=TYPE_CHOICES,
-                                 default='Noun')
+                                 default='Noun',)
 
     english = models.CharField(
         'English',
