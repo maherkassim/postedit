@@ -1,0 +1,178 @@
+{% load custom_filters %}
+{% for block_form in form_list %}
+<li{% if template %} id="empty_{{ block_form|model_name }}s"{% endif %}>
+  {% if block_form|model_name == 'image' %}
+    <span>Add/Edit Image:</span>
+    {{ block_form.link.errors }}
+    {{ block_form.width.errors }}
+    {{ block_form.height.errors }}
+    {{ block_form.wordpress_image_id.errors }}
+    {{ block_form.english.errors }}
+    {{ block_form.somali.errors }}
+    {{ block_form.french.errors }}
+    {{ block_form.arabic.errors }}
+    <table>
+    <tr>
+      <td rowspan="4"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" /></td>
+      <td>Image URL: {{ block_form.link }}</td>
+      <td>English Caption: {{ block_form.english }}</td>
+    </tr>
+    <tr>
+      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}</td>
+      <td>Somali Caption: {{ block_form.somali }}</td>
+    </tr>
+    <tr>
+      <td>WordPress ID: {{ block_form.wordpress_image_id }}</td>
+      <td>French Caption: {{ block_form.french }}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Arabic Caption: {{ block_form.arabic }}</td>
+    </tr>
+    </table>
+  <span class="form_info">
+  {% elif block_form|model_name == 'video' %}
+    <span>Add/Edit Video:</span>
+    {{ block_form.link.errors }}
+    {{ block_form.width.errors }}
+    {{ block_form.height.errors }}
+    <table>
+    <tr>
+      <td rowspan="2"><iframe src="{{ block_form.link.value|or_blank }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
+      <td>Video URL: {{ block_form.link }}</td>
+    </tr>
+    <tr>
+      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}</td>
+    </tr>
+    </table>
+  <span class="form_info">
+  {% elif block_form|model_name == 'textblock' %}
+    <span>Add/Edit Text/Paragraph:</span>
+    {{ block_form.english.errors }}
+    {{ block_form.french.errors }}
+    {{ block_form.somali.errors }}
+    {{ block_form.arabic.errors }}
+    <table>
+    <tr>
+      <td>English: {{ block_form.english }}</td>
+      <td>
+        <div class="tabs">
+        {% with loc_index=block_form|get_loc %}
+          <ul>
+          <li><a href="#text-{{ loc_index }}-french">Français</a></li>
+            <li><a href="#text-{{ loc_index }}-somali">Af-Somaali</a></li>
+            <li><a href="#text-{{ loc_index }}-arabic">عربي</a></li>
+          </ul>
+          <div id="text-{{ loc_index }}-french">{{ block_form.french }}</div>
+          <div id="text-{{ loc_index }}-somali">{{ block_form.somali }}</div>
+          <div id="text-{{ loc_index }}-arabic">{{ block_form.arabic }}</div>
+        {% endwith %}
+        </div>
+      </td>
+    </tr>
+    </table>
+  <span class="form_info">
+  {% elif block_form|model_name == 'ingredientblock' %}
+    <span>Add/Edit Ingredient Set:</span><br />
+    <span>Ingredient Set Header: {{ block_form.header }}{{ block_form.header.errors }}</span>
+    {% for ingredient_fs in block_form.nested %}
+    <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
+      {{ ingredient_fs.management_form }}
+      {% for ingredient_form in ingredient_fs %}
+      <li{% if forloop.last %} class="nested_empty" id="empty_{{ ingredient_fs.prefix }}"{% endif %}>
+        <span>Add/Edit Ingredient:</span>
+        {{ ingredient_form.quantity.errors }}
+        {{ ingredient_form.quantity_units.errors }}
+        {{ ingredient_form.size.errors }}
+        {{ ingredient_form.name.errors }}
+        {{ ingredient_form.english.errors }}
+        {{ ingredient_form.somali.errors }}
+        {{ ingredient_form.french.errors }}
+        {{ ingredient_form.arabic.errors }}
+        <table>
+          <tr>
+            <td>Quantity:</td>
+            <td>Units:</td>
+            <td>Size:</td>
+            <td>Name:</td>
+            <td>English Comment: {{ ingredient_form.english }}</td>
+          </tr>
+          <tr>
+            <td>{{ ingredient_form.quantity }}</td>
+            <td>{{ ingredient_form.quantity_units }}</td>
+            <td>{{ ingredient_form.size }}</td>
+            <td>{{ ingredient_form.name }}</td>
+            <td>Somali Comment: {{ ingredient_form.somali }}</td>
+          </tr>
+          <tr>
+            <td>Int'l:</td>
+            <td>Units:</td>
+            <td rowspan="2" style="text-align:right">Preparation/Types:</td>
+            <td rowspan="2">{{ ingredient_form.prep_style }}</td>
+            <td>French Comment: {{ ingredient_form.french }}</td>
+          </tr>
+          <tr>
+            <td>{{ ingredient_form.intl }}</td>
+            <td>{{ ingredient_form.intl_units }}</td>
+            <td>Arabic Comment: {{ ingredient_form.arabic }}</td>
+          </tr>
+        </table>
+        <span class="form_info">
+          {{ ingredient_form.DELETE }} Delete?<br />
+          {{ ingredient_form.id }}
+        </span>
+      </li>
+      {% endfor %}
+      <input id="id_{{ ingredient_fs.prefix }}-ADD" name="{{ ingredient_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Ingredient" />
+    </ol>
+    {% endfor %}
+  <span class="formset_info">
+  {% elif block_form|model_name == 'directionblock' %}
+    <span>Add/Edit Direction Set:</span><br />
+    <span>Direction Set Header: {{ block_form.header }}{{ block_form.header.errors }}</span>
+    {% for direction_fs in block_form.nested %}
+    <ol id="{{ direction_fs.prefix }}-LIST" class="nested">
+      {{ direction_fs.management_form }}
+      {% for direction_form in direction_fs %}
+      <li{% if forloop.last %} class="nested_empty" id="empty_{{ direction_fs.prefix }}"{% endif %}>
+        <span>Add/Edit Direction:</span>
+        {{ direction_form.english.errors }}
+        {{ direction_form.somali.errors }}
+        {{ direction_form.french.errors }}
+        {{ direction_form.arabic.errors }}
+        <table>
+          <tr>
+            <td>English:</td>
+            <td>{{ direction_form.english }}</td>
+          </tr>
+          <tr>
+            <td>Somali:</td>
+            <td>{{ direction_form.somali }}</td>
+          </tr>
+          <tr>
+            <td>French:</td>
+            <td>{{ direction_form.french }}</td>
+          </tr>
+          <tr>
+            <td>Arabic:</td>
+            <td>{{ direction_form.arabic }}</td>
+          </tr>
+       </table>
+       <span class="form_info">
+          {{ direction_form.DELETE }} Delete?<br />
+          {{ direction_form.id }}
+       </span>
+      </li>
+      {% endfor %}
+      <input id="id_{{ direction_fs.prefix }}-ADD" name="{{ direction_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Direction" />
+    </ol>
+    {% endfor %}
+  <span class="formset_info">
+  {% endif %}
+    Location Index: {{ block_form|loc_field }}<br />
+    {{ block_form|tab_field }} Tabbed?<br />
+    {{ block_form.DELETE }} Delete?<br />
+    {{ block_form.id }}
+  </span>
+</li>
+{% endfor %}

@@ -20,7 +20,7 @@
   [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
   {% for lang in languages %}
-    {% if lang.name == 'somali' %}({% endif %}{{ block.caption|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
+    {% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
   {% endfor %}[/caption]
   {% endif %}
 <br />
@@ -41,25 +41,22 @@
   {% if block|class_name == 'Image' %}
   [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
-  {{ block.caption|dict_val:lang_name }}[/caption]
-  {% endif %}
-
-  {% if block|class_name == 'Video' %}
+  {{ block|dict_val:lang_name }}[/caption]
+  <br />
+  {% elif block|class_name == 'Video' %}
+  <br />
   <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
   {% endif %}
-
   {% if block|class_name == 'TextBlock' %}
   <p>{{ block|dict_val:lang_name }}</p>
-  {% endif %}
-
-  {% if block|class_name == 'IngredientBlock' %}
+  {% elif block|class_name == 'IngredientBlock' %}
   <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.ingredients|dict_val:lang_name }}:</h3>
   <ul>
   {% for ing in block.ingredient_set.all %}
     <li>
       {{ ing.quantity }}
       
-      {% if ing.intl %}
+      {% if ing.quantity_units %}
         {{ ing.quantity_units|dict_val:lang_name }}
       {% endif %}
 
@@ -77,24 +74,23 @@
         ({{ ing.prep_style|dict_val:lang_name }})
       {% endif %}
       
-      {% if ing.comment and ing.comment|dict_val:lang_name %}
-        - {{ ing.comment|dict_val:lang_name }}
+      {% if ing|dict_val:lang_name %}
+        - {{ ing|dict_val:lang_name }}
       {% endif %}
     </li>
   {% endfor %}
   </ul>
-  {% endif %}
-
-  {% if block|class_name == 'DirectionBlock' %}
+  <br />
+  {% elif block|class_name == 'DirectionBlock' %}
   <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.directions|dict_val:lang_name }}:</h3>
   <ol>
   {% for dir in block.direction_set.all %}
     <li>{{ dir|dict_val:lang_name }}</li>
   {% endfor %}
   </ol>
+  <br />
   {% endif %}
 
-<br />
 {% endwith %}
 {% endfor %}
 </div>

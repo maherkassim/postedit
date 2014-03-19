@@ -84,7 +84,6 @@ class RequiredInlineFormSet(BaseInlineFormSet):
             for nested in form.nested:
                 nested.save(commit=commit)
 
-
 class BaseIngredientBlockFormSet(RequiredInlineFormSet):
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
@@ -93,20 +92,15 @@ class BaseIngredientBlockFormSet(RequiredInlineFormSet):
         # created the nested formset
         try:
             instance = self.get_queryset()[index]
-            pk_value = instance.pk
         except IndexError:
             instance = None
-            pk_value = hash(form.prefix)
 
         # store the formset in the .nested property
-        data = None
-        if self.data:
-            data = self.data
         form.nested = [
-            IngredientFormSet(data=data,
+            IngredientFormSet(data = self.data if self.data and index is not None else None,
                             instance=instance,
-                            prefix='ing_%s' % pk_value)]
-    
+                            prefix=form.prefix)]
+ 
 class BaseDirectionBlockFormSet(RequiredInlineFormSet):
     def add_fields(self, form, index):
         # allow the super class to create the fields as usual
@@ -115,25 +109,20 @@ class BaseDirectionBlockFormSet(RequiredInlineFormSet):
         # created the nested formset
         try:
             instance = self.get_queryset()[index]
-            pk_value = instance.pk
         except IndexError:
-            instance=None
-            pk_value = hash(form.prefix)
+            instance = None
 
         # store the formset in the .nested property
-        data = None
-        if self.data:
-            data = self.data
         form.nested = [
-            DirectionFormSet(data=data,
+            DirectionFormSet(data = self.data if self.data and index is not None else None,
                             instance=instance,
-                            prefix='dir_%s' % pk_value)]
-
-ImageFormSet = inlineformset_factory(Post, Image)
-VideoFormSet = inlineformset_factory(Post, Video)
-TextBlockFormSet = inlineformset_factory(Post, TextBlock)
-IngredientBlockFormSet = inlineformset_factory(Post, IngredientBlock, formset=BaseIngredientBlockFormSet)
-DirectionBlockFormSet = inlineformset_factory(Post, DirectionBlock, formset=BaseDirectionBlockFormSet)
-IngredientFormSet = inlineformset_factory(IngredientBlock, Ingredient)
-DirectionFormSet = inlineformset_factory(DirectionBlock, Direction)
+                            prefix=form.prefix)]
+    
+ImageFormSet = inlineformset_factory(Post, Image, extra=1)
+VideoFormSet = inlineformset_factory(Post, Video, extra=1)
+TextBlockFormSet = inlineformset_factory(Post, TextBlock, extra=1)
+IngredientBlockFormSet = inlineformset_factory(Post, IngredientBlock, formset=BaseIngredientBlockFormSet, extra=1)
+DirectionBlockFormSet = inlineformset_factory(Post, DirectionBlock, formset=BaseDirectionBlockFormSet, extra=1)
+IngredientFormSet = inlineformset_factory(IngredientBlock, Ingredient, extra=1)
+DirectionFormSet = inlineformset_factory(DirectionBlock, Direction, extra=1)
 

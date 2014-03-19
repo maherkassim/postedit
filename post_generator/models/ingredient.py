@@ -56,12 +56,29 @@ class Ingredient(models.Model):
         limit_choices_to={'_set':'Prep_Type'},
     )
     
-    comment = models.ForeignKey(
-        TextBlock,
-        related_name="comment",
-        null=True,
+    english = models.CharField(
+        'English Comment',
+        max_length=1000,
         blank=True,
-    ) 
+    )
+    
+    somali = models.CharField(
+        'Somali Comment',
+        max_length=1000,
+        blank=True,
+    )
+    
+    french = models.CharField(
+        'French Comment',
+        max_length=1000,
+        blank=True,
+    )
+    
+    arabic = models.CharField(
+        'Arabic Comment',
+        max_length=1000,
+        blank=True,
+    )
     
     optional = models.BooleanField()
     

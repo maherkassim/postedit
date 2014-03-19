@@ -27,7 +27,12 @@ def model_name(value):
   return value._meta.model._meta.model_name
 
 @register.filter(name='scale')
-def class_name(value):
-  return value/4
+def scale(value):
+  if value:
+    return int(value)/4
+
+@register.filter(name='or_blank')
+def or_blank(value):
+  return value or ''
 
 

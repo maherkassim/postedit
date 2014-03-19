@@ -4,30 +4,22 @@ from post_generator.models import DirectionBlock
 class Direction(models.Model):
     direction_block = models.ForeignKey(DirectionBlock)
     
-    item_number = models.PositiveIntegerField(
-        'Index in set of directions',
-    )
-    
-    english = models.CharField(
+    english = models.TextField(
         'English Direction',
-        max_length=250,
     )
     
-    somali = models.CharField(
+    somali = models.TextField(
         'Somali Direction',
-        max_length=500,
         blank=True,
     )
     
-    french = models.CharField(
+    french = models.TextField(
         'French Direction',
-        max_length=500,
         blank=True,
     )
     
-    arabic = models.CharField(
+    arabic = models.TextField(
         'Arabic Direction',
-        max_length=500,
         blank=True,
     )
     

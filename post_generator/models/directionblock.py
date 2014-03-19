@@ -1,5 +1,5 @@
 from django.db import models
-from post_generator.models import Post, DictionaryItem
+from post_generator.models import Post, DictionaryItem, Image
 
 class DirectionBlock(models.Model):
     post = models.ForeignKey(Post)

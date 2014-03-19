@@ -10,6 +10,11 @@
       span {
         padding-left:10px;
       }
+      h2 {
+        padding-left:10px;
+        border:2px solid gainsboro;
+        border-radius:7px;
+      }
       table {
         width:100%;
       }
@@ -21,17 +26,20 @@
         border:1px solid gainsboro;
         border-radius:10px;
       }
-      ol li:nth-child(even){
+      .nested li:nth-child(even){
         border:1px solid black;
         background-color:gainsboro;
         border-radius:5px;
       }
-      ol li:nth-child(even) table {
+      .nested li:nth-child(even) table {
         border-top:1px solid black;
         border-radius:5px;
       }
       td {
         padding:0px 5px;
+      }
+      .nested_empty{
+        display:none;
       }
       </style>
 {% endblock css %}
@@ -40,9 +48,15 @@
 <form method="post" action="">
 {% csrf_token %}
 
+{{ image_fs.management_form }}
+{{ video_fs.management_form }}
+{{ text_block_fs.management_form }}
+{{ ingredient_block_fs.management_form }}
+{{ direction_block_fs.management_form }}
+
 <div id="post-general">
-  <h2>General Post Info</h2>
-  {{ form.non_field_erros }}
+  <h2>General Post Information</h2>
+  {{ form.non_field_errors }}
   <table>
     <tr>
       <td>Post Title: {{ form.title }}{{ form.title.errors }}</td>
@@ -63,143 +77,37 @@
   </table>
 </div>
 
-{% for management_form in fs_manage %}
-{{ management_form }}
-{% endfor %}
-
 <div id="pre-tab">
-  <h2 style="border:2px solid gainsboro;border-radius:7px">Pre-Tab Content</h2>
+  <h2>Pre-Tab Content</h2>
   <ol id="pretab-list" class="block-list">
-  {% for block_form in pretab_fs %}
-    {% if block_form|model_name == 'image' %}
-    <li>Add/Edit Image:<table>
-    <tr>
-      <td rowspan="3"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value }}" /></td>
-      <td>Image URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
-      <td rowspan="3">Caption: {{ block_form.caption }}{{ block_form.caption.errors }}</td>
-    </tr>
-    <tr>
-      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
-    </tr>
-    <tr>
-      <td>WordPress ID: {{ block_form.wordpress_image_id }} {{ block_form.wordpress_image_id.errors }}</td>
-    </tr>
-    </table></li>
-    {% endif %}
-  {% endfor %}
+  {% include "post_generator/block_form.html" with form_list=pretab_forms %}
   </ol>
 </div>
 
 <div id="tabbed">
-  <h2 style="border:2px solid gainsboro;border-radius:7px;">Tabbed Content</h2>
+  <h2>Tabbed Content</h2>
   <ol id="tabbed-list" class="block-list">
-  {% for block_form in tabbed_fs %}
-    <li>
-    {% if block_form|model_name == 'image' %}
-    <span>Add/Edit Image:</span>
-    <table>
+  {% include "post_generator/block_form.html" with form_list=tabbed_forms %}
+  </ol>
+  <table>
     <tr>
-      <td rowspan="3"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value }}" /></td>
-      <td>Image URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
-      <td rowspan="3">Caption: {{ block_form.caption }}{{ block_form.caption.errors }}</td>
+      <td><input id="add-images" type="button" value="Add Image" /></td>
+      <td><input id="add-videos" type="button" value="Add Video" /></td>
+      <td><input id="add-textblocks" type="button" value="Add Text/Paragraph" /></td>
+      <td><input id="add-ingredientblocks" type="button" value="Add Ingredient Set" /></td>
+      <td><input id="add-directionblocks" type="button" value="Add Direction Set" /></td>
     </tr>
-    <tr>
-      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
-    </tr>
-    <tr>
-      <td>WordPress ID: {{ block_form.wordpress_image_id }} {{ block_form.wordpress_image_id.errors }}</td>
-    </tr>
-    </table>
+  </table>
+</div>
 
-    {% elif block_form|model_name == 'video' %}
-    <span>Add/Edit Video:</span>
-    <table>
-    <tr>
-      <td rowspan="2"><iframe src="{{ block_form.link.value }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
-      <td>Video URL: {{ block_form.link }}{{ block_form.link.errors }}</td>
-    </tr>
-    <tr>
-      <td>Dimensions: {{ block_form.width }} X {{ block_form.height }}{{ block_form.width.errors }}{{ block_form.height.errors }}</td>
-    </tr>
-    </table>
-
-    {% elif block_form|model_name == 'textblock' %}
-    <span>Add/Edit Text/Paragraph:</span>
-    <table>
-    <tr>
-      <td>{{ block_form.english }}{{ block_form.english.errors }}</td>
-      <td>
-        <div class="tabs">
-        {% with loc_index=block_form|get_loc %}
-          <ul>
-	    <li><a href="#text-{{ loc_index }}-french">Français</a></li>
-            <li><a href="#text-{{ loc_index }}-somali">Af-Somaali</a></li>
-            <li><a href="#text-{{ loc_index }}-arabic">عربي</a></li>
-          </ul>
-          <div id="text-{{ loc_index }}-french">
-            {{ block_form.french }}{{ block_form.french.errors }}
-          </div>
-          <div id="text-{{ loc_index }}-somali">
-            {{ block_form.somali }}{{ block_form.somali.errors }}
-          </div>
-          <div id="text-{{ loc_index }}-arabic">
-            {{ block_form.arabic }}{{ block_form.arabic.errors }}
-          </div>
-        {% endwith %}
-        </div>
-      </td>
-    </tr>
-    </table>
-
-    {% elif block_form|model_name == 'ingredientblock' %}
-    <span>Add/Edit Ingredient Set:</span>
-      <br /><span>Ingredient Set Header: {{ block_form.header }}{{ block_form.header.errors }}</span>
-      <ol>
-      {% for query_set in block_form.nested %}
-        {% for ingredient_form in query_set %}
-        {{ ingredient_form.management_form }}
-      <li>
-      <table>
-        <tr>
-          <td>Quantity:</td>
-          <td>Units:</td>
-          <td>Size:</td>
-          <td>Name:</td>
-          <td>Comment:</td>
-        </tr>
-        <tr>
-          <td>{{ ingredient_form.quantity }}</td>
-          <td>{{ ingredient_form.quantity_units }}</td>
-          <td>{{ ingredient_form.size }}</td>
-          <td>{{ ingredient_form.name }}</td>
-          <td rowspan="3">{{ ingredient_form.comment }}</td>
-        </tr>
-        <tr>
-          <td>Int'l:</td>
-          <td>Units:</td>
-          <td rowspan="2" style="text-align:right">Preparation/Types:</td>
-          <td rowspan="2">{{ ingredient_form.prep_style }}</td>
-        </tr>
-        <tr>
-          <td>{{ ingredient_form.intl }}</td>
-          <td>{{ ingredient_form.intl_units }}</td>
-        </tr>
-      </table>
-      </li>
-      {% endfor %}
-      {% endfor %}
-      </ol>
-    {% endif %}
-      <span style="display:none">
-        Location Index:{{ block_form|loc_field }}<br />
-        {{ block_form|tab_field }} Tabbed?
-      </span>
-    </li>
-  {% endfor %}
+<div id="templates" style="display:none">
+  <h2>Block Templates</h2>
+  <ol id="template-list">
+  {% include "post_generator/block_form.html" with form_list=template_forms template=1 %}
   </ol>
 </div>
 
-<input type="submit" value="Submit">
+<input type="submit" value="Submit" />
 </form>
 {% endblock content %}
 
@@ -221,6 +129,83 @@
     $( "#pretab-list" ).sortable({
       connectWith:'.block-list'
     }).disableSelection();
+    
+    function addForm(prefix, target, nested){
+      var templateForm = $( '#empty_' + prefix );
+      var newForm = templateForm.clone(true);
+      var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
+      newForm.removeAttr('id');
+      newForm.find('.form_info > :input').each(function(){
+        var nameList = $(this).attr('name').split('-');
+        var field = nameList[nameList.length-1];
+        if(field == '_loc_index'){
+          $(this).val($(target).children().length);
+        } else if (field == 'DELETE'){
+          $(this).removeAttr('checked');
+        }
+      }); 
+      templateForm.find(':input,select,textarea').each(function(){
+        var nameList = $(this).attr('name').split('-');
+        nameList[nameList.length-2] = total;
+        var name = nameList.join('-');
+        var id = 'id_' + name;
+        $(this).attr({'name':name, 'id':id}); 
+      });
+      total++;
+      $( '#id_' + prefix + '-TOTAL_FORMS' ).val(total);
+      if(nested){
+        newForm.removeAttr('class');
+        newForm.insertBefore('#empty_' + prefix);
+      } else {
+        newForm.appendTo( target );
+      }
+    }
+
+    function addFormSet(prefix, target){
+      var templateFormSet = $( '#empty_' + prefix );
+      var newFormSet = templateFormSet.clone(true);
+      var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
+      newFormSet.removeAttr('id');
+      newFormSet.find('.formset_info > :input').each(function(){
+        var nameList = $(this).attr('name').split('-');
+        var field = nameList[nameList.length-1];
+        if(field == '_loc_index'){
+          $(this).val($(target).children().length);
+        } else if (field == 'DELETE'){
+          $(this).removeAttr('checked');
+        }
+      }); 
+      templateFormSet.find(':input,select,textarea').each(function(){
+        var nameList = $(this).attr('name').split('-');
+        nameList[1] = total;
+        var name = nameList.join('-');
+        var id = 'id_' + name;
+        $(this).attr({'name':name, 'id':id});
+      });
+
+      templateFormSet.find('.nested,.nested > .nested_empty').each(function(){
+        var idList = $(this).attr('id').split('-');
+        idList[1] = total;
+        var id = idList.join('-');
+        $(this).attr({'id':id});
+      });
+      
+      total++;
+      $( '#id_' + prefix + '-TOTAL_FORMS' ).val(total);
+      newFormSet.appendTo( target );
+    }
+
+    $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
+    $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
+    $( '#add-textblocks' ).click(function(){ addForm('textblocks', '#tabbed-list', false); });
+    $( '#add-ingredientblocks' ).click(function(){ addFormSet('ingredientblocks', '#tabbed-list', false); });
+    $( '#add-directionblocks' ).click(function(){ addFormSet('directionblocks', '#tabbed-list', false); });
+    $( '.add-nested' ).click(function(){
+      var name = $(this).attr('name');
+      var prefix = name.replace('-ADD', '');
+      var target = '#' + prefix + '-LIST';
+      addForm(prefix, target, true);
+    });
   });
   </script>
 {% endblock javascript %}

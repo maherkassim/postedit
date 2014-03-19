@@ -1,5 +1,5 @@
 from django.db import models
-from post_generator.models import Post, TextBlock
+from post_generator.models import Post
 
 class Image(models.Model):
     _loc_index = models.PositiveIntegerField(
@@ -17,12 +17,29 @@ class Image(models.Model):
         blank=True,
     )
     
-    caption = models.ForeignKey(
-        TextBlock,
-        related_name="image_caption",
-        verbose_name="Image Caption",
+    english = models.CharField(
+        'English Caption',
+        max_length=1000,
+    )
+
+    somali = models.CharField(
+        'Somali Caption',
+        max_length=1000,
+        blank=True,
+    )
+
+    french = models.CharField(
+        'French Caption',
+        max_length=1000,
+        blank=True,
     )
     
+    arabic = models.CharField(
+        'Arabic Caption',
+        max_length=1000,
+        blank=True,
+    )
+   
     link = models.URLField(
         'Image URL',
     )
@@ -33,12 +50,12 @@ class Image(models.Model):
         blank=True,
     )
     
-    width = models.PositiveSmallIntegerField(
+    width = models.IntegerField(
         'Image Width',
         default=820,
     )
     
-    height = models.PositiveSmallIntegerField(
+    height = models.IntegerField(
         'Image Height',
         default=543,
     )
@@ -47,4 +64,4 @@ class Image(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.link + ' -  ' + self.caption.english
+        return self.link + ' -  ' + self.english
