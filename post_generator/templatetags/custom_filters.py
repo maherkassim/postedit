@@ -14,6 +14,10 @@ def get_loc(block):
 def loc_field(block):
     return block['_loc_index']
 
+@register.filter(name='set_field')
+def set_field(item):
+    return item['_set']
+
 @register.filter(name='tab_field')
 def tab_field(block):
     return block['_tabbed']

@@ -1,0 +1,16 @@
+{% extends "post_generator/base.html" %}
+{% block title %}Dictionary Item List - Xawaash Post Generator{% endblock %}
+
+{% block content %}
+{% if dictionary_items %}
+    <table>
+    {% for item in dictionary_items %}
+      <tr>
+        <td><a href="{% url 'post_generator:dictionary_item_manage' item.id %}">{{ item.english|title }}</a></td>
+      </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No dictionary items are available.</p>
+{% endif %}
+{% endblock %}

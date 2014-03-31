@@ -8,6 +8,10 @@ class PostForm(ModelForm):
     class Meta:
         model = Post
 
+class DictionaryItemForm(ModelForm):
+    class Meta:
+        model = DictionaryItem
+
 class RequiredInlineFormSet(BaseInlineFormSet):
     """
     Generates an inline formset that is required

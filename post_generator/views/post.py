@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from post_generator.models import Post, Language, DictionaryItem
 from post_generator.forms import PostForm, ImageFormSet, VideoFormSet, TextBlockFormSet, IngredientBlockFormSet, DirectionBlockFormSet
-from django.template import RequestContext
 
 def PostIndex(request):
     posts = Post.objects.all().order_by('-pub_date')
