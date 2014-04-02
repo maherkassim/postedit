@@ -55,7 +55,7 @@ def PostManage(request, post_id=False):
                 tabbed_forms.append(block_form)
             else:
                 pretab_forms.append(block_form)
-     
+    
     return render(request, 'post_generator/post_manage.html',
                               {'form':form,
                                'pretab_forms':pretab_forms,
@@ -66,6 +66,7 @@ def PostManage(request, post_id=False):
                                'text_block_fs':text_block_fs,
                                'ingredient_block_fs':ingredient_block_fs,
                                'direction_block_fs':direction_block_fs,
+                               'num_dict_items':DictionaryItem.objects.latest('id').id,
                                })
 
 def PostView(request, post_id):

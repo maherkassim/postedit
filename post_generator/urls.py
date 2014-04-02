@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^dict/$', views.DictionaryItemIndex, name='dictionary_item_index'),
      
     # ex: post/dict/5/
-    url(r'^dict/(?P<item_id>\d+)/$', views.DictionaryItemManage, name='dictionary_item_manage'),
+    url(r'^dict/(?P<pk>\d+)/$', views.DictionaryItemUpdate.as_view(), name='dictionary_item_manage'),
     
     # ex: post/dict/form/
-    url(r'^dict/form/$', views.DictionaryItemManage, name='dictionary_item_new'),
+    url(r'^dict/form/$', views.DictionaryItemCreate.as_view(), name='dictionary_item_new'),
 )

@@ -1,13 +1,15 @@
-{% extends "post_generator/base.html" %}
 {% load custom_filters %}
 
-{% block title %}Dictionary Item Management{% endblock %}
-
-{% block content %}
-<form method="post" action="">
+{% if form.instance.id %}
+<form class="item-form" method="post" action="{% url 'post_generator:dictionary_item_manage' pk=form.instance.id %}">
+{% else %}
+<form class="item-form" method="post" action="{% url 'post_generator:dictionary_item_new' %}">
+{% endif %}
 {% csrf_token %}
 
+<div id="DictItemError">
 {{ form.errors }}
+</div>
 
 <table>
   <tr id="item-type">
@@ -41,4 +43,3 @@
 <span style="display:none;">Set: {{ form|set_field }}</span>
 <input type="submit" value="Submit" />
 </form>
-{% endblock content %}

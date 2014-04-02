@@ -53,13 +53,16 @@
 {{ text_block_fs.management_form }}
 {{ ingredient_block_fs.management_form }}
 {{ direction_block_fs.management_form }}
+<input id="dict_len" style="display:none" value="{{ num_dict_items }}" type="hidden" />
+
+<div id="dict_modal"></div>
 
 <div id="post-general">
   <h2>General Post Information</h2>
   {{ form.non_field_errors }}
   <table>
     <tr>
-      <td>Post Title: {{ form.title }}{{ form.title.errors }}</td>
+      <td>Post Title: {{ form.title }}{{ form.title.errors }} <button class="add-item" data-url="{% url 'post_generator:dictionary_item_new' %}" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
     </tr>
     <tr>
@@ -130,6 +133,45 @@
       connectWith:'.block-list'
     }).disableSelection();
     
+    $('#dict_modal').dialog({
+        autoOpen: false,
+        width: 500,
+        height: 500,
+        modal: true
+    });
+ 
+    $('#dict_modal').on('submit', '.item-form', function () {
+        $.ajax({
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function() {
+                var target = $('#dict_modal').data('target');
+                var eng = $('#id_english').val();
+                var len = parseInt($('#dict_len').val()) + 1;
+                $('#dict_len').val(len);
+                $(target).append('<option value="' + len + '">' + eng + '</option>');
+                $(target).val(len);
+                $('#dict_modal').dialog('close');
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                $('#DictItemError').append(xhr);
+            }
+        });
+        return false; 
+    });
+   
+    $( ".add-item" ).button().click(function(e){
+        e.preventDefault();
+        var url = $(this).data('url');
+        var target = $(this).data('target');
+        $('#dict_modal').load(url,function(){
+            $(this).attr({'data-target':target});
+            $(this).dialog('open');
+        });
+        return false;
+    });
+
     function addForm(prefix, target, nested){
       var templateForm = $( '#empty_' + prefix );
       var newForm = templateForm.clone(true);
