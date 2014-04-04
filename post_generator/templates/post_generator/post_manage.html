@@ -6,14 +6,15 @@
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.ui.combobox.css" />
     <style>
       span {
         padding-left:10px;
       }
       h2 {
+        color: gray;
         padding-left:10px;
-        border:2px solid gainsboro;
-        border-radius:7px;
+        border-bottom:2px solid gainsboro;
       }
       table {
         width:100%;
@@ -62,7 +63,7 @@
   {{ form.non_field_errors }}
   <table>
     <tr>
-      <td>Post Title: {{ form.title }}{{ form.title.errors }} <button class="add-item" data-url="{% url 'post_generator:dictionary_item_new' %}" data-target="#{{ form.title.auto_id }}">+</button></td>
+      <td>Post Title: {{ form.title }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
     </tr>
     <tr>
@@ -117,6 +118,8 @@
 {% block javascript_library %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.ui.combobox.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic-forms.js"></script>
 {% endblock javascript_library %}
 
 {% block javascript %}
@@ -132,7 +135,8 @@
     $( "#pretab-list" ).sortable({
       connectWith:'.block-list'
     }).disableSelection();
-    
+    $('select').combobox();
+
     $('#dict_modal').dialog({
         autoOpen: false,
         width: 500,
@@ -163,7 +167,7 @@
    
     $( ".add-item" ).button().click(function(e){
         e.preventDefault();
-        var url = $(this).data('url');
+        var url = "{% url 'post_generator:dictionary_item_new' %}";
         var target = $(this).data('target');
         $('#dict_modal').load(url,function(){
             $(this).attr({'data-target':target});
@@ -171,71 +175,6 @@
         });
         return false;
     });
-
-    function addForm(prefix, target, nested){
-      var templateForm = $( '#empty_' + prefix );
-      var newForm = templateForm.clone(true);
-      var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
-      newForm.removeAttr('id');
-      newForm.find('.form_info > :input').each(function(){
-        var nameList = $(this).attr('name').split('-');
-        var field = nameList[nameList.length-1];
-        if(field == '_loc_index'){
-          $(this).val($(target).children().length);
-        } else if (field == 'DELETE'){
-          $(this).removeAttr('checked');
-        }
-      }); 
-      templateForm.find(':input,select,textarea').each(function(){
-        var nameList = $(this).attr('name').split('-');
-        nameList[nameList.length-2] = total;
-        var name = nameList.join('-');
-        var id = 'id_' + name;
-        $(this).attr({'name':name, 'id':id}); 
-      });
-      total++;
-      $( '#id_' + prefix + '-TOTAL_FORMS' ).val(total);
-      if(nested){
-        newForm.removeAttr('class');
-        newForm.insertBefore('#empty_' + prefix);
-      } else {
-        newForm.appendTo( target );
-      }
-    }
-
-    function addFormSet(prefix, target){
-      var templateFormSet = $( '#empty_' + prefix );
-      var newFormSet = templateFormSet.clone(true);
-      var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
-      newFormSet.removeAttr('id');
-      newFormSet.find('.formset_info > :input').each(function(){
-        var nameList = $(this).attr('name').split('-');
-        var field = nameList[nameList.length-1];
-        if(field == '_loc_index'){
-          $(this).val($(target).children().length);
-        } else if (field == 'DELETE'){
-          $(this).removeAttr('checked');
-        }
-      }); 
-      templateFormSet.find(':input,select,textarea').each(function(){
-        var nameList = $(this).attr('name').split('-');
-        nameList[1] = total;
-        var name = nameList.join('-');
-        var id = 'id_' + name;
-        $(this).attr({'name':name, 'id':id});
-      });
-
-      templateFormSet.find('.nested,.nested > .nested_empty').each(function(){
-        var idList = $(this).attr('id').split('-');
-        idList[1] = total;
-        var id = idList.join('-');
-        $(this).attr({'id':id});
-      });
-      
-      total++;
-      $( '#id_' + prefix + '-TOTAL_FORMS' ).val(total);
-      newFormSet.appendTo( target );
-    }
 
     $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
     $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
