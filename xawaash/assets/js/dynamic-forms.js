@@ -1,6 +1,12 @@
 function addForm(prefix, target, nested){
   var templateForm = $( '#empty_' + prefix );
+  templateForm.find('select').each(function(){
+    $(this).combobox('destroy');
+  });
   var newForm = templateForm.clone(true);
+  newForm.find('select').each(function(){
+    $(this).combobox();
+  });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newForm.removeAttr('id');
   newForm.find('.form_info > :input').each(function(){
@@ -38,7 +44,13 @@ function addForm(prefix, target, nested){
 
 function addFormSet(prefix, target){
   var templateFormSet = $( '#empty_' + prefix );
+  templateFormSet.find('select').each(function(){
+    $(this).combobox('destroy');
+  });
   var newFormSet = templateFormSet.clone(true);
+  newFormSet.find('select').each(function(){
+    $(this).combobox();
+  });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newFormSet.removeAttr('id');
   newFormSet.find('.formset_info > :input').each(function(){
