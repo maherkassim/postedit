@@ -1,5 +1,6 @@
 {% extends "post_generator/base.html" %}
 {% load custom_filters %}
+{% load widget_tweaks %}
 
 {% block title %}Post Content Management{% endblock %}
 
@@ -27,12 +28,12 @@
         border:1px solid gainsboro;
         border-radius:10px;
       }
-      .nested li:nth-child(even){
+      .nested > li:nth-child(even){
         border:1px solid black;
         background-color:gainsboro;
         border-radius:5px;
       }
-      .nested li:nth-child(even) table {
+      .nested > li:nth-child(even) table {
         border-top:1px solid black;
         border-radius:5px;
       }
@@ -63,7 +64,7 @@
   {{ form.non_field_errors }}
   <table>
     <tr>
-      <td>Post Title: {{ form.title }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-target="#{{ form.title.auto_id }}">+</button></td>
+      <td>Post Title: {{ form.title|add_class:"general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".general" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
     </tr>
     <tr>
@@ -135,7 +136,7 @@
     $( "#pretab-list" ).sortable({
       connectWith:'.block-list'
     }).disableSelection();
-    $('select').combobox();
+    $('select:not(select[multiple=multiple])').combobox();
 
     $('#dict_modal').dialog({
         autoOpen: false,
@@ -150,12 +151,13 @@
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function() {
+                var type = $('#dict_modal').data('type');
                 var target = $('#dict_modal').data('target');
                 var eng = $('#id_english').val();
                 var len = parseInt($('#dict_len').val()) + 1;
                 $('#dict_len').val(len);
-                $(target).append('<option value="' + len + '">' + eng + '</option>');
-                $(target).val(len);
+                $(type).append('<option value="' + len + '">' + eng + '</option>');
+                $(target).combobox("value", len);
                 $('#dict_modal').dialog('close');
             },
             error: function(xhr, ajaxOptions, thrownError) {
@@ -168,8 +170,10 @@
     $( ".add-item" ).button().click(function(e){
         e.preventDefault();
         var url = "{% url 'post_generator:dictionary_item_new' %}";
+        var type = $(this).data('type');
         var target = $(this).data('target');
         $('#dict_modal').load(url,function(){
+            $(this).attr({'data-type':type});
             $(this).attr({'data-target':target});
             $(this).dialog('open');
         });

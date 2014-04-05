@@ -1,4 +1,6 @@
 {% load custom_filters %}
+{% load widget_tweaks %}
+
 {% for block_form in form_list %}
 <li{% if template %} id="empty_{{ block_form|model_name }}s"{% endif %}>
   {% if block_form|model_name == 'image' %}
@@ -74,7 +76,7 @@
   <span class="form_info">
   {% elif block_form|model_name == 'ingredientblock' %}
     <span>Add/Edit Ingredient Set:</span><br />
-    <span>Ingredient Set Header: {{ block_form.header }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+    <span>Ingredient Set Header: {{ block_form.header|add_class:"general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
     {% for ingredient_fs in block_form.nested %}
     <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
       {{ ingredient_fs.management_form }}
@@ -99,21 +101,21 @@
           </tr>
           <tr>
             <td>{{ ingredient_form.quantity }}</td>
-            <td>{{ ingredient_form.quantity_units }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
-            <td>{{ ingredient_form.size }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
-            <td>{{ ingredient_form.name }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
+            <td>{{ ingredient_form.quantity_units|add_class:"ing_quant_unit" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".ing_quant_unit" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
+            <td>{{ ingredient_form.size|add_class:"ing_size" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".ing_size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
+            <td>{{ ingredient_form.name|add_class:"general" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
             <td>Somali Comment: {{ ingredient_form.somali }}</td>
           </tr>
           <tr>
             <td>Int'l:</td>
             <td>Units:</td>
             <td rowspan="2" style="text-align:right">Preparation/Types:</td>
-            <td rowspan="2">{{ ingredient_form.prep_style }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-target="#{{ ingredient_form.prep_style.auto_id }}">+</button></td>
+            <td rowspan="2">{{ ingredient_form.prep_style|add_class:"ing_prep_style" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".ing_prep_style" data-target="#{{ inredient_form.prep_style.auto_id }}">+</button></td>
             <td>French Comment: {{ ingredient_form.french }}</td>
           </tr>
           <tr>
             <td>{{ ingredient_form.intl }}</td>
-            <td>{{ ingredient_form.intl_units }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
+            <td>{{ ingredient_form.intl_units|add_class:"ing_intl_unit" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".ing_intl_unit" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
             <td>Arabic Comment: {{ ingredient_form.arabic }}</td>
           </tr>
         </table>
@@ -129,7 +131,7 @@
   <span class="formset_info">
   {% elif block_form|model_name == 'directionblock' %}
     <span>Add/Edit Direction Set:</span><br />
-    <span>Direction Set Header: {{ block_form.header }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+    <span>Direction Set Header: {{ block_form.header|add_class:"general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
     {% for direction_fs in block_form.nested %}
     <ol id="{{ direction_fs.prefix }}-LIST" class="nested">
       {{ direction_fs.management_form }}
