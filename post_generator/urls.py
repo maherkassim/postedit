@@ -23,4 +23,7 @@ urlpatterns = patterns('',
     
     # ex: post/dict/form/
     url(r'^dict/form/$', views.DictionaryItemCreate.as_view(), name='dictionary_item_new'),
+
+    # ex: post/wp/new/
+    url(r'^wp/new/$', views.WPPostNew, name='wp_new'),
 )

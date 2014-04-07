@@ -68,7 +68,7 @@
       <td>{{ form.include_somali }} Include Somali Tab</td>
     </tr>
     <tr>
-      <td>Post URL: {{ form.link }} <input type="button" value="Generate New...">{{ form.link.errors }}</td>
+      <td>Post URL: {{ form.link }} <button id="generate-post-link">New</button>{{ form.link.errors }}</td>
       <td>{{ form.include_french }} Include French Tab</td>
     </tr>
     <tr>
@@ -137,6 +137,14 @@
       connectWith:'.block-list'
     }).disableSelection();
     $('select:not(select[multiple=multiple])').combobox();
+
+    $('#generate-post-link').button().click(function(e){
+      e.preventDefault();
+      $.get("{% url 'post_generator:wp_new' %}", function(data){
+           $('#id_link').val(data.link);
+      });
+      return false; 
+    });
 
     $('#dict_modal').dialog({
         autoOpen: false,
