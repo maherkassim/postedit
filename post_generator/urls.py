@@ -26,4 +26,7 @@ urlpatterns = patterns('',
 
     # ex: post/wp/new/
     url(r'^wp/new/$', views.WPPostNew, name='wp_new'),
+
+    # ex: post/wp/upload/
+    url(r'^wp/upload/$', views.WPMediaUpload, name='wp_upload'),
 )

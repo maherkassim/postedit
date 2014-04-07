@@ -15,7 +15,13 @@
     {{ block_form.arabic.errors }}
     <table>
     <tr>
-      <td rowspan="4"><img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" /></td>
+      <td rowspan="4">
+        {% if block_form.link.value %}
+        <img width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
+        {% else %}
+        <div class="img-upload"></div>
+        {% endif %}
+      </td>
       <td>Image URL: {{ block_form.link }}</td>
       <td>English Caption: {{ block_form.english }}</td>
     </tr>

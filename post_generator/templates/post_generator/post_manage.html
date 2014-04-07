@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.ui.combobox.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/basic.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/dropzone.css" />
     <style>
       span {
         padding-left:10px;
@@ -42,6 +44,11 @@
       }
       .nested_empty{
         display:none;
+      }
+      .img-upload {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
       }
       </style>
 {% endblock css %}
@@ -120,6 +127,7 @@
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.ui.combobox.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/dropzone.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic-forms.js"></script>
 {% endblock javascript_library %}
 
@@ -138,6 +146,10 @@
     }).disableSelection();
     $('select:not(select[multiple=multiple])').combobox();
 
+    $('.img-upload').dropzone({ url: "{% url 'post_generator:wp_upload' %}" });
+    $(document).bind('drop dragover', function (e) {
+        e.preventDefault();
+    });
     $('#generate-post-link').button().click(function(e){
       e.preventDefault();
       $.get("{% url 'post_generator:wp_new' %}", function(data){

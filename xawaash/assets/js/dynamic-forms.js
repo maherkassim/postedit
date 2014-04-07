@@ -7,6 +7,9 @@ function addForm(prefix, target, nested){
   newForm.find('select:not(select[multiple=multiple])').each(function(){
     $(this).combobox();
   });
+  newForm.find('.img-upload').each(function(){
+    $(this).dropzone({url:'/post/wp/upload/'});
+  });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newForm.removeAttr('id');
   newForm.find('.form_info > :input').each(function(){
@@ -50,6 +53,9 @@ function addFormSet(prefix, target){
   var newFormSet = templateFormSet.clone(true);
   newFormSet.find('select:not(select[multiple=multiple])').each(function(){
     $(this).combobox();
+  });
+  newFormSet.find('.img-upload').each(function(){
+    $(this).dropzone({url:'/post/wp/upload/'});
   });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newFormSet.removeAttr('id');
