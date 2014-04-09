@@ -1,3 +1,5 @@
+from itertools import chain
+from operator import attrgetter
 from django.shortcuts import render, redirect, get_object_or_404
 from post_generator.models import Post, Language, DictionaryItem
 from post_generator.forms import PostForm, ImageFormSet, VideoFormSet, TextBlockFormSet, IngredientBlockFormSet, DirectionBlockFormSet
@@ -13,6 +15,7 @@ def PostManage(request, post_id=False):
     pretab_forms = []
     tabbed_forms = []
     template_forms = []
+    deleted_forms = []
     if post_id:
         post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
@@ -39,28 +42,25 @@ def PostManage(request, post_id=False):
         text_block_fs = TextBlockFormSet(instance=post, prefix='textblocks')
         ingredient_block_fs = IngredientBlockFormSet(instance=post, prefix='ingredientblocks')
         direction_block_fs = DirectionBlockFormSet(instance=post, prefix='directionblocks')
-    block_count = image_fs.total_form_count() + \
-                  video_fs.total_form_count() + \
-                  text_block_fs.total_form_count() + \
-                  ingredient_block_fs.total_form_count() + \
-                  direction_block_fs.total_form_count()
-    blocks = [None] * block_count
     for block_formset in image_fs, video_fs, text_block_fs, ingredient_block_fs, direction_block_fs:
         for block_form in block_formset.forms:
-            if block_form['_loc_index'].value() < 0:
+            if block_form['_loc_index'].value() < 0: # Template Forms
                 block_form['DELETE'].field.initial = True
                 block_form['_loc_index'].field.initial = 0
                 template_forms.append(block_form)
-            elif block_form['_tabbed'].value():
+            elif block_form['DELETE'].value(): # Deleted Forms (on error)
+                deleted_forms.append(block_form)
+            elif block_form['_tabbed'].value(): # Tabbed Forms
                 tabbed_forms.append(block_form)
-            else:
+            else: # Pre-Tab Forms
                 pretab_forms.append(block_form)
     
     return render(request, 'post_generator/post_manage.html',
                               {'form':form,
-                               'pretab_forms':pretab_forms,
-                               'tabbed_forms':tabbed_forms,
+                               'pretab_forms':sorted(pretab_forms, key=lambda form: form['_loc_index'].value()),
+                               'tabbed_forms':sorted(tabbed_forms, key=lambda form: form['_loc_index'].value()),
                                'template_forms':template_forms,
+                               'deleted_forms':deleted_forms,
                                'image_fs':image_fs,
                                'video_fs':video_fs,
                                'text_block_fs':text_block_fs,
@@ -77,20 +77,9 @@ def PostView(request, post_id):
                                     post.title.arabic)
     
     # Sort blocks into defined array indices
-    block_count = post.image_set.count()
-    block_count += post.video_set.count()
-    block_count += post.textblock_set.count()
-    block_count += post.ingredientblock_set.count()
-    block_count += post.directionblock_set.count()
-    blocks = [None] * block_count;
-    for query_set in (post.image_set.all(),
-                      post.video_set.all(),
-                      post.textblock_set.all(),
-                      post.ingredientblock_set.all(),
-                      post.directionblock_set.all()):
-        for block in query_set:
-            blocks[block._loc_index]=block
-    
+    blocks = sorted(chain(post.image_set.all(), post.video_set.all(), post.textblock_set.all(), post.ingredientblock_set.all(), post.directionblock_set.all()),
+                    key=attrgetter('_loc_index'))
+
     languages = [] 
     languages.append(Language.objects.get(name="english"))
     if post.include_somali:

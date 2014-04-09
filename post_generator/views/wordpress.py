@@ -1,4 +1,4 @@
-import json, mimetypes
+import json, mimetypes, Image, cStringIO
 
 from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods import media, posts
@@ -25,13 +25,22 @@ def WPMediaUpload(request):
     client = Client(U1, U2, U3)
     if request.method == 'POST':
         upload_file = request.FILES['file']
+        file_buf = upload_file.read()
         upload_name = upload_file.name
         upload_type = mimetypes.guess_type(upload_name)[0]
         upload_data = {
             'name':upload_name,
             'type':upload_type,
-            'bits':xmlrpc_client.Binary(upload_file.read()),
+            'bits':xmlrpc_client.Binary(file_buf),
         }
         response = client.call(media.UploadFile(upload_data))
-        data = json.dumps(response)
+        img = Image.open(cStringIO.StringIO(file_buf))
+        width, height = img.size
+        response_data = {
+            'id':response['id'],
+            'link':response['url'],
+            'width':width,
+            'height':height,
+        }
+        data = json.dumps(response_data)
         return HttpResponse(data, content_type='application/json')

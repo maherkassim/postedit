@@ -8,7 +8,22 @@ function addForm(prefix, target, nested){
     $(this).combobox();
   });
   newForm.find('.img-upload').each(function(){
-    $(this).dropzone({url:'/post/wp/upload/'});
+    $(this).dropzone({
+      url:'/post/wp/upload/',
+      success: function(file, response){
+        var target = $(this.element).data('target');
+        $(target + 'wordpress_image_id').val(response.id);
+        $(target + 'link').val(response.link);
+        $(target + 'width').val(response.width);
+        $(target + 'height').val(response.height);
+        $(target + 'img').attr({
+          'src': response.link,
+          'width': response.width/4,
+          'height': response.height/4,
+        }).removeClass('hidden');
+        $(this.element).addClass('hidden');
+      },
+    });
   });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newForm.removeAttr('id');
@@ -55,7 +70,22 @@ function addFormSet(prefix, target){
     $(this).combobox();
   });
   newFormSet.find('.img-upload').each(function(){
-    $(this).dropzone({url:'/post/wp/upload/'});
+    $(this).dropzone({
+      url:'/post/wp/upload/',
+      success: function(file, response){
+        var target = $(this.element).data('target');
+        $(target + 'wordpress_image_id').val(response.id);
+        $(target + 'link').val(response.link);
+        $(target + 'width').val(response.width);
+        $(target + 'height').val(response.height);
+        $(target + 'img').attr({
+          'src': response.link,
+          'width': response.width/4,
+          'height': response.height/4,
+        }).removeClass('hidden');
+        $(this.element).addClass('hidden');
+      },
+    });
   });
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newFormSet.removeAttr('id');

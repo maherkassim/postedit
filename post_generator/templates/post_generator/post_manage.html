@@ -8,12 +8,8 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.ui.combobox.css" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/basic.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/dropzone.css" />
     <style>
-      span {
-        padding-left:10px;
-      }
       h2 {
         color: gray;
         padding-left:10px;
@@ -46,15 +42,57 @@
         display:none;
       }
       .img-upload {
-        width: 200px;
-        height: 200px;
+        width: 136px;
+        min-height: 158px;
         border: 1px solid black;
+        padding: 0px;
+      }
+      .dropzone .dz-default.dz-message {
+        background-image: none;
+        width: 136px;
+        height: 158px;
+        margin: 0px;
+        top: 0px;
+        left: 0px;
+        font-size: 13pt;
+        text-align: center;
+        display: table;
+      }
+      .dropzone .dz-default.dz-message span {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        padding: 0px;
+      }
+      .dropzone .dz-preview {
+        margin: 10px;
+      }
+      .hidden {
+        display: none;
+      }
+      .delete-block-btn {
+        float: right;
+      }
+      .block-title,.nested-title {
+        display: inline;
+      }
+      .block-row {
+        background-color: white;
+      }
+      .block-move-btn {
+        float: right;
+      }
+      .img-preview {
+        border: 1px solid gray;
+      }
+      .form_info,.formset_info {
+        display: none;
       }
       </style>
 {% endblock css %}
 
 {% block content %}
-<form method="post" action="">
+<form id="post-form" method="post" action="">
 {% csrf_token %}
 
 {{ image_fs.management_form }}
@@ -71,7 +109,7 @@
   {{ form.non_field_errors }}
   <table>
     <tr>
-      <td>Post Title: {{ form.title|add_class:"general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".general" data-target="#{{ form.title.auto_id }}">+</button></td>
+      <td>Post Title: {{ form.title|add_class:"dict-general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
     </tr>
     <tr>
@@ -119,6 +157,13 @@
   </ol>
 </div>
 
+<div id="deleted" style="display:none">
+  <h2>Deleted Blocks</h2>
+  <ol id="deleted-list">
+  {% include "post_generator/block_form.html" with form_list=deleted_forms %}
+  </ol>
+</div>
+
 <input type="submit" value="Submit" />
 </form>
 {% endblock content %}
@@ -138,18 +183,93 @@
     //          - tabs for languages
     //          - sortable for reordering blocks
     $( ".tabs" ).tabs();
+    function updateLoc(){
+      $('.block-list').children().each(function(){
+        var loc = $(this).find('.loc-field');
+        loc.val($(this).index());
+      });
+    }
     $( "#tabbed-list" ).sortable({
-      connectWith:'.block-list'
+      connectWith:'.block-list',
+      stop: function(event, ui) {
+        updateLoc();
+      }
     }).disableSelection();
     $( "#pretab-list" ).sortable({
-      connectWith:'.block-list'
+      connectWith:'.block-list',
+      stop: function(event, ui) {
+        updateLoc();
+      }
     }).disableSelection();
+    function moveUp(item) {
+        var prev = item.prev();
+        if (prev.length == 0)
+            return;
+        prev.css('z-index', 999).css('position','relative').animate({ top: item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: '-' + prev.height() }, 300, function () {
+            prev.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertBefore(prev);
+            updateLoc();
+        });
+    }
+    function moveDown(item) {
+        var next = item.next();
+        if (next.length == 0)
+            return;
+        next.css('z-index', 999).css('position', 'relative').animate({ top: '-' + item.height() }, 250);
+        item.css('z-index', 1000).css('position', 'relative').animate({ top: next.height() }, 300, function () {
+            next.css('z-index', '').css('top', '').css('position', '');
+            item.css('z-index', '').css('top', '').css('position', '');
+            item.insertAfter(next);
+            updateLoc();
+        });
+    }
+    $('.block-move-btn').button().click(function(e){
+      e.preventDefault();
+      if($(this).val() == 'up'){
+        moveUp($(this).parent());
+      } else {
+        moveDown($(this).parent());
+      }
+    }); 
+
     $('select:not(select[multiple=multiple])').combobox();
 
-    $('.img-upload').dropzone({ url: "{% url 'post_generator:wp_upload' %}" });
+    $('.delete-block-btn').button().click(function(e){
+      e.preventDefault();
+      var blockRow = $(this).parent();
+      var blockList = blockRow.parent();
+      if($(this).val() == 'nested'){
+        blockRow.find('.delete-nested').prop('checked', true);
+      } else {
+        blockRow.find('.delete-block').prop('checked', true);
+      }
+      blockRow.appendTo($('#deleted-list'));
+      updateLoc();
+   });
+
+    Dropzone.autoDiscover = false;
+    $('.img-upload').dropzone({
+      url: "{% url 'post_generator:wp_upload' %}",
+      success: function(file, response){
+        var target = $(this.element).data('target');
+        $(target + 'wordpress_image_id').val(response.id);
+        $(target + 'link').val(response.link);
+        $(target + 'width').val(response.width);
+        $(target + 'height').val(response.height);
+        $(target + 'img').attr({
+          'src': response.link,
+          'width': response.width/4,
+          'height': response.height/4,
+        }).removeClass('hidden');
+        $(this.element).addClass('hidden');
+      },
+    });
     $(document).bind('drop dragover', function (e) {
         e.preventDefault();
     });
+
     $('#generate-post-link').button().click(function(e){
       e.preventDefault();
       $.get("{% url 'post_generator:wp_new' %}", function(data){
@@ -171,8 +291,8 @@
             url: $(this).attr('action'),
             data: $(this).serialize(),
             success: function() {
-                var type = $('#dict_modal').data('type');
-                var target = $('#dict_modal').data('target');
+                var type = $('#dict_modal').attr('data-type');
+                var target = $('#dict_modal').attr('data-target');
                 var eng = $('#id_english').val();
                 var len = parseInt($('#dict_len').val()) + 1;
                 $('#dict_len').val(len);
