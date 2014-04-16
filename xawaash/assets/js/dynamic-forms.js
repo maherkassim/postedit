@@ -1,7 +1,9 @@
 function addForm(prefix, target, nested){
   var templateForm = $( '#empty_' + prefix );
   templateForm.find('select:not(select[multiple=multiple])').each(function(){
-    $(this).combobox('destroy');
+    if($(this).data('uiCombobox')){
+      $(this).combobox('destroy');
+    }
   });
   var newForm = templateForm.clone(true);
   newForm.find('select:not(select[multiple=multiple])').each(function(){
@@ -11,7 +13,7 @@ function addForm(prefix, target, nested){
     $(this).dropzone({
       url:'/post/wp/upload/',
       success: function(file, response){
-        var target = $(this.element).data('target');
+        var target = $(this.element).attr('data-target');
         $(target + 'wordpress_image_id').val(response.id);
         $(target + 'link').val(response.link);
         $(target + 'width').val(response.width);
@@ -35,16 +37,20 @@ function addForm(prefix, target, nested){
     } else if (field == 'DELETE'){
       $(this).removeAttr('checked');
     }
-  }); 
-  templateForm.find(':input,select,textarea').each(function(){
+  });
+  templateForm.find(':input,select,textarea,img,.dropzone').each(function(){
     var name = $(this).attr('name');
     if(name){
       var nameList = name.split('-');
       nameList[nameList.length-2] = total;
       name = nameList.join('-');
       var id = 'id_' + name;
-      $(this).attr({'name':name, 'id':id}); 
-      if($(this).attr('data-target')){
+      $(this).attr({'name':name, 'id':id});
+      if($(this).hasClass('dropzone')){
+        nameList[nameList.length-1] = '';
+        var target = '#id_' + nameList.join('-');
+        $(this).attr({'data-target':target});
+      } else if($(this).attr('data-target')){
         var target = '#id_' + name.substring(0, name.length - 6);
         $(this).attr({'data-target':target});
       }
@@ -63,7 +69,9 @@ function addForm(prefix, target, nested){
 function addFormSet(prefix, target){
   var templateFormSet = $( '#empty_' + prefix );
   templateFormSet.find('select:not(select[multiple=multiple])').each(function(){
-    $(this).combobox('destroy');
+    if($(this).data('uiCombobox')){
+      $(this).combobox('destroy');
+    }
   });
   var newFormSet = templateFormSet.clone(true);
   newFormSet.find('select:not(select[multiple=multiple])').each(function(){
@@ -73,7 +81,7 @@ function addFormSet(prefix, target){
     $(this).dropzone({
       url:'/post/wp/upload/',
       success: function(file, response){
-        var target = $(this.element).data('target');
+        var target = $(this.element).attr('data-target');
         $(target + 'wordpress_image_id').val(response.id);
         $(target + 'link').val(response.link);
         $(target + 'width').val(response.width);

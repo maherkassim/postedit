@@ -18,19 +18,19 @@
     {{ block_form.arabic.errors }}
     <table>
     <tr>
-      <td rowspan="4">
+      <td rowspan="4" width="220">
         {% if block_form.link.value %}
-        <img class="img-preview" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
+        <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
         {% else %}
-        <img id="id_{{ block_form.prefix }}-img" class="img-preview hidden"/>
-        <div class="img-upload dropzone" data-target="#id_{{ block_form.prefix }}-">
+        <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview hidden"/>
+        <div id="id_{{ block_form.prefix }}-dz" name="{{ block_form.prefix }}-dz" class="img-upload dropzone" data-target="#id_{{ block_form.prefix }}-">
           <div class="dz-default dz-message">
             <span>Drop Files Here<br />(or Click)<br />to Upload</span>
           </div>
         </div>
         {% endif %}
       </td>
-      <td>Image URL: {{ block_form.link|add_class:"text-input url" }}</td>
+      <td width="330">Image URL: {{ block_form.link|add_class:"text-input url image-url" }}</td>
       <td>English Caption: {{ block_form.english|add_class:"text-input caption" }}</td>
     </tr>
     <tr>
@@ -38,7 +38,7 @@
       <td>Somali Caption: {{ block_form.somali|add_class:"text-input caption" }}</td>
     </tr>
     <tr>
-      <td>WordPress ID: {{ block_form.wordpress_image_id }}</td>
+      <td>WordPress ID: {{ block_form.wordpress_image_id|add_class:"text-input" }}</td>
       <td>French Caption: {{ block_form.french|add_class:"text-input caption" }}</td>
     </tr>
     <tr>
@@ -57,7 +57,7 @@
     {{ block_form.height.errors }}
     <table>
     <tr>
-      <td rowspan="2"><iframe src="{{ block_form.link.value|or_blank }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
+      <td width="220" rowspan="2"><iframe src="{{ block_form.link.value|or_blank }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
       <td>Video URL: {{ block_form.link|add_class:"text-input url" }}</td>
     </tr>
     <tr>
@@ -121,26 +121,26 @@
             <td>Units:</td>
             <td>Size:</td>
             <td>Name:</td>
-            <td>English Comment: {{ ingredient_form.english|add_class:"text-input caption" }}</td>
+            <td>English Comment: {{ ingredient_form.english|add_class:"text-input comment" }}</td>
           </tr>
           <tr>
             <td>{{ ingredient_form.quantity|add_class:"text-input quantity" }}</td>
             <td>{{ ingredient_form.quantity_units|add_class:"dict-quant" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-quant" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
             <td>{{ ingredient_form.size|add_class:"dict-size" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
             <td>{{ ingredient_form.name|add_class:"dict-general" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
-            <td>Somali Comment: {{ ingredient_form.somali|add_class:"text-input caption" }}</td>
+            <td>Somali Comment: {{ ingredient_form.somali|add_class:"text-input comment" }}</td>
           </tr>
           <tr>
             <td>Int'l:</td>
             <td>Units:</td>
             <td rowspan="2" style="text-align:right">Preparation/Types:</td>
             <td rowspan="2">{{ ingredient_form.prep_style|add_class:"dict-prep" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".dict-prep" data-target="#{{ inredient_form.prep_style.auto_id }}">+</button></td>
-            <td>French Comment: {{ ingredient_form.french|add_class:"text-input caption" }}</td>
+            <td>French Comment: {{ ingredient_form.french|add_class:"text-input comment" }}</td>
           </tr>
           <tr>
             <td>{{ ingredient_form.intl|add_class:"text-input quantity" }}</td>
             <td>{{ ingredient_form.intl_units|add_class:"dict-intl" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".dict-intl" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
-            <td>Arabic Comment: {{ ingredient_form.arabic|add_class:"text-input caption arabic" }}</td>
+            <td>Arabic Comment: {{ ingredient_form.arabic|add_class:"text-input comment arabic" }}</td>
           </tr>
         </table>
         <span class="form_info">
@@ -172,19 +172,19 @@
         {{ direction_form.arabic.errors }}
         <table>
           <tr>
-            <td>English:</td>
+            <td width="15">English:</td>
             <td>{{ direction_form.english|add_class:"text-input direction" }}</td>
           </tr>
           <tr>
-            <td>Somali:</td>
+            <td width="15">Somali:</td>
             <td>{{ direction_form.somali|add_class:"text-input direction" }}</td>
           </tr>
           <tr>
-            <td>French:</td>
+            <td width="15">French:</td>
             <td>{{ direction_form.french|add_class:"text-input direction" }}</td>
           </tr>
           <tr>
-            <td>Arabic:</td>
+            <td width="15">Arabic:</td>
             <td>{{ direction_form.arabic|add_class:"text-input direction arabic" }}</td>
           </tr>
        </table>

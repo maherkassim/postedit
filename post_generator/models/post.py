@@ -12,11 +12,8 @@ class Post(models.Model):
     
     title = models.ForeignKey(DictionaryItem)
     
-    featured_image = models.ForeignKey(
-        'post_generator.Image',
-        related_name='featured_image',
-        null=True,
-        blank=True,
+    featured_image = models.URLField(
+        'Featured Image URL',
     )
     
     include_somali = models.BooleanField(

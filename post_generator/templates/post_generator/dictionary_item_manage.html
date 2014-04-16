@@ -13,7 +13,8 @@
 
 <table>
   <tr id="item-type">
-    <td colspan="2">Type: {{ form.word_type }}</td>
+    <td>Type: {{ form.word_type }}</td>
+    <td>Set: {{ form|set_field }}</td>
   </tr>
   <tr id="item-en">
     <td><b>English:</b> {{ form.english }}</td>
@@ -40,6 +41,5 @@
     <td colspan="2">Recipe (if available): {{ form.link }}</td>
   </tr>
 </table>
-<span style="display:none;">Set: {{ form|set_field }}</span>
 <input type="submit" value="Submit" />
 </form>
