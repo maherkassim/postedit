@@ -125,7 +125,7 @@
             <td>English Comment: {{ ingredient_form.english|add_class:"text-input comment" }}</td>
           </tr>
           <tr>
-            <td>{{ ingredient_form.quantity|add_class:"text-input quantity" }}</td>
+            <td>{{ ingredient_form.quantity|add_class:"text-input quantity frac-input" }}</td>
             <td>{{ ingredient_form.quantity_units|add_class:"dict-quant" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-quant" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
             <td>{{ ingredient_form.size|add_class:"dict-size" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
             <td>{{ ingredient_form.name|add_class:"dict-general" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>

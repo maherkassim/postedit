@@ -220,6 +220,114 @@
 
 <input type="submit" value="Submit" />
 </form>
+<div class="hidden">
+<div id="arabic-keyboard" title="Arabic Keyboard">
+  <table>
+    <tr>
+      <td><button class="add-arabic">ذ</button></td>
+      <td><button class="add-arabic">١</button></td>
+      <td><button class="add-arabic">٢</button></td>
+      <td><button class="add-arabic">٣</button></td>
+      <td><button class="add-arabic">٤</button></td>
+      <td><button class="add-arabic">٥</button></td>
+      <td><button class="add-arabic">٦</button></td>
+      <td><button class="add-arabic">٧</button></td>
+      <td><button class="add-arabic">٨</button></td>
+      <td><button class="add-arabic">٩</button></td>
+      <td><button class="add-arabic">٠</button></td>
+    </tr>
+    <tr>
+      <td><button class="add-arabic">ض</button></td>
+      <td><button class="add-arabic">ص</button></td>
+      <td><button class="add-arabic">ث</button></td>
+      <td><button class="add-arabic">ق</button></td>
+      <td><button class="add-arabic">ف</button></td>
+      <td><button class="add-arabic">غ</button></td>
+      <td><button class="add-arabic">ع</button></td>
+      <td><button class="add-arabic">ه</button></td>
+      <td><button class="add-arabic">خ</button></td>
+      <td><button class="add-arabic">ح</button></td>
+      <td><button class="add-arabic">ج</button></td>
+      <td><button class="add-arabic">د</button></td>
+    </tr>
+    <tr>
+      <td><button class="add-arabic">ش</button></td>
+      <td><button class="add-arabic">س</button></td>
+      <td><button class="add-arabic">ي</button></td>
+      <td><button class="add-arabic">ب</button></td>
+      <td><button class="add-arabic">ل</button></td>
+      <td><button class="add-arabic">ا</button></td>
+      <td><button class="add-arabic">ت</button></td>
+      <td><button class="add-arabic">ن</button></td>
+      <td><button class="add-arabic">م</button></td>
+      <td><button class="add-arabic">ك</button></td>
+      <td><button class="add-arabic">ط</button></td>
+    </tr>
+    <tr>
+      <td><button class="add-arabic">ئ</button></td>
+      <td><button class="add-arabic">ء</button></td>
+      <td><button class="add-arabic">ؤ</button></td>
+      <td><button class="add-arabic">ر</button></td>
+      <td><button class="add-arabic">ﻻ</button></td>
+      <td><button class="add-arabic">ى</button></td>
+      <td><button class="add-arabic">ة</button></td>
+      <td><button class="add-arabic">و</button></td>
+      <td><button class="add-arabic">ز</button></td>
+      <td><button class="add-arabic">ظ</button></td>
+    </tr>
+   <tr>
+      <td><button class="add-arabic">لآ</button></td>
+      <td><button class="add-arabic">آ</button></td>
+      <td><button class="add-arabic">,</button></td>
+      <td><button class="add-arabic">.</button></td>
+      <td><button class="add-arabic">؟</button></td>
+      <td><button class="add-arabic">لأ</button></td>
+      <td><button class="add-arabic">أ</button></td>
+      <td><button class="add-arabic">-</button></td>
+      <td><button class="add-arabic">،</button></td>
+      <td><button class="add-arabic">إ</button></td>
+      <td><button class="add-arabic">;</button></td>
+      <td><button class="add-arabic">ـ</button></td>
+    </tr>
+  </table>
+</div>
+<div id="frac-keyboard" title="Fraction Keyboard">
+  <table>
+    <tr>
+      <td><button class="add-frac">½</button></td>
+      <td><button class="add-frac">⅓</button></td>
+      <td><button class="add-frac">¼</button></td>
+      <td><button class="add-frac">⅕</button></td>
+      <td><button class="add-frac">⅙</button></td>
+      <td><button class="add-frac">⅛</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button class="add-frac">⅔</button></td>
+      <td><button class="add-frac">¾</button></td>
+      <td><button class="add-frac">⅖</button></td>
+      <td><button class="add-frac">⅚</button></td>
+      <td><button class="add-frac">⅜</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><button class="add-frac">⅗</button></td>
+      <td></td>
+      <td><button class="add-frac">⅝</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><button class="add-frac">⅘</button></td>
+      <td></td>
+      <td><button class="add-frac">⅞</button></td>
+    </tr>
+  </table>
+</div>
+</div>
 {% endblock content %}
 
 {% block javascript_library %}
@@ -237,6 +345,51 @@
     // jQuery UI elements initialized
     //          - tabs for languages
     //          - sortable for reordering blocks
+    $( ':input.arabic' ).click(function(){
+      var target = '#' + $(this).attr('id');
+      $( '#arabic-keyboard' ).attr({'data-target':target});
+      if($( '#arabic-keyboard' ).data('uiDialog')){
+        $( '#arabic-keyboard' ).dialog('destroy');
+      }
+      $( '#arabic-keyboard' ).dialog({
+        width: 540,
+        position: {
+          my: 'right top',
+          at: 'right bottom',
+          of: $(this)
+        },
+      });
+      $(this).focus();
+    });
+    $( ".add-arabic" ).button().click(function(ev){
+      ev.preventDefault();
+      var target = $( '#arabic-keyboard' ).attr('data-target');
+      var value = $( target ).val();
+      value += $(this).text();
+      $( target ).val(value);
+    });
+    $( '.frac-input' ).click(function(){
+      var target = '#' + $(this).attr('id');
+      $( '#frac-keyboard' ).attr({'data-target':target});
+      if($( '#frac-keyboard' ).data('uiDialog')){
+        $( '#frac-keyboard' ).dialog('destroy');
+      }
+      $( '#frac-keyboard' ).dialog({
+        position: {
+          my: 'left top',
+          at: 'left bottom',
+          of: $(this)
+        },
+      });
+      $(this).focus();
+    });
+    $( ".add-frac" ).button().click(function(ev){
+      ev.preventDefault();
+      var target = $( '#frac-keyboard' ).attr('data-target');
+      var value = $( target ).val();
+      value += $(this).text();
+      $( target ).val(value);
+    });
     $( ".tabs" ).tabs();
     function updateLoc(){
       $('.block-list').children().each(function(){
