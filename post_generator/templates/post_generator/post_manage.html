@@ -197,6 +197,7 @@
       <td><input id="add-images" type="button" value="Add Image" /></td>
       <td><input id="add-videos" type="button" value="Add Video" /></td>
       <td><input id="add-textblocks" type="button" value="Add Text/Paragraph" /></td>
+      <td><input id="add-headers" type="button" value="Add Header" /></td>
       <td><input id="add-ingredientblocks" type="button" value="Add Ingredient Set" /></td>
       <td><input id="add-directionblocks" type="button" value="Add Direction Set" /></td>
     </tr>
@@ -394,6 +395,7 @@
     $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
     $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
     $( '#add-textblocks' ).click(function(){ addForm('textblocks', '#tabbed-list', false); });
+    $( '#add-headers' ).click(function(){ addForm('headers', '#tabbed-list', false); });
     $( '#add-ingredientblocks' ).click(function(){ addFormSet('ingredientblocks', '#tabbed-list', false); });
     $( '#add-directionblocks' ).click(function(){ addFormSet('directionblocks', '#tabbed-list', false); });
     $( '.add-nested' ).click(function(){

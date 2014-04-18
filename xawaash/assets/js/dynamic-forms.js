@@ -1,14 +1,21 @@
 function addForm(prefix, target, nested){
+  var is_header = false;
+  if(prefix == 'headers'){
+    is_header = true;
+    prefix = 'textblocks';
+  }
   var templateForm = $( '#empty_' + prefix );
   templateForm.find('select:not(select[multiple=multiple])').each(function(){
     if($(this).data('uiCombobox')){
       $(this).combobox('destroy');
     }
   });
+  templateForm.find('.tabs').tabs('destroy');
   var newForm = templateForm.clone(true);
   newForm.find('select:not(select[multiple=multiple])').each(function(){
     $(this).combobox();
   });
+  newForm.find('.tabs').tabs();
   newForm.find('.img-upload').each(function(){
     $(this).dropzone({
       url:'/post/wp/upload/',
@@ -27,6 +34,10 @@ function addForm(prefix, target, nested){
       },
     });
   });
+  if(is_header){
+    newForm.find('.header-field').prop('checked', true);
+    newForm.find('.block-title').text('Add/Edit Header:');
+  }
   var total = $( '#id_' + prefix + '-TOTAL_FORMS' ).val();
   newForm.removeAttr('id');
   newForm.find('.form_info > :input').each(function(){
@@ -56,6 +67,19 @@ function addForm(prefix, target, nested){
       }
     }
   });
+  if(prefix == 'textblocks'){
+    templateForm.find('.textblock_a').each(function(){
+      href = $(this).attr('href');
+      div = templateForm.find(href);
+      var idList = div.attr('id').split('-');
+      idList[idList.length-2] = total;
+      var tab_id = idList.join('-');
+      var tab_href = '#' + tab_id;
+      $(this).attr('href', tab_href);
+      div.attr('id', tab_id);
+    });
+    templateForm.find('.tabs').tabs();
+  }
   total++;
   $( '#id_' + prefix + '-TOTAL_FORMS' ).val(total);
   if(nested){

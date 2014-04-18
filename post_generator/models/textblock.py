@@ -31,9 +31,14 @@ class TextBlock(models.Model):
         'Arabic Text/Paragraph',
         blank=True,
     )
-    
+
     printable = models.BooleanField(
         'Make this text block printable?',
+    )
+    
+    header = models.BooleanField(
+        'Is this text a header?',
+        default = False,
     )
     
     class Meta:

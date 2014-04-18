@@ -74,6 +74,7 @@
     {{ block_form.french.errors }}
     {{ block_form.somali.errors }}
     {{ block_form.arabic.errors }}
+    <div class="hidden">Header?: {{ block_form.header|add_class:"header-field" }}</div>
     <table>
     <tr>
       <td>English: {{ block_form.english|add_class:"text-area" }}</td>
@@ -81,13 +82,13 @@
         <div class="tabs">
         {% with loc_index=block_form|get_loc %}
           <ul>
-          <li><a href="#text-{{ loc_index }}-french">Français</a></li>
-            <li><a href="#text-{{ loc_index }}-somali">Af-Somaali</a></li>
-            <li><a href="#text-{{ loc_index }}-arabic">عربي</a></li>
+          <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-french">Français</a></li>
+            <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-somali">Af-Somaali</a></li>
+            <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-arabic">عربي</a></li>
           </ul>
-          <div id="text-{{ loc_index }}-french">{{ block_form.french|add_class:"text-area" }}</div>
-          <div id="text-{{ loc_index }}-somali">{{ block_form.somali|add_class:"text-area" }}</div>
-          <div id="text-{{ loc_index }}-arabic">{{ block_form.arabic|add_class:"text-area arabic" }}</div>
+          <div class="textblock_div" id="tab_{{ block_form.prefix }}-french">{{ block_form.french|add_class:"text-area" }}</div>
+          <div class="textblock_div" id="tab_{{ block_form.prefix }}-somali">{{ block_form.somali|add_class:"text-area" }}</div>
+          <div class="textblock_div" id="tab_{{ block_form.prefix }}-arabic">{{ block_form.arabic|add_class:"text-area arabic" }}</div>
         {% endwith %}
         </div>
       </td>

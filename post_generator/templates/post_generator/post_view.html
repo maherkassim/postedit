@@ -6,6 +6,11 @@
 {% block css %}
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
+    <style>
+      .arabic {
+        direction: rtl;
+      }
+    </style>
 {% endblock css %}
 
 {% block content %}
@@ -35,7 +40,7 @@
 </ul>
 
 {% for lang in languages %}
-<div id="tabs-{{ lang.name }}">
+<div class="{{ lang.name }}" id="tabs-{{ lang.name }}">
 {% for block in blocks_tabbed %}
 {% with lang_name=lang.name %}
   {% if block|class_name == 'Image' %}
@@ -46,43 +51,22 @@
   {% elif block|class_name == 'Video' %}
   <br />
   <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
-  {% endif %}
-  {% if block|class_name == 'TextBlock' %}
+  {% elif block|class_name == 'TextBlock' %}
+    {% if block.header %}
+  <h2>{{ block|dict_val:lang_name }}</h2>
+    {% else %}
   <p>{{ block|dict_val:lang_name }}</p>
+    {% endif %}
   {% elif block|class_name == 'IngredientBlock' %}
-  <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.ingredients|dict_val:lang_name }}:</h3>
+  <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
   <ul>
-  {% for ing in block.ingredient_set.all %}
-    <li>
-      {{ ing.quantity }}
-      
-      {% if ing.quantity_units %}
-        {{ ing.quantity_units|dict_val:lang_name }}
-      {% endif %}
-
-      {% if ing.intl %}
-        ({{ ing.intl }} {{ ing.intl_units|dict_val:lang_name }})
-      {% endif %}
-      
-      {% if ing.size %}
-        {{ ing.size|dict_val:lang_name }}
-      {% endif %}
-      
-      {{ ing.name|dict_val:lang_name }}
-      
-      {% if ing.prep_style and ing.prep_style|dict_val:lang_name %}
-        ({{ ing.prep_style|dict_val:lang_name }})
-      {% endif %}
-      
-      {% if ing|dict_val:lang_name %}
-        - {{ ing|dict_val:lang_name }}
-      {% endif %}
-    </li>
-  {% endfor %}
+    {% for ing in block.ingredient_set.all %}
+      <li>{{ ing|ing_name:lang_name }}</li>
+    {% endfor %}
   </ul>
   <br />
   {% elif block|class_name == 'DirectionBlock' %}
-  <h3>{{ block.header|dict_val:lang_name|title }} {{ headers.directions|dict_val:lang_name }}:</h3>
+  <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
   <ol>
   {% for dir in block.direction_set.all %}
     <li>{{ dir|dict_val:lang_name }}</li>
