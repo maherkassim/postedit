@@ -29,4 +29,8 @@ urlpatterns = patterns('',
 
     # ex: post/wp/upload/
     url(r'^wp/upload/$', views.WPMediaUpload, name='wp_upload'),
+
+    # ex: post/ing/lookup/
+    url(r'^ing/lookup/$', views.IngredientIntlLookup, name='intl_lookup'),
+
 )

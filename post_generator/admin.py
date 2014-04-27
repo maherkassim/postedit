@@ -1,5 +1,5 @@
 from django.contrib import admin
-from post_generator.models import Language, DictionaryItem, Post, TextBlock, Image, Video, IngredientBlock, DirectionBlock, Ingredient, Direction
+from post_generator.models import Language, DictionaryItem, Post, TextBlock, Image, Video, IngredientBlock, DirectionBlock, Ingredient, Direction, ConversionType, Conversion, ConversionIngredient
 
 class VideoInline(admin.TabularInline):
     model = Video
@@ -27,6 +27,15 @@ class DirectionBlockInline(admin.TabularInline):
     model = DirectionBlock
     inlines = [ DirectionInline, ]
 
+class ConversionTypeInline(admin.TabularInline):
+    model = ConversionType
+
+class ConversionInline(admin.TabularInline):
+    model = Conversion
+
+class ConversionIngredientInline(admin.TabularInline):
+    model = ConversionIngredient
+
 class PostAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,  {'fields': []}),
@@ -51,3 +60,6 @@ admin.site.register(DirectionBlock)
 admin.site.register(Direction)
 admin.site.register(Image)
 admin.site.register(Video)
+admin.site.register(ConversionType)
+admin.site.register(Conversion)
+admin.site.register(ConversionIngredient)

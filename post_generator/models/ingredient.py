@@ -86,4 +86,4 @@ class Ingredient(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.ingredient_block.post.title.english.title() + ' - ' + self.ingredient_block.header.english.title() + ' - ' + self.name.english
+        return unicode(self.ingredient_block.post.title.english.title() + ' - ' + self.ingredient_block.header.english.title() + ' - ' + self.name.english)

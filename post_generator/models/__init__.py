@@ -8,3 +8,6 @@ from post_generator.models.ingredientblock import IngredientBlock
 from post_generator.models.directionblock import DirectionBlock
 from post_generator.models.ingredient import Ingredient
 from post_generator.models.direction import Direction
+from post_generator.models.conversion import ConversionType
+from post_generator.models.conversion import Conversion
+from post_generator.models.conversion import ConversionIngredient

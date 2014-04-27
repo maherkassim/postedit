@@ -1,4 +1,5 @@
 {% load custom_filters %}
+{% load widget_tweaks %}
 
 {% if form.instance.id %}
 <form class="item-form" method="post" action="{% url 'post_generator:dictionary_item_manage' pk=form.instance.id %}">
@@ -32,7 +33,7 @@
     <td>Plural: {{ form.french_feminine_plural }}</td>
   </tr>
   <tr id="item-ar">
-    <td colspan="2">Arabic: {{ form.arabic }}</td>
+    <td colspan="2">Arabic: {{ form.arabic|add_class:"arabic" }}</td>
   </tr>
   <tr id="item-img">
     <td colspan="2">Image (if available): {{ form.image }}</td>

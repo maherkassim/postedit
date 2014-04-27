@@ -13,6 +13,8 @@ class DictionaryItem(models.Model):
          ('Intl_Unit', 'Ingredient International Unit'),
          ('Size', 'Ingredient Size'),
          ('Prep_Type', 'Preparation/Type'),
+         ('Conv_Cat', 'Conversion Category (eg. Liquid)'),
+         ('Conv_Type', 'Conversion Types (eg. US)'),
     )
     
     _set = models.CharField('Set Type',
@@ -86,4 +88,4 @@ class DictionaryItem(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.english
+        return unicode(self.english)

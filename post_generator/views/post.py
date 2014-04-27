@@ -3,6 +3,7 @@ from operator import attrgetter
 from django.shortcuts import render, redirect, get_object_or_404
 from post_generator.models import Post, Language, DictionaryItem
 from post_generator.forms import PostForm, ImageFormSet, VideoFormSet, TextBlockFormSet, IngredientBlockFormSet, DirectionBlockFormSet
+from post_generator.views import UpdateConversionIngredients
 
 def PostIndex(request):
     posts = Post.objects.all().order_by('-pub_date')
@@ -34,6 +35,7 @@ def PostManage(request, post_id=False):
                 text_block_fs.save()
                 ingredient_block_fs.save_all()
                 direction_block_fs.save_all()
+                UpdateConversionIngredients(post.id)
                 return redirect('post_generator:post_view', post_id=post.id)
     else:
         form = PostForm(instance=post)

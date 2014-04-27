@@ -220,7 +220,7 @@
 
 <input type="submit" value="Submit" />
 </form>
-<div class="hidden">
+<div id="keyboards" class="hidden">
 <div id="arabic-keyboard" title="Arabic Keyboard">
   <table>
     <tr>
@@ -275,7 +275,10 @@
       <td><button class="add-arabic">ز</button></td>
       <td><button class="add-arabic">ظ</button></td>
     </tr>
-   <tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
       <td><button class="add-arabic">لآ</button></td>
       <td><button class="add-arabic">آ</button></td>
       <td><button class="add-arabic">,</button></td>
@@ -345,51 +348,6 @@
     // jQuery UI elements initialized
     //          - tabs for languages
     //          - sortable for reordering blocks
-    $( ':input.arabic' ).click(function(){
-      var target = '#' + $(this).attr('id');
-      $( '#arabic-keyboard' ).attr({'data-target':target});
-      if($( '#arabic-keyboard' ).data('uiDialog')){
-        $( '#arabic-keyboard' ).dialog('destroy');
-      }
-      $( '#arabic-keyboard' ).dialog({
-        width: 540,
-        position: {
-          my: 'right top',
-          at: 'right bottom',
-          of: $(this)
-        },
-      });
-      $(this).focus();
-    });
-    $( ".add-arabic" ).button().click(function(ev){
-      ev.preventDefault();
-      var target = $( '#arabic-keyboard' ).attr('data-target');
-      var value = $( target ).val();
-      value += $(this).text();
-      $( target ).val(value);
-    });
-    $( '.frac-input' ).click(function(){
-      var target = '#' + $(this).attr('id');
-      $( '#frac-keyboard' ).attr({'data-target':target});
-      if($( '#frac-keyboard' ).data('uiDialog')){
-        $( '#frac-keyboard' ).dialog('destroy');
-      }
-      $( '#frac-keyboard' ).dialog({
-        position: {
-          my: 'left top',
-          at: 'left bottom',
-          of: $(this)
-        },
-      });
-      $(this).focus();
-    });
-    $( ".add-frac" ).button().click(function(ev){
-      ev.preventDefault();
-      var target = $( '#frac-keyboard' ).attr('data-target');
-      var value = $( target ).val();
-      value += $(this).text();
-      $( target ).val(value);
-    });
     $( ".tabs" ).tabs();
     function updateLoc(){
       $('.block-list').children().each(function(){
@@ -397,7 +355,7 @@
         loc.val($(this).index());
       });
     }
-    $( "#tabbed-list" ).sortable({
+   $( "#tabbed-list" ).sortable({
       connectWith:'.block-list',
       stop: function(event, ui) {
         updateLoc();
@@ -531,7 +489,7 @@
         });
         return false; 
     });
-   
+ 
     $( ".add-item" ).button().click(function(e){
         e.preventDefault();
         var url = "{% url 'post_generator:dictionary_item_new' %}";
@@ -541,10 +499,97 @@
             $(this).attr({'data-type':type});
             $(this).attr({'data-target':target});
             $(this).dialog('open');
+            $( '#id_arabic' ).click(function(){
+              var target = '#' + $(this).attr('id');
+              $( '#arabic-keyboard' ).attr({'data-target':target});
+              if($( '#arabic-keyboard' ).data('uiDialog')){
+                $( '#arabic-keyboard' ).dialog('destroy');
+              }
+              $( '#arabic-keyboard' ).dialog({
+                width: 540,
+                position: {
+                  my: 'right top',
+                  at: 'right bottom',
+                  of: $(this)
+                },
+              });
+              $(this).focus();
+            });
         });
         return false;
     });
 
+    $( ':input.arabic' ).click(function(){
+      var target = '#' + $(this).attr('id');
+      $( '#arabic-keyboard' ).attr({'data-target':target});
+      if($( '#arabic-keyboard' ).data('uiDialog')){
+        $( '#arabic-keyboard' ).dialog('destroy');
+      }
+      $( '#arabic-keyboard' ).dialog({
+        width: 540,
+        position: {
+          my: 'right top',
+          at: 'right bottom',
+          of: $(this)
+        },
+      });
+      $(this).focus();
+    });
+    $( ".add-arabic" ).button().click(function(ev){
+      ev.preventDefault();
+      var target = $( '#arabic-keyboard' ).attr('data-target');
+      var value = $( target ).val();
+      value += $(this).text();
+      $( target ).val(value);
+    });
+    $( '.frac-input' ).click(function(){
+      var target = '#' + $(this).attr('id');
+      $( '#frac-keyboard' ).attr({'data-target':target});
+      if($( '#frac-keyboard' ).data('uiDialog')){
+        $( '#frac-keyboard' ).dialog('destroy');
+      }
+      $( '#frac-keyboard' ).dialog({
+        position: {
+          my: 'left top',
+          at: 'left bottom',
+          of: $(this)
+        },
+      });
+      $(this).focus();
+    });
+    $( ".add-frac" ).button().click(function(ev){
+      ev.preventDefault();
+      var target = $( '#frac-keyboard' ).attr('data-target');
+      var value = $( target ).val();
+      value += $(this).text();
+      $( target ).val(value);
+    });
+
+    $('.lookup-intl').button().click(function(ev){
+      ev.preventDefault();
+      var lookup_button = $(this);
+      lookup_button.button( "option", "label", "Loading..." );
+      var request_data = {};
+      var target = $(this).attr('data-target');
+      request_data['name'] = $( target + 'name' ).combobox('value');
+      request_data['size'] = $( target + 'size' ).combobox('value');
+      request_data['quantity'] = $( target + 'quantity' ).val();
+      request_data['quantity_units'] = $( target + 'quantity_units' ).combobox('value');
+      request_data['intl_units'] = $( target + 'intl_units' ).combobox('value');
+      request_data['styles'] = $( target + 'prep_style' ).val();
+      console.log(target + 'name');
+      console.log(request_data);
+      $.ajax({
+        type: "POST",
+        url: "{% url 'post_generator:intl_lookup' %}",
+        data: request_data,
+        success: function(data){
+          lookup_button.button( "option", "label", "Lookup" );
+          $( target + 'intl' ).val(data['intl']);
+        }
+      });
+    });
+ 
     $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
     $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
     $( '#add-textblocks' ).click(function(){ addForm('textblocks', '#tabbed-list', false); });
