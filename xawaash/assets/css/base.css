@@ -1,0 +1,23 @@
+header {
+  margin-top: 10px;
+  text-align:center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 301px;
+  padding-bottom: 30px;
+}
+
+.header-container {
+  width: 100%;
+  background: none;
+}
+
+.title {
+  float: none;
+  display: block;
+  text-decoration: none;
+  color: darkgreen;
+  font-size: 255%;
+  font-weight: normal;
+  font-family: monospace;
+}

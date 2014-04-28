@@ -11,6 +11,10 @@ class Image(models.Model):
         default=True,
     )
     
+    printable = models.BooleanField(
+        default=False,
+    )
+    
     post = models.ForeignKey(
         Post,
         null=True,

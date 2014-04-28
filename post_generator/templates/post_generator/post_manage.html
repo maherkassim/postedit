@@ -164,18 +164,24 @@
       </td>
       <td width="350">Post Title: {{ form.title|add_class:"dict-general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
+      <td>Servings: {{ form.servings }}{{ form.servings.errors }}</td>
     </tr>
     <tr>
       <td>Post URL: {{ form.link|add_class:"text-input post-url" }} <button id="generate-post-link">New</button>{{ form.link.errors }}</td>
       <td>{{ form.include_french }} Include French Tab</td>
+      <td>Preparation Time: {{ form.prep_time|add_class:"time-field" }}{{ form.prep_time.errors }}</td>
     </tr>
     <tr>
       <td>Publication Date: {{ form.pub_date|add_class:"text-input date" }}{{ form.pub_date.errors }}</td>
       <td>{{ form.include_arabic }} Include Arabic Tab</td>
+      <td>Cooking Time: {{ form.cook_time|add_class:"time-field" }}{{ form.cook_time.errors }}</td>
     </tr>
     <tr>
       <td>Featured Image: {{ form.featured_image|add_class:"text-input url image-url" }}{{ form.featured_image.errors }}</td>
-      <td>Servings: {{ form.servings }}{{ form.servings.errors }}</td>
+      <td></td>
+      {% if form.initial.id %}
+      <td><button id="post-preview" style="float:right"><a href="{% url 'post_generator:post_view' form.initial.id %}">Back to Post Preview</a></button></td>
+      {% endif %}
     </tr>
   </table>
 </div>
@@ -321,7 +327,7 @@
       <td><button class="add-frac">⅝</button></td>
     </tr>
     <tr>
-      <td></td>
+      <td><button class="add-frac">°</button></td>
       <td></td>
       <td></td>
       <td><button class="add-frac">⅘</button></td>
@@ -349,6 +355,7 @@
     //          - tabs for languages
     //          - sortable for reordering blocks
     $( ".tabs" ).tabs();
+    $('#post-preview').button().click(function(e){e.preventDefault;});
     function updateLoc(){
       $('.block-list').children().each(function(){
         var loc = $(this).find('.loc-field');
@@ -408,7 +415,6 @@
     });
     
     $('select:not(select[multiple=multiple])').combobox();
-
     $('.delete-block-btn').button().click(function(e){
       e.preventDefault();
       var blockRow = $(this).parent();
@@ -519,22 +525,31 @@
         return false;
     });
 
+    $( '#arabic-keyboard' ).dialog({
+      autoOpen: false,
+      modal: false,
+      width: 540
+    });
+
+    $( '#frac-keyboard' ).dialog({
+      autoOpen: false,
+      modal: false,
+    });
+
     $( ':input.arabic' ).click(function(){
       var target = '#' + $(this).attr('id');
-      $( '#arabic-keyboard' ).attr({'data-target':target});
-      if($( '#arabic-keyboard' ).data('uiDialog')){
-        $( '#arabic-keyboard' ).dialog('destroy');
-      }
+      $( '#arabic-keyboard' ).dialog('open');
       $( '#arabic-keyboard' ).dialog({
-        width: 540,
         position: {
           my: 'right top',
           at: 'right bottom',
           of: $(this)
-        },
+        }
       });
+      $( '#arabic-keyboard' ).attr({'data-target':target});
       $(this).focus();
     });
+
     $( ".add-arabic" ).button().click(function(ev){
       ev.preventDefault();
       var target = $( '#arabic-keyboard' ).attr('data-target');
@@ -542,27 +557,42 @@
       value += $(this).text();
       $( target ).val(value);
     });
+
     $( '.frac-input' ).click(function(){
       var target = '#' + $(this).attr('id');
+      $( '#frac-keyboard' ).dialog('open');
       $( '#frac-keyboard' ).attr({'data-target':target});
-      if($( '#frac-keyboard' ).data('uiDialog')){
-        $( '#frac-keyboard' ).dialog('destroy');
-      }
       $( '#frac-keyboard' ).dialog({
         position: {
           my: 'left top',
           at: 'left bottom',
           of: $(this)
-        },
+        }
       });
       $(this).focus();
     });
+
     $( ".add-frac" ).button().click(function(ev){
       ev.preventDefault();
       var target = $( '#frac-keyboard' ).attr('data-target');
       var value = $( target ).val();
       value += $(this).text();
       $( target ).val(value);
+      var intl = $(this).parents('table').find('.intl-quant');
+      if(intl){
+        intl.val('');
+      }
+    });
+
+    $('html').click(function(e){
+      if(!$(e.target).is('.ui-dialog, a') && !$(e.target).closest('.ui-dialog').length){
+        if(!$(e.target).is('.arabic') && $('#arabic-keyboard').dialog('isOpen')){
+          $('#arabic-keyboard').dialog('close');
+        }
+        if(!$(e.target).is('.frac-input') && $('#frac-keyboard').dialog('isOpen')){
+          $('#frac-keyboard').dialog('close');
+        }
+      }
     });
 
     $('.lookup-intl').button().click(function(ev){
@@ -589,7 +619,12 @@
         }
       });
     });
- 
+
+    $('.calc-intl').change(function(){
+      var intl = $(this).parents('table').find('.intl-quant')
+      intl.val('');
+    });
+
     $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
     $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
     $( '#add-textblocks' ).click(function(){ addForm('textblocks', '#tabbed-list', false); });

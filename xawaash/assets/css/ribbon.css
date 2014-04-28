@@ -1,0 +1,79 @@
+@media only screen
+{
+	.ribbon
+	{
+		margin-top: 8px;
+		font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+		padding-bottom: 35px;
+	}
+	
+	.ribbon:after, .ribbon:before
+	{
+		margin-top:0.5em;
+		content: "";
+		float:left;
+		border:1.5em solid darkgreen;
+	}
+
+	.ribbon:after
+	{
+		border-right-color:transparent;
+	}
+
+	.ribbon:before
+	{
+		border-left-color:transparent;
+	}
+
+	.ribbon a:link, .ribbon a:visited
+	{
+		color:white;
+		text-decoration:none;
+		float:left;
+		height:3.5em;
+		overflow:hidden;
+	}
+
+	.ribbon span
+	{
+		background:darkgreen;
+		display:inline-block;
+		line-height:3em;
+		padding:0 1em;
+		margin-top:0.5em;
+		position:relative;
+
+		-webkit-transition: background-color 0.5s, margin-top 0.5s, color 0.5s;  /* Saf3.2+, Chrome */
+		-moz-transition: background-color 0.5s, margin-top 0.5s, color 0.5s;  /* FF4+ */
+		-ms-transition: background-color 0.5s, margin-top 0.5s, color 0.5s;  /* IE10 */
+		-o-transition: background-color 0.5s, margin-top 0.5s, color 0.5s;  /* Opera 10.5+ */
+		transition: background-color 0.5s, margin-top 0.5s, color 0.5s;
+	}
+
+	.ribbon a:hover span
+	{
+		background:darkgreen;
+		color: white;
+		margin-top:0;
+	}
+
+	.ribbon span:before
+	{
+		content: "";
+		position:absolute;
+		top:3em;
+		left:0;
+		border-right:0.5em solid #9B8651;
+		border-bottom:0.5em solid #fff;
+	}
+
+	.ribbon span:after
+	{
+		content: "";
+		position:absolute;
+		top:3em;
+		right:0;
+		border-left:0.5em solid #9B8651;
+		border-bottom:0.5em solid #fff;
+	}
+}

@@ -10,30 +10,42 @@
       .arabic {
         direction: rtl;
       }
-    </style>
+   </style>
+   <style media="print">
+      .print-hide {
+        display: none !important;
+      }
+      .print-show {
+        display: block !important;
+      }
+   </style>
 {% endblock css %}
 
 {% block content %}
 <div class="main-container">
 <h1><a href="{{ post.link }}" target="_blank">{{ post_title }}</a></h1>
 <span>Date: {{ post.pub_date }}</span>
-<button><a href="{% url 'post_generator:post_manage' post.id %}">Edit This Post</a></button>
+<button class="print-hide"><a href="{% url 'post_generator:post_manage' post.id %}">Edit This Post</a></button>
 <br />
 
 {% for block in blocks_pretab %}
   {% if block|class_name == 'Image' %}
+  {% if block.printable %}
+  <div class="block block-image print-show">
+  {% else %}
+  <div class="block block-image print-hide">
+  {% endif %}
   [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
   {% for lang in languages %}
     {% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
   {% endfor %}[/caption]
   {% endif %}
-<br />
+</div>
 {% endfor %}
- 
 
 <div class="tabs">
-<ul>
+<ul class="print-hide">
 {% for lang in languages %}
   <li><a href="#tabs-{{ lang.name }}">{{ lang.display_name }}</a></li>
 {% endfor %}
@@ -44,28 +56,38 @@
 {% for block in blocks_tabbed %}
 {% with lang_name=lang.name %}
   {% if block|class_name == 'Image' %}
+  {% if block.printable %}
+  <div class="block block-image print-show">
+  {% else %}
+  <div class="block block-image print-hide">
+  {% endif %}
   [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
   <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
   {{ block|dict_val:lang_name }}[/caption]
-  <br />
+
   {% elif block|class_name == 'Video' %}
-  <br />
+  <div class="block block-video print-hide">
   <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
+
   {% elif block|class_name == 'TextBlock' %}
+  <div class="block block-text print-hide">
     {% if block.header %}
   <h2>{{ block|dict_val:lang_name }}</h2>
     {% else %}
   <p>{{ block|dict_val:lang_name }}</p>
     {% endif %}
+
   {% elif block|class_name == 'IngredientBlock' %}
+  <div class="block block-ingredient print-show">
   <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
   <ul>
     {% for ing in block.ingredient_set.all %}
       <li>{{ ing|ing_name:lang_name }}</li>
     {% endfor %}
   </ul>
-  <br />
+
   {% elif block|class_name == 'DirectionBlock' %}
+  <div class="block block-direction print-show">
   <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
   <ol>
   {% for dir in block.direction_set.all %}
@@ -74,7 +96,7 @@
   </ol>
   <br />
   {% endif %}
-
+  </div>
 {% endwith %}
 {% endfor %}
 </div>
