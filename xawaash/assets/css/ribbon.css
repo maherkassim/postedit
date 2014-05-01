@@ -3,6 +3,9 @@
 	.ribbon
 	{
 		margin-top: 8px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 315px;
 		font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
 		padding-bottom: 35px;
 	}
@@ -12,7 +15,7 @@
 		margin-top:0.5em;
 		content: "";
 		float:left;
-		border:1.5em solid darkgreen;
+		border:1.5em solid #c63;
 	}
 
 	.ribbon:after
@@ -36,7 +39,7 @@
 
 	.ribbon span
 	{
-		background:darkgreen;
+		background:#c63;
 		display:inline-block;
 		line-height:3em;
 		padding:0 1em;
@@ -52,7 +55,7 @@
 
 	.ribbon a:hover span
 	{
-		background:darkgreen;
+		background:#c63;
 		color: white;
 		margin-top:0;
 	}

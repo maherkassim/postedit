@@ -17,6 +17,11 @@ class Post(models.Model):
         'Featured Image URL',
     )
     
+    featured_image_id = models.PositiveIntegerField(
+        'WordPress Image ID',
+        default = 0,
+    )
+    
     include_somali = models.BooleanField(
         'Include Somali tab in post?',
         default=True,

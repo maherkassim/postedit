@@ -7,4 +7,5 @@ from dictionary_item import DictionaryItemIndex
 from dictionary_item import DictionaryItemCreate
 from dictionary_item import DictionaryItemUpdate
 from wordpress import WPPostNew
+from wordpress import WPPostUpdate
 from wordpress import WPMediaUpload

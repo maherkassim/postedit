@@ -10,7 +10,54 @@
       .arabic {
         direction: rtl;
       }
-   </style>
+      .block {
+        margin-bottom: 20px;
+      }
+      .block-image, .block-video {
+        text-align: center;
+      }
+      .ui-widget {
+        font-family: verdana, sans-serif;
+        font-size: 13px;
+        border-style: none;
+        line-height: 150%;
+      }
+      .ui-widget-header {
+        background: #c63;
+        font-size: 1.0em;
+        font-family: Verdana,Arial,sans-serif;
+        border-style: none;
+      }
+      .ui-tabs .ui-tabs-panel {
+        padding: 0;
+      }
+      .ui-tabs .ui-tabs-nav {
+        margin-bottom: 20px;
+      }
+      .outer-tabs {
+        width:865px;
+        padding: 10px;
+        border: 1px solid gainsboro;
+      }
+      h2 {
+        font-weight: bold;
+        font-size: medium;
+        text-decoration: underline;
+      }
+      h3 {
+        font-weight: bold;
+        font-size: inherit;
+      }
+      .ingredient, .direction {
+        margin-bottom: 0;
+      }
+      .ingredient-list {
+        margin: 0;
+      }
+      .main-container {
+        margin: 0;
+      }
+  </style>
    <style media="print">
       .print-hide {
         display: none !important;
@@ -25,9 +72,20 @@
 <div class="main-container">
 <h1><a href="{{ post.link }}" target="_blank">{{ post_title }}</a></h1>
 <span>Date: {{ post.pub_date }}</span>
-<button class="print-hide"><a href="{% url 'post_generator:post_manage' post.id %}">Edit This Post</a></button>
+<button id="edit-post" class="print-hide"><a href="{% url 'post_generator:post_manage' post.id %}">Edit This Post</a></button>
+<button id="update-wp" class="print-hide">Update This Post</button>
 <br />
 
+<div class="tabs outer-tabs">
+<ul>
+  <li><a href="#tabs-preview">Preview</a></li>
+  <li><a href="#tabs-html">HTML</a></li>
+</ul>
+<div id="tabs-html">
+  <code id="post-html">
+  </code>
+</div>
+<div id="tabs-preview">
 {% for block in blocks_pretab %}
   {% if block|class_name == 'Image' %}
   {% if block.printable %}
@@ -35,13 +93,9 @@
   {% else %}
   <div class="block block-image print-hide">
   {% endif %}
-  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
-  <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
-  {% for lang in languages %}
-    {% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %}
-  {% endfor %}[/caption]
+  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{% for lang in languages %}{% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %} {% endfor %}[/caption]
   {% endif %}
-</div>
+  </div>
 {% endfor %}
 
 <div class="tabs">
@@ -61,46 +115,44 @@
   {% else %}
   <div class="block block-image print-hide">
   {% endif %}
-  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<br />
-  <a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a><br />
-  {{ block|dict_val:lang_name }}[/caption]
+    [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{{ block|dict_val:lang_name }}[/caption]
 
   {% elif block|class_name == 'Video' %}
   <div class="block block-video print-hide">
-  <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
+    <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
 
   {% elif block|class_name == 'TextBlock' %}
   <div class="block block-text print-hide">
     {% if block.header %}
-  <h2>{{ block|dict_val:lang_name }}</h2>
+    <h2>{{ block|dict_val:lang_name }}</h2>
     {% else %}
-  <p>{{ block|dict_val:lang_name }}</p>
+    <p>{{ block|dict_val:lang_name }}</p>
     {% endif %}
 
   {% elif block|class_name == 'IngredientBlock' %}
   <div class="block block-ingredient print-show">
-  <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
-  <ul>
+    <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
+    <ul class="ingredient-list">
     {% for ing in block.ingredient_set.all %}
-      <li>{{ ing|ing_name:lang_name }}</li>
+      <li class="ingredient">{{ ing|ing_name:lang_name }}</li>
     {% endfor %}
-  </ul>
+    </ul>
 
   {% elif block|class_name == 'DirectionBlock' %}
   <div class="block block-direction print-show">
-  <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
-  <ol>
-  {% for dir in block.direction_set.all %}
-    <li>{{ dir|dict_val:lang_name }}</li>
-  {% endfor %}
-  </ol>
-  <br />
+    <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
+    <ol class="direction-list">
+    {% for dir in block.direction_set.all %}
+      <li class="direction">{{ dir|dict_val:lang_name }}</li>
+    {% endfor %}
+    </ol>
   {% endif %}
   </div>
 {% endwith %}
 {% endfor %}
 </div>
 {% endfor %}
+</div>
 </div>
 </div>
 {% endblock content %}
@@ -117,6 +169,23 @@
     //          - tabs for languages
 
     $( ".tabs" ).tabs();
+    $( '#post-html' ).text($( '#tabs-preview' ).html().replace(/\n+/gm, '\n').replace(/(\n\s*\n)+/gm, '\n'))
+    $( '#edit-post' ).button();
+    $( '#update-wp' ).button().click(function(e){
+      e.preventDefault();
+      var updateButton = $(this)
+      updateButton.button("option", "label", "Loading...");
+      var requestData = {};
+      requestData['post-content'] = $( '#post-html' ).text();
+      $.ajax({
+        type: "POST",
+        url: "{% url 'post_generator:wp_update' post.id %}",
+        data: requestData,
+        success: function(data){
+          updateButton.button("option", "label", "Update This Post");
+        }
+      });
+    });
   });
   </script>
 {% endblock javascript %}

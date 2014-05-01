@@ -129,6 +129,30 @@
       .arabic {
         direction:rtl;
       }
+      .submit-form-upper {
+        float: right;
+        margin-right: 25px;
+      }
+      .submit-form-bottom {
+        margin: 25px auto;
+        display: block;
+        font-size: 140%;
+      }
+      .btn-submit-form {
+        font-weight: bold;
+        color: #c63;
+      }
+      .btn-symbol-keyboard {
+        float: right;
+        margin-right: 20px;
+      }
+      .add-block-buttons {
+        text-align: center;
+      }
+      #table-post-form tr td:last-child {
+        float:right;
+        margin-right: 20px;
+      }
       </style>
 {% endblock css %}
 
@@ -145,10 +169,11 @@
 
 <div id="dict_modal"></div>
 
+<input class="btn-submit-form submit-form-upper"  type="submit" value="Submit Changes" />
 <div id="post-general">
   <h2>General Post Information</h2>
   {{ form.non_field_errors }}
-  <table>
+  <table id="table-post-form">
     <tr>
       <td rowspan="4" width="220" style="padding-left: 20px;">
         {% if form.featured_image.value %}
@@ -178,9 +203,11 @@
     </tr>
     <tr>
       <td>Featured Image: {{ form.featured_image|add_class:"text-input url image-url" }}{{ form.featured_image.errors }}</td>
-      <td></td>
+      <td>Featured Image WP ID: {{ form.featured_image_id|add_class:"text-input" }}{{ form.featured_image_id.errors }}</td>
       {% if form.initial.id %}
-      <td><button id="post-preview" style="float:right"><a href="{% url 'post_generator:post_view' form.initial.id %}">Back to Post Preview</a></button></td>
+      <td><button id="post-preview"><a href="{% url 'post_generator:post_view' form.initial.id %}">Back to Post Preview</a></button></td>
+      {% else %}
+      <td></td>
       {% endif %}
     </tr>
   </table>
@@ -198,7 +225,7 @@
   <ol id="tabbed-list" class="block-list">
   {% include "post_generator/block_form.html" with form_list=tabbed_forms %}
   </ol>
-  <table>
+  <table class="add-block-buttons">
     <tr>
       <td><input id="add-images" type="button" value="Add Image" /></td>
       <td><input id="add-videos" type="button" value="Add Video" /></td>
@@ -224,115 +251,157 @@
   </ol>
 </div>
 
-<input type="submit" value="Submit" />
+<input class="btn-submit-form submit-form-bottom"  type="submit" value="Submit Changes" />
 </form>
 <div id="keyboards" class="hidden">
 <div id="arabic-keyboard" title="Arabic Keyboard">
   <table>
     <tr>
-      <td><button class="add-arabic">ذ</button></td>
-      <td><button class="add-arabic">١</button></td>
-      <td><button class="add-arabic">٢</button></td>
-      <td><button class="add-arabic">٣</button></td>
-      <td><button class="add-arabic">٤</button></td>
-      <td><button class="add-arabic">٥</button></td>
-      <td><button class="add-arabic">٦</button></td>
-      <td><button class="add-arabic">٧</button></td>
-      <td><button class="add-arabic">٨</button></td>
-      <td><button class="add-arabic">٩</button></td>
-      <td><button class="add-arabic">٠</button></td>
+      <td><button class="btn-add-arabic">ذ</button></td>
+      <td><button class="btn-add-arabic">١</button></td>
+      <td><button class="btn-add-arabic">٢</button></td>
+      <td><button class="btn-add-arabic">٣</button></td>
+      <td><button class="btn-add-arabic">٤</button></td>
+      <td><button class="btn-add-arabic">٥</button></td>
+      <td><button class="btn-add-arabic">٦</button></td>
+      <td><button class="btn-add-arabic">٧</button></td>
+      <td><button class="btn-add-arabic">٨</button></td>
+      <td><button class="btn-add-arabic">٩</button></td>
+      <td><button class="btn-add-arabic">٠</button></td>
     </tr>
     <tr>
-      <td><button class="add-arabic">ض</button></td>
-      <td><button class="add-arabic">ص</button></td>
-      <td><button class="add-arabic">ث</button></td>
-      <td><button class="add-arabic">ق</button></td>
-      <td><button class="add-arabic">ف</button></td>
-      <td><button class="add-arabic">غ</button></td>
-      <td><button class="add-arabic">ع</button></td>
-      <td><button class="add-arabic">ه</button></td>
-      <td><button class="add-arabic">خ</button></td>
-      <td><button class="add-arabic">ح</button></td>
-      <td><button class="add-arabic">ج</button></td>
-      <td><button class="add-arabic">د</button></td>
+      <td><button class="btn-add-arabic">ض</button></td>
+      <td><button class="btn-add-arabic">ص</button></td>
+      <td><button class="btn-add-arabic">ث</button></td>
+      <td><button class="btn-add-arabic">ق</button></td>
+      <td><button class="btn-add-arabic">ف</button></td>
+      <td><button class="btn-add-arabic">غ</button></td>
+      <td><button class="btn-add-arabic">ع</button></td>
+      <td><button class="btn-add-arabic">ه</button></td>
+      <td><button class="btn-add-arabic">خ</button></td>
+      <td><button class="btn-add-arabic">ح</button></td>
+      <td><button class="btn-add-arabic">ج</button></td>
+      <td><button class="btn-add-arabic">د</button></td>
     </tr>
     <tr>
-      <td><button class="add-arabic">ش</button></td>
-      <td><button class="add-arabic">س</button></td>
-      <td><button class="add-arabic">ي</button></td>
-      <td><button class="add-arabic">ب</button></td>
-      <td><button class="add-arabic">ل</button></td>
-      <td><button class="add-arabic">ا</button></td>
-      <td><button class="add-arabic">ت</button></td>
-      <td><button class="add-arabic">ن</button></td>
-      <td><button class="add-arabic">م</button></td>
-      <td><button class="add-arabic">ك</button></td>
-      <td><button class="add-arabic">ط</button></td>
+      <td><button class="btn-add-arabic">ش</button></td>
+      <td><button class="btn-add-arabic">س</button></td>
+      <td><button class="btn-add-arabic">ي</button></td>
+      <td><button class="btn-add-arabic">ب</button></td>
+      <td><button class="btn-add-arabic">ل</button></td>
+      <td><button class="btn-add-arabic">ا</button></td>
+      <td><button class="btn-add-arabic">ت</button></td>
+      <td><button class="btn-add-arabic">ن</button></td>
+      <td><button class="btn-add-arabic">م</button></td>
+      <td><button class="btn-add-arabic">ك</button></td>
+      <td><button class="btn-add-arabic">ط</button></td>
     </tr>
     <tr>
-      <td><button class="add-arabic">ئ</button></td>
-      <td><button class="add-arabic">ء</button></td>
-      <td><button class="add-arabic">ؤ</button></td>
-      <td><button class="add-arabic">ر</button></td>
-      <td><button class="add-arabic">ﻻ</button></td>
-      <td><button class="add-arabic">ى</button></td>
-      <td><button class="add-arabic">ة</button></td>
-      <td><button class="add-arabic">و</button></td>
-      <td><button class="add-arabic">ز</button></td>
-      <td><button class="add-arabic">ظ</button></td>
+      <td><button class="btn-add-arabic">ئ</button></td>
+      <td><button class="btn-add-arabic">ء</button></td>
+      <td><button class="btn-add-arabic">ؤ</button></td>
+      <td><button class="btn-add-arabic">ر</button></td>
+      <td><button class="btn-add-arabic">ﻻ</button></td>
+      <td><button class="btn-add-arabic">ى</button></td>
+      <td><button class="btn-add-arabic">ة</button></td>
+      <td><button class="btn-add-arabic">و</button></td>
+      <td><button class="btn-add-arabic">ز</button></td>
+      <td><button class="btn-add-arabic">ظ</button></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
     </tr>
     <tr>
-      <td><button class="add-arabic">لآ</button></td>
-      <td><button class="add-arabic">آ</button></td>
-      <td><button class="add-arabic">,</button></td>
-      <td><button class="add-arabic">.</button></td>
-      <td><button class="add-arabic">؟</button></td>
-      <td><button class="add-arabic">لأ</button></td>
-      <td><button class="add-arabic">أ</button></td>
-      <td><button class="add-arabic">-</button></td>
-      <td><button class="add-arabic">،</button></td>
-      <td><button class="add-arabic">إ</button></td>
-      <td><button class="add-arabic">;</button></td>
-      <td><button class="add-arabic">ـ</button></td>
+      <td><button class="btn-add-arabic">لآ</button></td>
+      <td><button class="btn-add-arabic">آ</button></td>
+      <td><button class="btn-add-arabic">,</button></td>
+      <td><button class="btn-add-arabic">.</button></td>
+      <td><button class="btn-add-arabic">؟</button></td>
+      <td><button class="btn-add-arabic">لأ</button></td>
+      <td><button class="btn-add-arabic">أ</button></td>
+      <td><button class="btn-add-arabic">-</button></td>
+      <td><button class="btn-add-arabic">،</button></td>
+      <td><button class="btn-add-arabic">إ</button></td>
+      <td><button class="btn-add-arabic">;</button></td>
+      <td><button class="btn-add-arabic">ـ</button></td>
     </tr>
   </table>
 </div>
 <div id="frac-keyboard" title="Fraction Keyboard">
   <table>
     <tr>
-      <td><button class="add-frac">½</button></td>
-      <td><button class="add-frac">⅓</button></td>
-      <td><button class="add-frac">¼</button></td>
-      <td><button class="add-frac">⅕</button></td>
-      <td><button class="add-frac">⅙</button></td>
-      <td><button class="add-frac">⅛</button></td>
+      <td><button class="btn-add-frac">½</button></td>
+      <td><button class="btn-add-frac">⅓</button></td>
+      <td><button class="btn-add-frac">¼</button></td>
+      <td><button class="btn-add-frac">⅕</button></td>
+      <td><button class="btn-add-frac">⅙</button></td>
+      <td><button class="btn-add-frac">⅛</button></td>
     </tr>
     <tr>
       <td></td>
-      <td><button class="add-frac">⅔</button></td>
-      <td><button class="add-frac">¾</button></td>
-      <td><button class="add-frac">⅖</button></td>
-      <td><button class="add-frac">⅚</button></td>
-      <td><button class="add-frac">⅜</button></td>
+      <td><button class="btn-add-frac">⅔</button></td>
+      <td><button class="btn-add-frac">¾</button></td>
+      <td><button class="btn-add-frac">⅖</button></td>
+      <td><button class="btn-add-frac">⅚</button></td>
+      <td><button class="btn-add-frac">⅜</button></td>
     </tr>
     <tr>
       <td></td>
       <td></td>
       <td></td>
-      <td><button class="add-frac">⅗</button></td>
+      <td><button class="btn-add-frac">⅗</button></td>
       <td></td>
-      <td><button class="add-frac">⅝</button></td>
+      <td><button class="btn-add-frac">⅝</button></td>
     </tr>
     <tr>
-      <td><button class="add-frac">°</button></td>
       <td></td>
       <td></td>
-      <td><button class="add-frac">⅘</button></td>
       <td></td>
-      <td><button class="add-frac">⅞</button></td>
+      <td><button class="btn-add-frac">⅘</button></td>
+      <td></td>
+      <td><button class="btn-add-frac">⅞</button></td>
+    </tr>
+  </table>
+</div>
+<div id="symbol-keyboard" title="Symbol Keyboard">
+  <table>
+    <tr>
+      <td><button class="btn-add-symbol">½</button></td>
+      <td><button class="btn-add-symbol">⅓</button></td>
+      <td><button class="btn-add-symbol">¼</button></td>
+      <td><button class="btn-add-symbol">⅕</button></td>
+      <td><button class="btn-add-symbol">⅙</button></td>
+      <td><button class="btn-add-symbol">⅛</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button class="btn-add-symbol">⅔</button></td>
+      <td><button class="btn-add-symbol">¾</button></td>
+      <td><button class="btn-add-symbol">⅖</button></td>
+      <td><button class="btn-add-symbol">⅚</button></td>
+      <td><button class="btn-add-symbol">⅜</button></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><button class="btn-add-symbol">⅗</button></td>
+      <td></td>
+      <td><button class="btn-add-symbol">⅝</button></td>
+    </tr>
+    <tr>
+      <td><button class="btn-add-symbol">°</button></td>
+      <td></td>
+      <td></td>
+      <td><button class="btn-add-symbol">⅘</button></td>
+      <td></td>
+      <td><button class="btn-add-symbol">⅞</button></td>
+    </tr>
+    <tr>
+      <td colspan="6">
+        <input id="text-symbol-keyboard" type="text"/>
+        <button id="btn-select-symbol">Select</button>
+      </td>
     </tr>
   </table>
 </div>
@@ -355,6 +424,8 @@
     //          - tabs for languages
     //          - sortable for reordering blocks
     $( ".tabs" ).tabs();
+    $( '.submit-form-upper' ).button();
+    $( '.submit-form-bottom' ).button();
     $('#post-preview').button().click(function(e){e.preventDefault;});
     function updateLoc(){
       $('.block-list').children().each(function(){
@@ -414,7 +485,12 @@
        timeFormat: 'HH:mm:ss'
     });
     
-    $('select:not(select[multiple=multiple])').combobox();
+    $('select:not(select[multiple=multiple])').combobox({
+      change: function(){
+        var intl = $(this).parents('table').find('.intl-quant');
+        if(intl){intl.val('');}
+      }
+    });
     $('.delete-block-btn').button().click(function(e){
       e.preventDefault();
       var blockRow = $(this).parent();
@@ -435,6 +511,7 @@
         var target = $(this.element).attr('data-target');
         if(target == 'featured-image'){
           $('#{{ form.featured_image.auto_id }}').val(response.link);
+          $('#{{ form.featured_image_id.auto_id }}').val(response.id);
           $('#{{ form.featured_image.auto_id }}_preview').attr({'src':response.link}).removeClass('hidden');
           $(this.element).addClass('hidden');
         } else {
@@ -456,9 +533,11 @@
     });
 
     $('#generate-post-link').button().click(function(e){
+      $(this).button( "option", "label", "Loading..." );
       e.preventDefault();
       $.get("{% url 'post_generator:wp_new' %}", function(data){
            $('#id_link').val(data.link);
+           $(this).button( "option", "label", "New" );
       });
       return false; 
     });
@@ -536,6 +615,11 @@
       modal: false,
     });
 
+    $( '#symbol-keyboard' ).dialog({
+      autoOpen: false,
+      modal: false,
+    });
+
     $( ':input.arabic' ).click(function(){
       var target = '#' + $(this).attr('id');
       $( '#arabic-keyboard' ).dialog('open');
@@ -550,7 +634,7 @@
       $(this).focus();
     });
 
-    $( ".add-arabic" ).button().click(function(ev){
+    $( ".btn-add-arabic" ).button().click(function(ev){
       ev.preventDefault();
       var target = $( '#arabic-keyboard' ).attr('data-target');
       var value = $( target ).val();
@@ -572,7 +656,7 @@
       $(this).focus();
     });
 
-    $( ".add-frac" ).button().click(function(ev){
+    $( ".btn-add-frac" ).button().click(function(ev){
       ev.preventDefault();
       var target = $( '#frac-keyboard' ).attr('data-target');
       var value = $( target ).val();
@@ -584,6 +668,32 @@
       }
     });
 
+   $( '.btn-symbol-keyboard' ).button().click(function(e){
+      e.preventDefault();
+      $( '#symbol-keyboard' ).dialog('open');
+      $( '#symbol-keyboard' ).dialog({
+        position: {
+          my: 'right top',
+          at: 'right bottom',
+          of: $(this)
+        }
+      });
+      $(this).focus();    
+    });
+
+    $( ".btn-add-symbol" ).button().click(function(ev){
+      ev.preventDefault();
+      var target = '#text-symbol-keyboard';
+      var value = $( target ).val();
+      value += $(this).text();
+      $( target ).val(value);
+    });
+
+    $( "#btn-select-symbol" ).button().click(function(ev){
+      ev.preventDefault();
+      $( '#text-symbol-keyboard' ).select();
+    });
+
     $('html').click(function(e){
       if(!$(e.target).is('.ui-dialog, a') && !$(e.target).closest('.ui-dialog').length){
         if(!$(e.target).is('.arabic') && $('#arabic-keyboard').dialog('isOpen')){
@@ -591,6 +701,14 @@
         }
         if(!$(e.target).is('.frac-input') && $('#frac-keyboard').dialog('isOpen')){
           $('#frac-keyboard').dialog('close');
+        }
+        if(!$(e.target).parent().is('button.btn-symbol-keyboard') && $('#symbol-keyboard').dialog('isOpen')){
+          $('#symbol-keyboard').dialog('close');
+          $('#text-symbol-keyboard').val('');
+        }
+
+        if($(e.target).is(':input')){
+          $(e.target).focus();
         }
       }
     });
@@ -621,17 +739,21 @@
     });
 
     $('.calc-intl').change(function(){
-      var intl = $(this).parents('table').find('.intl-quant')
+      var intl = $(this).parents('table').find('.intl-quant');
       intl.val('');
     });
 
-    $( '#add-images' ).click(function(){ addForm('images', '#tabbed-list', false); });
-    $( '#add-videos' ).click(function(){ addForm('videos', '#tabbed-list', false); });
-    $( '#add-textblocks' ).click(function(){ addForm('textblocks', '#tabbed-list', false); });
-    $( '#add-headers' ).click(function(){ addForm('headers', '#tabbed-list', false); });
-    $( '#add-ingredientblocks' ).click(function(){ addFormSet('ingredientblocks', '#tabbed-list', false); });
-    $( '#add-directionblocks' ).click(function(){ addFormSet('directionblocks', '#tabbed-list', false); });
-    $( '.add-nested' ).click(function(){
+    $('.spell').each(function(){
+      $(this).attr('spellcheck', 'true');
+    })
+
+    $( '#add-images' ).button().click(function(){ addForm('images', '#tabbed-list', false); });
+    $( '#add-videos' ).button().click(function(){ addForm('videos', '#tabbed-list', false); });
+    $( '#add-textblocks' ).button().click(function(){ addForm('textblocks', '#tabbed-list', false); });
+    $( '#add-headers' ).button().click(function(){ addForm('headers', '#tabbed-list', false); });
+    $( '#add-ingredientblocks' ).button().click(function(){ addFormSet('ingredientblocks', '#tabbed-list', false); });
+    $( '#add-directionblocks' ).button().click(function(){ addFormSet('directionblocks', '#tabbed-list', false); });
+    $( '.add-nested' ).button().click(function(){
       var name = $(this).attr('name');
       var prefix = name.replace('-ADD', '');
       var target = '#' + prefix + '-LIST';

@@ -1,4 +1,4 @@
-import json, mimetypes, Image, cStringIO
+import json, mimetypes, Image, cStringIO, re
 
 from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods import media, posts
@@ -20,10 +20,42 @@ def WPPostNew(request):
     data = json.dumps({'link':wp_post.link})
     return HttpResponse(data, content_type='application/json')
 
+def get_french(dict_item):
+    return dict_item.french or dict_item.french_feminine
+
+@csrf_exempt
+def WPPostUpdate(request, post_id):
+    if request.method == 'POST':
+        client = Client(U1, U2, U3)
+        post_obj = Post.objects.get(pk=post_id)
+        post_title = post_obj.title.english
+        if post_obj.title.somali:
+            post_title += ' (' + post_obj.title.somali + ')'
+        french_title = get_french(post_obj.title)
+        if french_title:
+            post_title += ' ' + french_title
+        if post_obj.title.arabic:
+            post_title += ' ' + post_obj.title.arabic
+        post_title += ' - Post Generator'
+        
+        matches = re.search('.*=(\d+)$', post_obj.link)
+        wp_post_id = matches.group(1)
+        current_post = client.call(posts.GetPost(wp_post_id))
+        wp_post = WordPressPost()
+        wp_post.title = post_title
+        wp_post.content = request.POST['post-content']
+        wp_post.date = post_obj.pub_date
+        if current_post.thumbnail['attachment_id'] != str(post_obj.featured_image_id):
+            wp_post.thumbnail = str(post_obj.featured_image_id)
+
+        client.call(posts.EditPost(wp_post_id, wp_post))
+        data = json.dumps({'status':True})
+        return HttpResponse(data, content_type='application/json')
+
 @csrf_exempt
 def WPMediaUpload(request):
-    client = Client(U1, U2, U3)
     if request.method == 'POST':
+        client = Client(U1, U2, U3)
         upload_file = request.FILES['file']
         file_buf = upload_file.read()
         upload_name = upload_file.name
