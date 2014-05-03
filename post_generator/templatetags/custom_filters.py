@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unicodedata
 from django import template
 
@@ -73,21 +74,27 @@ def ing_name(ing, lang):
   intl = ing.intl
   comment = ing.__dict__[lang]
   gender = 'masculine' if ing.name.french else 'feminine'
+  join_char = ", "
+  if lang == 'arabic': join_char = u'، '
   if unicodedata.numeric(quant) > 1:
     quant_units = get_plural(ing.quantity_units, lang)
-    intl_units = get_plural(ing.intl_units, lang)
     size = get_plural(ing.size, lang, gender)
     name = get_plural(ing.name, lang)
-    style = ", ".join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
+    styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
   else:
     quant_units = get_single(ing.quantity_units, lang)
-    intl_units = get_single(ing.intl_units, lang)
-    size = get_single(ing.size, lang, gender)
-    style = ", ".join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
     if quant_units:
       name = get_plural(ing.name, lang)
+      size = get_plural(ing.size, lang, gender)
+      styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
     else:
       name = get_single(ing.name, lang)
+      size = get_single(ing.size, lang, gender)
+      styles = join_char.join(map(lambda style: get_single(style, lang, gender), ing.prep_style.all()))
+  if intl and float(intl) > 1:
+    intl_units = get_plural(ing.intl_units, lang)
+  else:
+    intl_units = get_single(ing.intl_units, lang)
 
   result = []
   if quant: result.append(quant)
@@ -96,7 +103,7 @@ def ing_name(ing, lang):
   if size and (lang == 'english' or lang == 'french'): result.append(size)
   result.append(name)
   if size and (lang == 'somali' or lang == 'arabic'): result.append(size)
-  if style: result.append('(' + style + ')')
+  if styles: result.append('(' + styles + ')')
   if comment: result.append('- ' + comment)
   return " ".join(result)
 

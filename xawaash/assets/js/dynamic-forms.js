@@ -35,6 +35,7 @@ function addForm(prefix, target, nested){
     });
   });
   if(is_header){
+    newForm.addClass('header-block');
     newForm.find('.header-field').prop('checked', true);
     newForm.find('.block-title').text('Add/Edit Header:');
   }

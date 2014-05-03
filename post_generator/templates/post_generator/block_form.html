@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 
 {% for block_form in form_list %}
-<li class="block-row"{% if template %} id="empty_{{ block_form|model_name }}s"{% endif %}>
+<li class="block-row{% if block_form|model_name == 'textblock' and block_form.header.value %} header-block{% endif %}"{% if template %} id="empty_{{ block_form|model_name }}s"{% endif %}>
   {% if block_form|model_name == 'image' %}
     <h3 class="block-title">Add/Edit Image:</h3>
     <button class="delete-block-btn" value="block">X</button>
@@ -58,8 +58,8 @@
     {{ block_form.height.errors }}
     <table>
     <tr>
-      <td width="220" rowspan="2"><iframe src="{{ block_form.link.value|or_blank }}" frameborder="0" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}"></iframe></td>
-      <td>Video URL: {{ block_form.link|add_class:"text-input url" }}</td>
+      <td width="220" rowspan="2"><iframe class="video-preview" src="{{ block_form.link.value|or_blank }}" frameborder="0" width="205" height="165"></iframe></td>
+      <td>Video URL: {{ block_form.link|add_class:"text-input url video-url" }}</td>
     </tr>
     <tr>
       <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
@@ -67,7 +67,11 @@
     </table>
   <span class="form_info">
   {% elif block_form|model_name == 'textblock' %}
+    {% if block_form.header.value %}
+    <h3 class="block-title">Add/Edit Header:</h3>
+    {% else %}
     <h3 class="block-title">Add/Edit Text/Paragraph:</h3>
+    {% endif %}
     <button class="delete-block-btn" value="block">X</button>
     <button class="block-move-btn" value="down">Down</button>
     <button class="block-move-btn" value="up">Up</button>
@@ -79,7 +83,7 @@
     <div class="hidden">Header?: {{ block_form.header|add_class:"header-field" }}</div>
     <table>
     <tr>
-      <td>English: {{ block_form.english|add_class:"text-area spell" }}</td>
+      <td class="english-textblock" >English: {{ block_form.english|add_class:"text-area english spell" }}</td>
       <td>
         <div class="tabs">
         {% with loc_index=block_form|get_loc %}
@@ -210,5 +214,6 @@
     {{ block_form.DELETE|add_class:"delete-block" }} Delete?<br />
     {{ block_form.id }}
   </span>
+  <p>Custom CSS: {{ block_form.inline_styles }}{{ block_form.inline_styles.errors }}</p>
 </li>
 {% endfor %}

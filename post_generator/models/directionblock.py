@@ -18,6 +18,13 @@ class DirectionBlock(models.Model):
         'Make this block of directions printable?',
     )
     
+    inline_styles = models.CharField(
+        'Custom Styles',
+        max_length=1000,
+        default="",
+        blank=True,
+    )
+    
     class Meta:
         app_label = 'post_generator'
     

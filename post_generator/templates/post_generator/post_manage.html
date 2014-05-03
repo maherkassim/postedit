@@ -10,150 +10,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.ui.combobox.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.timepicker.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/dropzone.css" />
-    <style>
-      h2 {
-        color: gray;
-        padding-left:10px;
-        border-bottom:2px solid gainsboro;
-      }
-      table {
-        width:100%;
-      }
-      ol {
-        padding:0 0 0 25px;
-      }
-      ol > li {
-        margin:10px 0px;
-        padding:10px;
-        border:1px solid gainsboro;
-        border-radius:10px;
-      }
-      .nested > li:nth-child(even){
-        border:1px solid black;
-        background-color:gainsboro;
-        border-radius:5px;
-      }
-      td {
-        padding:0px 5px;
-      }
-      .nested_empty{
-        display:none;
-      }
-      .img-upload {
-        width: 136px;
-        min-height: 158px;
-        border: 1px solid black;
-        padding: 0px;
-      }
-      .dropzone .dz-default.dz-message {
-        background-image: none;
-        width: 136px;
-        height: 158px;
-        margin: 0px;
-        top: 0px;
-        left: 0px;
-        font-size: 13pt;
-        text-align: center;
-        display: table;
-      }
-      .dropzone .dz-default.dz-message span {
-        display: table-cell;
-        vertical-align: middle;
-        text-align: center;
-        padding: 0px;
-      }
-      .dropzone .dz-preview {
-        margin: 10px;
-      }
-      .hidden {
-        display: none;
-      }
-      .delete-block-btn {
-        float: right;
-      }
-      .block-title,.nested-title {
-        display: inline;
-      }
-      .block-row {
-        background-color: white;
-      }
-      .block-move-btn {
-        float: right;
-      }
-      .img-preview {
-        border: 1px solid gray;
-        border-radius: 3px;
-      }
-      .form_info,.formset_info {
-        display: none;
-      }
-      textarea {
-        width: 100%;
-        font-size: 9pt;
-        border: 1px solid #aaa;
-        border-radius: 3px;
-      }
-      .direction {
-        min-height: 30px;
-      }
-      .url {
-        width: 250px;
-      }
-      .post-url {
-        width: 150px;
-      }
-      .image-url {
-        direction: rtl;
-      }
-      .block-list {
-        min-height: 100px;
-      }
-      .dimensions,.quantity {
-        width: 40px;
-      }
-      .caption {
-        width: 425px;
-      }
-      .comment {
-        width: 195px;
-      }
-      dt {
-        height: 20px;
-      }
-      .text-input {
-        border: 1px solid #aaa;
-        height:13px;
-        padding-left: 2px;
-        border-radius: 3px;
-      }
-      .arabic {
-        direction:rtl;
-      }
-      .submit-form-upper {
-        float: right;
-        margin-right: 25px;
-      }
-      .submit-form-bottom {
-        margin: 25px auto;
-        display: block;
-        font-size: 140%;
-      }
-      .btn-submit-form {
-        font-weight: bold;
-        color: #c63;
-      }
-      .btn-symbol-keyboard {
-        float: right;
-        margin-right: 20px;
-      }
-      .add-block-buttons {
-        text-align: center;
-      }
-      #table-post-form tr td:last-child {
-        float:right;
-        margin-right: 20px;
-      }
-      </style>
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/post_manage.css" />
 {% endblock css %}
 
 {% block content %}
@@ -169,7 +26,7 @@
 
 <div id="dict_modal"></div>
 
-<input class="btn-submit-form submit-form-upper"  type="submit" value="Submit Changes" />
+<button class="btn-submit-form submit-form-upper">Submit Changes</button>
 <div id="post-general">
   <h2>General Post Information</h2>
   {{ form.non_field_errors }}
@@ -227,12 +84,12 @@
   </ol>
   <table class="add-block-buttons">
     <tr>
-      <td><input id="add-images" type="button" value="Add Image" /></td>
-      <td><input id="add-videos" type="button" value="Add Video" /></td>
-      <td><input id="add-textblocks" type="button" value="Add Text/Paragraph" /></td>
-      <td><input id="add-headers" type="button" value="Add Header" /></td>
-      <td><input id="add-ingredientblocks" type="button" value="Add Ingredient Set" /></td>
-      <td><input id="add-directionblocks" type="button" value="Add Direction Set" /></td>
+      <td><button class="btn-add-block-row" value="images">Add Image</button></td>
+      <td><button class="btn-add-block-row" value="videos">Add Video</button></td>
+      <td><button class="btn-add-block-row" value="textblocks">Add Text/Paragraph</button></td>
+      <td><button class="btn-add-block-row" value="headers">Add Header</button></td>
+      <td><button class="btn-add-inlineblock-row" value="ingredientblocks">Add Ingredient Set</button></td>
+      <td><button class="btn-add-inlineblock-row" value="directionblocks">Add Direction Set</button></td>
     </tr>
   </table>
 </div>
@@ -251,12 +108,15 @@
   </ol>
 </div>
 
-<input class="btn-submit-form submit-form-bottom"  type="submit" value="Submit Changes" />
+<button class="btn-submit-form submit-form-bottom">Submit Changes</button>
 </form>
 <div id="keyboards" class="hidden">
 <div id="arabic-keyboard" title="Arabic Keyboard">
   <table>
     <tr>
+      <td><button class="btn-add-arabic" value="&#x651;"><img src="{{ STATIC_URL }}img/shadda.png"></button></td>
+      <td><button class="btn-add-arabic" value="&#x652;"><img src="{{ STATIC_URL }}img/sukun.png"></button></td>
+      <td>&nbsp;</td>
       <td><button class="btn-add-arabic">ذ</button></td>
       <td><button class="btn-add-arabic">١</button></td>
       <td><button class="btn-add-arabic">٢</button></td>
@@ -270,6 +130,9 @@
       <td><button class="btn-add-arabic">٠</button></td>
     </tr>
     <tr>
+      <td><button class="btn-add-arabic" value="&#x64d;"><img src="{{ STATIC_URL }}img/kasratan.png"></button></td>
+      <td><button class="btn-add-arabic" value="&#x650;"><img src="{{ STATIC_URL }}img/kasra.png"></button></td>
+      <td>&nbsp;</td>
       <td><button class="btn-add-arabic">ض</button></td>
       <td><button class="btn-add-arabic">ص</button></td>
       <td><button class="btn-add-arabic">ث</button></td>
@@ -284,6 +147,9 @@
       <td><button class="btn-add-arabic">د</button></td>
     </tr>
     <tr>
+      <td><button class="btn-add-arabic" value="&#x64c;"><img src="{{ STATIC_URL }}img/dammatan.png"></button></td>
+      <td><button class="btn-add-arabic" value="&#x64f;"><img src="{{ STATIC_URL }}img/damma.png"></button></td>
+      <td>&nbsp;</td>
       <td><button class="btn-add-arabic">ش</button></td>
       <td><button class="btn-add-arabic">س</button></td>
       <td><button class="btn-add-arabic">ي</button></td>
@@ -297,6 +163,9 @@
       <td><button class="btn-add-arabic">ط</button></td>
     </tr>
     <tr>
+      <td><button class="btn-add-arabic" value="&#x64b;"><img src="{{ STATIC_URL }}img/fathatan.png"></button></td>
+      <td><button class="btn-add-arabic" value="&#x64e;"><img src="{{ STATIC_URL }}img/fatha.png"></button></td>
+      <td>&nbsp;</td>
       <td><button class="btn-add-arabic">ئ</button></td>
       <td><button class="btn-add-arabic">ء</button></td>
       <td><button class="btn-add-arabic">ؤ</button></td>
@@ -310,8 +179,8 @@
     </tr>
     <tr>
       <td>&nbsp;</td>
-    </tr>
-    <tr>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
       <td><button class="btn-add-arabic">لآ</button></td>
       <td><button class="btn-add-arabic">آ</button></td>
       <td><button class="btn-add-arabic">,</button></td>
@@ -419,14 +288,63 @@
 
 {% block javascript %}
   <script>
+  (function ($, undefined) {
+      $.fn.getCursorPosition = function () {
+          var el = $(this).get(0);
+          var pos = 0;
+          if ('selectionStart' in el) {
+              pos = el.selectionStart;
+          } else if ('selection' in document) {
+              el.focus();
+              var Sel = document.selection.createRange();
+              var SelLength = document.selection.createRange().text.length;
+              Sel.moveStart('character', -el.value.length);
+              pos = Sel.text.length - SelLength;
+          }
+          return pos;
+      }
+  })(jQuery);
+
   $(function() {
     // jQuery UI elements initialized
-    //          - tabs for languages
-    //          - sortable for reordering blocks
+    //   - tabs for languages, buttons, comboboxes, dialogs, & datetimepicker
     $( ".tabs" ).tabs();
-    $( '.submit-form-upper' ).button();
-    $( '.submit-form-bottom' ).button();
-    $('#post-preview').button().click(function(e){e.preventDefault;});
+    $( "button" ).button();
+    $( ".date" ).datetimepicker({
+      showAnim:'slide',
+      showButtonPanel: true,
+      dateFormat: 'yy-mm-dd',
+      timeFormat: 'HH:mm:ss'
+    });
+    $( "select:not(select[multiple=multiple])" ).combobox({
+      change: function(){
+        var intl = $(this).parents('table').find('.intl-quant');
+        if(intl){
+          intl.val('');
+        }
+      }
+    });
+    $( "#dict_modal" ).dialog({
+      autoOpen: false,
+      width: 500,
+      height: 500,
+      modal: true,
+    });
+    $( "#arabic-keyboard" ).dialog({
+      autoOpen: false,
+      modal: false,
+      width: 540,
+    });
+    $( "#frac-keyboard" ).dialog({
+      autoOpen: false,
+      modal: false,
+    });
+    $( "#symbol-keyboard" ).dialog({
+      autoOpen: false,
+      modal: false,
+    });
+
+    $('#post-preview').click(function(e){e.preventDefault;});
     function updateLoc(){
       $('.block-list').children().each(function(){
         var loc = $(this).find('.loc-field');
@@ -435,12 +353,14 @@
     }
    $( "#tabbed-list" ).sortable({
       connectWith:'.block-list',
+      distance: 15,
       stop: function(event, ui) {
         updateLoc();
       }
     }).disableSelection();
     $( "#pretab-list" ).sortable({
       connectWith:'.block-list',
+      distance: 15,
       stop: function(event, ui) {
         updateLoc();
       }
@@ -469,7 +389,7 @@
             updateLoc();
         });
     }
-    $('.block-move-btn').button().click(function(e){
+    $('.block-move-btn').click(function(e){
       e.preventDefault();
       if($(this).val() == 'up'){
         moveUp($(this).parent());
@@ -478,20 +398,7 @@
       }
     }); 
 
-    $('.date').datetimepicker({
-       showAnim:'slide',
-       showButtonPanel: true,
-       dateFormat: 'yy-mm-dd',
-       timeFormat: 'HH:mm:ss'
-    });
-    
-    $('select:not(select[multiple=multiple])').combobox({
-      change: function(){
-        var intl = $(this).parents('table').find('.intl-quant');
-        if(intl){intl.val('');}
-      }
-    });
-    $('.delete-block-btn').button().click(function(e){
+    $('.delete-block-btn').click(function(e){
       e.preventDefault();
       var blockRow = $(this).parent();
       var blockList = blockRow.parent();
@@ -528,11 +435,17 @@
         }
       },
     });
+
+    $( '.video-url' ).change(function(){
+      var preview = $(this).parents('tr').find('.video-preview')
+      $(preview).attr('src', $(this).val());
+    });
+
     $(document).bind('drop dragover', function (e) {
         e.preventDefault();
     });
 
-    $('#generate-post-link').button().click(function(e){
+    $('#generate-post-link').click(function(e){
       $(this).button( "option", "label", "Loading..." );
       e.preventDefault();
       $.get("{% url 'post_generator:wp_new' %}", function(data){
@@ -542,13 +455,6 @@
       return false; 
     });
 
-    $('#dict_modal').dialog({
-        autoOpen: false,
-        width: 500,
-        height: 500,
-        modal: true
-    });
- 
     $('#dict_modal').on('submit', '.item-form', function () {
         $.ajax({
             type: $(this).attr('method'),
@@ -575,7 +481,7 @@
         return false; 
     });
  
-    $( ".add-item" ).button().click(function(e){
+    $( ".add-item" ).click(function(e){
         e.preventDefault();
         var url = "{% url 'post_generator:dictionary_item_new' %}";
         var type = $(this).attr('data-type');
@@ -604,22 +510,6 @@
         return false;
     });
 
-    $( '#arabic-keyboard' ).dialog({
-      autoOpen: false,
-      modal: false,
-      width: 540
-    });
-
-    $( '#frac-keyboard' ).dialog({
-      autoOpen: false,
-      modal: false,
-    });
-
-    $( '#symbol-keyboard' ).dialog({
-      autoOpen: false,
-      modal: false,
-    });
-
     $( ':input.arabic' ).click(function(){
       var target = '#' + $(this).attr('id');
       $( '#arabic-keyboard' ).dialog('open');
@@ -632,14 +522,6 @@
       });
       $( '#arabic-keyboard' ).attr({'data-target':target});
       $(this).focus();
-    });
-
-    $( ".btn-add-arabic" ).button().click(function(ev){
-      ev.preventDefault();
-      var target = $( '#arabic-keyboard' ).attr('data-target');
-      var value = $( target ).val();
-      value += $(this).text();
-      $( target ).val(value);
     });
 
     $( '.frac-input' ).click(function(){
@@ -656,19 +538,7 @@
       $(this).focus();
     });
 
-    $( ".btn-add-frac" ).button().click(function(ev){
-      ev.preventDefault();
-      var target = $( '#frac-keyboard' ).attr('data-target');
-      var value = $( target ).val();
-      value += $(this).text();
-      $( target ).val(value);
-      var intl = $(this).parents('table').find('.intl-quant');
-      if(intl){
-        intl.val('');
-      }
-    });
-
-   $( '.btn-symbol-keyboard' ).button().click(function(e){
+    $( '.btn-symbol-keyboard' ).click(function(e){
       e.preventDefault();
       $( '#symbol-keyboard' ).dialog('open');
       $( '#symbol-keyboard' ).dialog({
@@ -681,15 +551,41 @@
       $(this).focus();    
     });
 
-    $( ".btn-add-symbol" ).button().click(function(ev){
+    $( ".btn-add-arabic" ).click(function(ev){
       ev.preventDefault();
-      var target = '#text-symbol-keyboard';
-      var value = $( target ).val();
-      value += $(this).text();
-      $( target ).val(value);
+      var target = $( '#arabic-keyboard' ).attr('data-target');
+      var initial = $( target ).val();
+      var insert = $(this).val() || $(this).text();
+      var cursor = $( target ).getCursorPosition();
+      var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
+      $( target ).val(result);
     });
 
-    $( "#btn-select-symbol" ).button().click(function(ev){
+    $( ".btn-add-frac" ).click(function(ev){
+      ev.preventDefault();
+      var target = $( '#frac-keyboard' ).attr('data-target');
+      var initial = $( target ).val();
+      var insert = $(this).text();
+      var cursor = $( target ).getCursorPosition();
+      var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
+      $( target ).val(result);
+      var intl = $(this).parents('table').find('.intl-quant');
+      if(intl){
+        intl.val('');
+      }
+    });
+
+    $( ".btn-add-symbol" ).click(function(ev){
+      ev.preventDefault();
+      var target = '#text-symbol-keyboard';
+      var initial = $( target ).val();
+      var insert = $(this).text();
+      var cursor = $( target ).getCursorPosition();
+      var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
+      $( target ).val(result);
+    });
+
+    $( "#btn-select-symbol" ).click(function(ev){
       ev.preventDefault();
       $( '#text-symbol-keyboard' ).select();
     });
@@ -713,7 +609,7 @@
       }
     });
 
-    $('.lookup-intl').button().click(function(ev){
+    $('.lookup-intl').click(function(ev){
       ev.preventDefault();
       var lookup_button = $(this);
       lookup_button.button( "option", "label", "Loading..." );
@@ -745,15 +641,21 @@
 
     $('.spell').each(function(){
       $(this).attr('spellcheck', 'true');
-    })
+    });
 
-    $( '#add-images' ).button().click(function(){ addForm('images', '#tabbed-list', false); });
-    $( '#add-videos' ).button().click(function(){ addForm('videos', '#tabbed-list', false); });
-    $( '#add-textblocks' ).button().click(function(){ addForm('textblocks', '#tabbed-list', false); });
-    $( '#add-headers' ).button().click(function(){ addForm('headers', '#tabbed-list', false); });
-    $( '#add-ingredientblocks' ).button().click(function(){ addFormSet('ingredientblocks', '#tabbed-list', false); });
-    $( '#add-directionblocks' ).button().click(function(){ addFormSet('directionblocks', '#tabbed-list', false); });
-    $( '.add-nested' ).button().click(function(){
+    $( '.btn-add-block-row' ).click(function(e){
+      e.preventDefault();
+      var target = '#tabbed-list';
+      addForm($(this).val(), target, false);
+    });
+    
+    $( '.btn-add-inlineblock-row' ).click(function(e){
+      e.preventDefault();
+      var target = '#tabbed-list';
+      addFormSet($(this).val(), target);
+    });
+
+    $( '.add-nested' ).click(function(){
       var name = $(this).attr('name');
       var prefix = name.replace('-ADD', '');
       var target = '#' + prefix + '-LIST';

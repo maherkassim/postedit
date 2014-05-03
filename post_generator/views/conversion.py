@@ -1,4 +1,4 @@
-import json, operator, unicodedata
+import json, operator, unicodedata, math
 
 from post_generator.models import Conversion, ConversionType, ConversionIngredient, Post, DictionaryItem
 from django.http import HttpResponse
@@ -83,8 +83,9 @@ def IngredientIntlLookup(request):
         ing_set = ConversionIngredient.objects.filter(name__id=request.POST['name'])
         
         size=request.POST['size']
-        if size: ing_set = ing_set.objects.filter(size__id=size)
-         
+        if size:
+            ing_set = ing_set.objects.filter(size__id=size)
+        
         for style in request.POST.getlist('styles'):
             if style:
                 ing_set = ing_set.filter(prep_style__id=style)
@@ -92,9 +93,28 @@ def IngredientIntlLookup(request):
         if ing_set:
            ing = ing_set[0]
            if quantity and quantity_units and intl_units and ing.grams_per_cup:
-                intl = round(convert(parse_quantity(quantity), quantity_units, 'US', intl_units, 'metric', float(ing.grams_per_cup)))
+               intl = convert(parse_quantity(quantity), quantity_units, 'US', intl_units, 'metric', float(ing.grams_per_cup))
         if quantity and quantity_units and intl_units and not intl:
-           intl = round(convert(parse_quantity(quantity), quantity_units, 'US', intl_units, 'metric'))
+            intl = convert(parse_quantity(quantity), quantity_units, 'US', intl_units, 'metric')
+    quant_units_obj = DictionaryItem.objects.get(pk=quantity_units)
+    intl_units_obj = DictionaryItem.objects.get(pk=intl_units)
+    if intl:
+        if intl < 100 and quant_units_obj.english == 'teaspoon' and intl_units_obj.english == 'milliliter':
+            to_two = round(intl, 2)
+            to_zero = math.floor(to_two)
+            dec = to_two - to_zero
+            if dec < 0.125:
+              intl = to_zero
+            elif dec < 0.375:
+              intl = to_zero + 0.25
+            elif dec < 0.625:
+              intl = to_zero + 0.5
+            elif dec < 0.875:
+              intl = to_zero + 0.75
+            else:
+              intl = round(intl)
+        else:
+            intl = round(intl)
     data = json.dumps({'intl':intl})
     return HttpResponse(data, content_type='application/json')
 

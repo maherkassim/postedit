@@ -13,14 +13,13 @@
         <meta name="author" content="{% block meta_author %}Maher Kassim{% endblock %}" />
         <meta name="viewport" content="width=device-width" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/ribbon.css" />
-        <link rel="stylesheet" href="{{ STATIC_URL }}css/dropzone.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/main.custom.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/base.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
         {% block css %}{% endblock %}
 
-        <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+        {% block header_scripts %}{% endblock %}
     </head>
     
     <body class="{% block body_class %}{% endblock %}">
@@ -79,7 +78,8 @@
 
         {% block javascript_library %}
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/vendor/jquery-1.10.2.min.js"><\/script>')</script> 
+        <script src="{{ STATIC_URL }}js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
         <script src="{{ STATIC_URL }}js/plugins.js"></script>
         <script src="{{ STATIC_URL }}js/main.js"></script>
         {% endblock javascript_library %}
