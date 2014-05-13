@@ -5,11 +5,16 @@
 # ruby, etc.
 
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
+if [ -d "$OPENSHIFT_REPO_DIR"wsgi/xawaash/post_generator/migrations ]; then
+  echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py schemamigration post_generator --auto'"
+  python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --auto
+else
+  echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py schemamigration post_generator --initial'"
+  python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --initial
+fi
+
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py syncdb --noinput'"
 python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py syncdb --noinput
-
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py schemamigration post_generator --auto'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --auto
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py migrate --noinput'"
 python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py migrate --noinput
