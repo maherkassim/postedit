@@ -2,6 +2,8 @@ import json
 
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -38,18 +40,37 @@ class AjaxableResponseMixin(object):
         else:
             return response
 
-class DictionaryItemCreate(AjaxableResponseMixin, CreateView):
+class LoginRequiredMixin(object):
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
+
+class DictionaryItemCreateEmbed(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
+    model = DictionaryItem
+    form_class = DictionaryItemForm
+    template_name = 'post_generator/dictionary_item_manage_embed.html'
+    success_url = reverse_lazy('post_generator:dictionary_item_index')
+
+class DictionaryItemUpdateEmbed(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
+    model = DictionaryItem
+    form_class = DictionaryItemForm
+    template_name = 'post_generator/dictionary_item_manage_embed.html'
+    success_url = reverse_lazy('post_generator:dictionary_item_index')
+
+class DictionaryItemCreate(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
-class DictionaryItemUpdate(AjaxableResponseMixin, UpdateView):
+class DictionaryItemUpdate(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
+@login_required
 def DictionaryItemIndex(request):
     dictionary_items = DictionaryItem.objects.all()
     return render(request, 'post_generator/dictionary_item_index.html',

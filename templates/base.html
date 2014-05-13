@@ -29,9 +29,6 @@
         <![endif]-->
         {% block header %}
         <div class="header-container print-hide">
-          {% if user.is_authenticated %}
-              <span id="user-info">{{ user.username }} - <a href="/logout/">Logout</a></span>
-          {% endif %}
           <header>
             <a href="{% url 'post_generator:post_index' %}" class="title">Xawaash Post Generator</a>
             <div class="ribbon">

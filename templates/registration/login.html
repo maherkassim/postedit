@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Account Login{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css">
+    <style>
+      #login-box {
+        margin: 50px auto;
+        display: block;
+        width: 400px;
+        border-radius: 10px;
+        font-family: verdana, sans-serif;
+        font-size: 11pt;
+        background-color: #c63;
+        color: white;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+      #login-box table {
+        margin: 0 auto;
+      }
+      #login-box input {
+        border-radius: 5px;
+      }
+      #submit-form.ui-button {
+        position: relative;
+        height: 35px;
+        background: #fff url({{ STATIC_URL }}css/images/ui-bg_glass_65_ffffff_1x400.png) 50% 50% repeat-x;
+        border-radius: 20px;
+        border-color: #c63;
+        border-width: 4px;
+        z-index: 2;
+        right: 20px;
+      }
+      #submit-form.ui-button span.ui-icon {
+        background-image: url({{ STATIC_URL }}css/images/ui-icons_cc6633_256x240.png);
+      }
+      #error-msg {
+        font-size: 8pt;
+        text-align: center;
+      }
+    </style>
+{% endblock css %}
+
+{% block content %}
+   
+    <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+    {% csrf_token %}
+    <div id="login-box">
+        {% if form.errors %}
+        <p id="error-msg">Your username and password didn't match. Please try again.</p>
+        {% endif %}
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>{{ form.username }}</td>
+                <td rowspan="2" style="vertical-align: middle;">
+                    <button id="submit-form"></button>
+                </td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td>{{ form.password }}</td>
+            </tr>
+        </table>
+    </div>
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+{% endblock content %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+{% endblock javascript_library %}
+
+{% block javascript %}
+    <script>
+      $(function(){
+        $( '#submit-form' ).button({
+          icons: {
+            primary: "ui-icon-arrowthick-1-e"
+          },
+          text: false
+        });
+      });
+    </script>
+{% endblock javascript %}

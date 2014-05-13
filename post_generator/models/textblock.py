@@ -22,8 +22,20 @@ class TextBlock(models.Model):
         blank=True,
     )
     
+    french_author = models.CharField(
+        'French Author',
+        max_length=1000,
+        blank=True,
+    )
+    
     somali = models.TextField(
         'Somali Text/Paragraph',
+        blank=True,
+    )
+    
+    somali_author = models.CharField(
+        'Somali Author',
+        max_length=1000,
         blank=True,
     )
     
@@ -32,6 +44,12 @@ class TextBlock(models.Model):
         blank=True,
     )
 
+    arabic_author = models.CharField(
+        'Arabic Author',
+        max_length=1000,
+        blank=True,
+    )
+    
     printable = models.BooleanField(
         'Make this text block printable?',
     )
@@ -52,4 +70,4 @@ class TextBlock(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.english
+        return unicode(self.english)

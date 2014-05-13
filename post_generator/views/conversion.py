@@ -1,9 +1,10 @@
 import json, operator, unicodedata, math
 
-from post_generator.models import Conversion, ConversionType, ConversionIngredient, Post, DictionaryItem
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
+from post_generator.models import Conversion, ConversionType, ConversionIngredient, Post, DictionaryItem
 
 def convert(from_quant, from_units, from_type, to_units, to_type, grams_per_cup=0):
     if from_units == to_units and from_type == to_type:
@@ -29,9 +30,6 @@ def convert(from_quant, from_units, from_type, to_units, to_type, grams_per_cup=
         return ''
     
     result = from_quant * from_obj.to_base / to_obj.to_base
-    print "from_quant: " + str(from_quant)
-    print "from_obj.to_base: " + str(from_obj.to_base)
-    print "to_obj.to_base: " + str(to_obj.to_base)
     # Check if units are of the same type (ie. US/Imperial/Metric)
     if from_obj.unit_type.id != to_obj.unit_type.id:
         result = result * float(from_obj.unit_type.to_metric) / float(to_obj.unit_type.to_metric)
@@ -46,6 +44,7 @@ def parse_quantity(quantity):
             result += float(quantity[0:-1])
     return result
 
+@login_required
 def UpdateConversionIngredients(post_id):
     post = Post.objects.get(pk=post_id)
     cups_obj = DictionaryItem.objects.get(english='cup')
@@ -73,6 +72,7 @@ def UpdateConversionIngredients(post_id):
                 conv_ing.grams_per_cup = grams_per_cup
                 conv_ing.save()
 
+@login_required
 @csrf_exempt
 def IngredientIntlLookup(request):
     intl = ''

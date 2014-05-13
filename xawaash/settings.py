@@ -61,6 +61,10 @@ MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = '/media/'
 
+LOGIN_URL = '/login/'
+
+LOGIN_REDIRECT_URL = '/post/'
+
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
@@ -128,9 +132,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'south',
+    'reversion',
     'polls',
     'post_generator',
-    'south',
     'widget_tweaks',
 )
 

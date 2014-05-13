@@ -60,11 +60,14 @@ textarea {
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
 
+/* Customized for Post Generator */
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
     width: 1130px;
     margin: 0px auto;
     border: 1px solid #a3a3a3;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .main-container {

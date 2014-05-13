@@ -33,7 +33,7 @@ class DictionaryItem(models.Model):
     )
     
     english_plural = models.CharField(
-        'English - pluralized',
+        'English Plural',
         max_length=1000,
         blank=True,
     )
@@ -45,25 +45,25 @@ class DictionaryItem(models.Model):
     )
     
     french = models.CharField(
-        'French masculine',
+        'French Masculine',
         max_length=1000,
         blank=True,
     )
     
     french_masculine_plural = models.CharField(
-        'French - pluralized masculine',
+        'French Masculine Plural',
         max_length=1000,
         blank=True,
     )
     
     french_feminine = models.CharField(
-        'French - feminine',
+        'French Feminine',
         max_length=1000,
         blank=True,
     )
     
     french_feminine_plural = models.CharField(
-        'French - pluralized feminine',
+        'French Feminine Plural',
         max_length=1000,
         blank=True,
     )
@@ -86,6 +86,10 @@ class DictionaryItem(models.Model):
     
     class Meta:
         app_label = 'post_generator'
+        permissions = (
+            ('edit_french','Can edit french fields'),
+            ('edit_all','Can edit all language fields'),
+        )
     
     def __unicode__(self):
         return unicode(self.english)

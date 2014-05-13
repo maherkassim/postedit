@@ -1,16 +1,26 @@
-import json, mimetypes, Image, cStringIO, re
+import os
+import re
+import json
+import Image
+import mimetypes
+import cStringIO
 
 from wordpress_xmlrpc import Client, WordPressPost
 from wordpress_xmlrpc.methods import media, posts
 from wordpress_xmlrpc.compat import xmlrpc_client
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from post_generator.models import Post
-from user import U1, U2, U3
+from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
+from user import POSTGEN_AUTH
+from post_generator.models import Post
+
+@login_required
 def WPPostNew(request):
-    client = Client(U1, U2, U3)
+    client = Client(os.environ['POSTGEN_TARGET'], os.environ['POSTGEN_USER'], POSTGEN_AUTH)
     new_post = WordPressPost()
     new_post.title = 'New Post'
     new_post.content = 'New Post'
@@ -20,9 +30,11 @@ def WPPostNew(request):
     data = json.dumps({'link':wp_post.link})
     return HttpResponse(data, content_type='application/json')
 
+@login_required
 def get_french(dict_item):
     return dict_item.french or dict_item.french_feminine
 
+@login_required
 @csrf_exempt
 def WPPostUpdate(request, post_id):
     if request.method == 'POST':
@@ -52,6 +64,7 @@ def WPPostUpdate(request, post_id):
         data = json.dumps({'status':True})
         return HttpResponse(data, content_type='application/json')
 
+@login_required
 @csrf_exempt
 def WPMediaUpload(request):
     if request.method == 'POST':

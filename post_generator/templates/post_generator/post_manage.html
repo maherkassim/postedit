@@ -33,15 +33,16 @@
   <table id="table-post-form">
     <tr>
       <td rowspan="4" width="220" style="padding-left: 20px;">
+        <span>Featured Image Preview:</span><br>
         {% if form.featured_image.value %}
-          <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview" width="200" height="132" src="{{ form.featured_image.value }}" />
+        <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview" width="200" height="132" src="{{ form.featured_image.value }}" />
         {% else %}
-          <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview hidden" width="200" height="132" />
-          <div class="img-upload dropzone" data-target="featured-image">
-            <div class="dz-default dz-message">
-              <span>Drop Files Here<br />(or Click)<br />to Upload</span>
-            </div>
+        <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview hidden" width="200" height="132" />
+        <div class="img-upload dropzone" data-target="featured-image">
+          <div class="dz-default dz-message">
+            <span>Drop Files Here<br />(or Click)<br />to Upload</span>
           </div>
+        </div>
         {% endif %}
       </td>
       <td width="350">Post Title: {{ form.title|add_class:"dict-general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ form.title.auto_id }}">+</button></td>
@@ -483,7 +484,7 @@
  
     $( ".add-item" ).click(function(e){
         e.preventDefault();
-        var url = "{% url 'post_generator:dictionary_item_new' %}";
+        var url = "{% url 'post_generator:dictionary_item_new_embed' %}";
         var type = $(this).attr('data-type');
         var target = $(this).attr('data-target');
         $('#dict_modal').load(url,function(){

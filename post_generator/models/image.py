@@ -49,7 +49,7 @@ class Image(models.Model):
     )
     
     wordpress_image_id = models.PositiveIntegerField(
-        'WordPress Image ID (where applicable)',
+        'WordPress Image ID',
         null=True,
         blank=True,
     )
@@ -75,4 +75,4 @@ class Image(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.link + ' -  ' + self.english
+        return unicode(self.link)

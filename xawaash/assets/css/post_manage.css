@@ -184,3 +184,7 @@
   .btn-add-arabic img {
     width: 15px;
   }
+  .textblock_div span {
+    text-align: right;
+    display: block;
+  }

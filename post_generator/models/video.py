@@ -38,4 +38,4 @@ class Video(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return self.link
+        return unicode(self.link)
