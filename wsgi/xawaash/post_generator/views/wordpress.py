@@ -15,12 +15,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
-from user import POSTGEN_AUTH
 from post_generator.models import Post
 
 @login_required
 def WPPostNew(request):
-    client = Client(os.environ['POSTGEN_TARGET'], os.environ['POSTGEN_USER'], POSTGEN_AUTH)
+    client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
     new_post = WordPressPost()
     new_post.title = 'New Post'
     new_post.content = 'New Post'

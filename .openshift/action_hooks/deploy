@@ -5,10 +5,9 @@
 # ruby, etc.
 
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py syncdb --noinput'"
+python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py syncdb --noinput
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py syncdb --noinput'"
-python "$OPENSHIFT_REPO_DIR"wsgi/openshift/manage.py syncdb --noinput
-
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/openshift/manage.py migrate --noinput'"
-python "$OPENSHIFT_REPO_DIR"wsgi/openshift/manage.py migrate --noinput
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py migrate --noinput'"
+python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py migrate --noinput
 
