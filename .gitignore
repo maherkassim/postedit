@@ -46,3 +46,13 @@ migrations/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# OpenShift .gitignore #
+########################
+*.py[co]
+*.sw[po]
+*.bak
+*.orig
+*~
+.project
+.pydevproject

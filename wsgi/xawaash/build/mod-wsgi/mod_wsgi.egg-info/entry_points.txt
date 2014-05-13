@@ -1,0 +1,3 @@
+[console_scripts]
+mod_wsgi-admin = mod_wsgi.server:main
+
