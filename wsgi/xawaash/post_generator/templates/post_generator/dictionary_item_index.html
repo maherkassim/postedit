@@ -1,16 +1,65 @@
 {% extends "post_generator/base.html" %}
 {% block title %}Dictionary Item List - Xawaash Post Generator{% endblock %}
 
+{% block css %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css">
+{% endblock css %}
+
 {% block content %}
 {% if dictionary_items %}
-    <table>
+    <table id="dictionary-table" class="display" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>English</th>
+          <th>Somali</th>
+          <th>French Masculine</th>
+          <th>French Feminine</th>
+          <th>Arabic</th>
+          <th>Image Link</th>
+          <th>Recipe/Post Link</th>
+        </tr>
+      </thead>
+
+      <tfoot>
+        <tr>
+          <th>English</th>
+          <th>Somali</th>
+          <th>French Masculine</th>
+          <th>French Feminine</th>
+          <th>Arabic</th>
+          <th>Image Link</th>
+          <th>Recipe/Post Link</th>
+        </tr>
+      </tfoot>
+
+      <tbody>
     {% for item in dictionary_items %}
       <tr>
         <td><a href="{% url 'post_generator:dictionary_item_manage' item.id %}">{{ item.english|title }}</a></td>
+        <td>{{ item.somali|title }}</td>
+        <td>{{ item.french|title }}</td>
+        <td>{{ item.french_feminine|title }}</td>
+        <td>{{ item.arabic }}</td>
+        <td>{{ item.image }}</td>
+        <td>{{ item.link }}</td>
       </tr>
     {% endfor %}
+      </tbody>
     </table>
 {% else %}
     <p>No dictionary items are available.</p>
 {% endif %}
-{% endblock %}
+{% endblock content %}
+
+{% block javascript_library %}
+    {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.dataTables.min.js"></script>
+{% endblock javascript_library %}
+
+{% block javascript %}
+  <script>
+  $(function(){
+    $('#dictionary-table').dataTable();
+  });
+  </script>
+{% endblock javascript %}
