@@ -66,7 +66,7 @@ class IngredientAdmin(reversion.VersionAdmin):
 # DictionaryItem Model Admin
 class DictionaryItemAdmin(reversion.VersionAdmin):
     list_display = ('english', 'somali', 'french', 'french_feminine',
-                    'arabic', 'image', 'link')
+                    'arabic', 'image', 'link', 'word_type')
 
 # DirectionBlock Admin
 class DirectionInline(admin.TabularInline):

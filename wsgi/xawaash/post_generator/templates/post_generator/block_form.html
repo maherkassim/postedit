@@ -219,7 +219,7 @@
   <span class="formset_info">
   {% endif %}
     Location Index: {{ block_form|loc_field|add_class:"loc-field" }}<br />
-    {{ block_form|tab_field }} Tabbed?<br />
+    {{ block_form|tab_field|add_class:"tab-field" }} Tabbed?<br />
     {{ block_form.DELETE|add_class:"delete-block" }} Delete?<br />
     {{ block_form.id }}
   </span>

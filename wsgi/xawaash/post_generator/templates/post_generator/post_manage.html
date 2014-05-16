@@ -348,7 +348,13 @@
     $('#post-preview').click(function(e){e.preventDefault;});
     function updateLoc(){
       $('.block-list').children().each(function(){
+        var tab = $(this).find('.tab-field');
         var loc = $(this).find('.loc-field');
+        if(tab.parents('#tabbed-list').length){
+          tab.prop("checked", true);
+        } else if(tab.parents('#pretab-list').length){
+          tab.prop("checked", false);
+        }
         loc.val($(this).index());
       });
     }
