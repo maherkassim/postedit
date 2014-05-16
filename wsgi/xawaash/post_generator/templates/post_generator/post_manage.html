@@ -453,11 +453,12 @@
     });
 
     $('#generate-post-link').click(function(e){
-      $(this).button( "option", "label", "Loading..." );
+      var newPostBtn = $(this);
+      newPostBtn.button( "option", "label", "Loading..." );
       e.preventDefault();
       $.get("{% url 'post_generator:wp_new' %}", function(data){
            $('#id_link').val(data.link);
-           $(this).button( "option", "label", "New" );
+           newPostBtn.button( "option", "label", "New" );
       });
       return false; 
     });
@@ -566,6 +567,7 @@
       var cursor = $( target ).getCursorPosition();
       var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
       $( target ).val(result);
+      $( target ).focus();
     });
 
     $( ".btn-add-frac" ).click(function(ev){
@@ -580,6 +582,7 @@
       if(intl){
         intl.val('');
       }
+      $( target ).focus();
     });
 
     $( ".btn-add-symbol" ).click(function(ev){
@@ -590,6 +593,7 @@
       var cursor = $( target ).getCursorPosition();
       var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
       $( target ).val(result);
+      $( target ).focus();
     });
 
     $( "#btn-select-symbol" ).click(function(ev){

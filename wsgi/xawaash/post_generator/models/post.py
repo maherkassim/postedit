@@ -15,6 +15,7 @@ class Post(models.Model):
     
     featured_image = models.URLField(
         'Featured Image URL',
+        blank=True,
     )
     
     featured_image_id = models.PositiveIntegerField(

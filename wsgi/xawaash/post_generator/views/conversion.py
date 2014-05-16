@@ -44,7 +44,6 @@ def parse_quantity(quantity):
             result += float(quantity[0:-1])
     return result
 
-@login_required
 def UpdateConversionIngredients(post_id):
     post = Post.objects.get(pk=post_id)
     cups_obj = DictionaryItem.objects.get(english='cup')
