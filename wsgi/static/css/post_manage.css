@@ -73,6 +73,9 @@
   .delete-block-btn {
     float: right;
   }
+  .accordion-toggle-btn {
+    float: right;
+  }
   .block-title,.nested-title {
     display: inline;
   }

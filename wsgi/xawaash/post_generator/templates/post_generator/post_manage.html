@@ -401,15 +401,15 @@
     $('.block-move-btn').click(function(e){
       e.preventDefault();
       if($(this).val() == 'up'){
-        moveUp($(this).parent());
+        moveUp($(this).parents('li.block-row'));
       } else {
-        moveDown($(this).parent());
+        moveDown($(this).parents('li.block-row'));
       }
     }); 
 
     $('.delete-block-btn').click(function(e){
       e.preventDefault();
-      var blockRow = $(this).parent();
+      var blockRow = $(this).parents('li.block-row');
       var blockList = blockRow.parent();
       if($(this).val() == 'nested'){
         blockRow.find('.delete-nested').prop('checked', true);
@@ -420,18 +420,22 @@
       updateLoc();
     });
     
-    $('.accordion-handle').click(function(){
-      $(this).next().toggle();
+    $('.accordion-toggle-btn').click(function(ev){
+      ev.preventDefault();
+      var content = $(this).parent().next();
+      content.toggle();
     });
     
     $('.collapse-all-btn').click(function(ev){
       ev.preventDefault();
       $('.accordion-content:visible').toggle();
+      $('.accordion-toggle-btn').button("option", "label", "Expand");
     });
    
     $('.expand-all-btn').click(function(ev){
       ev.preventDefault();
       $('.accordion-content:not(:visible)').toggle();
+      $('.accordion-toggle-btn').button("option", "label", "Collapse`");
     });
  
     Dropzone.autoDiscover = false;
