@@ -4,218 +4,233 @@
 {% for block_form in form_list %}
 <li class="block-row{% if block_form|model_name == 'textblock' and block_form.header.value %} header-block{% endif %}"{% if template %} id="empty_{{ block_form|model_name }}s"{% endif %}>
   {% if block_form|model_name == 'image' %}
-    <h3 class="block-title">Add/Edit Image:</h3>
-    <button class="delete-block-btn" value="block">X</button>
-    <button class="block-move-btn" value="down">Down</button>
-    <button class="block-move-btn" value="up">Up</button>
-    <button class="btn-symbol-keyboard">Add Symbol</button>
-    {{ block_form.link.errors }}
-    {{ block_form.width.errors }}
-    {{ block_form.height.errors }}
-    {{ block_form.wordpress_image_id.errors }}
-    {{ block_form.english.errors }}
-    {{ block_form.somali.errors }}
-    {{ block_form.french.errors }}
-    {{ block_form.arabic.errors }}
-    <table>
-    <tr>
-      <td rowspan="4" width="220">
-        {% if block_form.link.value %}
-        <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
-        {% else %}
-        <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview hidden"/>
-        <div id="id_{{ block_form.prefix }}-dz" name="{{ block_form.prefix }}-dz" class="img-upload dropzone" data-target="#id_{{ block_form.prefix }}-">
-          <div class="dz-default dz-message">
-            <span>Drop Files Here<br />(or Click)<br />to Upload</span>
+    <div class="accordion-handle">
+      <h3 class="block-title">Add/Edit Image:</h3>
+      <button class="delete-block-btn" value="block">X</button>
+      <button class="block-move-btn" value="down">Down</button>
+      <button class="block-move-btn" value="up">Up</button>
+      <button class="btn-symbol-keyboard">Add Symbol</button>
+    </div>
+    <div class="accordion-content">
+      {{ block_form.link.errors }}
+      {{ block_form.width.errors }}
+      {{ block_form.height.errors }}
+      {{ block_form.wordpress_image_id.errors }}
+      {{ block_form.english.errors }}
+      {{ block_form.somali.errors }}
+      {{ block_form.french.errors }}
+      {{ block_form.arabic.errors }}
+      <table>
+      <tr>
+        <td rowspan="4" width="220">
+          {% if block_form.link.value %}
+          <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
+          {% else %}
+          <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview hidden"/>
+          <div id="id_{{ block_form.prefix }}-dz" name="{{ block_form.prefix }}-dz" class="img-upload dropzone" data-target="#id_{{ block_form.prefix }}-">
+            <div class="dz-default dz-message">
+              <span>Drop Files Here<br />(or Click)<br />to Upload</span>
+            </div>
           </div>
-        </div>
-        {% endif %}
-      </td>
-      <td width="330">Image URL: {{ block_form.link|add_class:"text-input url image-url" }}</td>
-      <td>English Caption: {{ block_form.english|add_class:"text-input caption" }}</td>
-    </tr>
-    <tr>
-      <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
-      <td>Somali Caption: {{ block_form.somali|add_class:"text-input caption" }}</td>
-    </tr>
-    <tr>
-      <td>WordPress ID: {{ block_form.wordpress_image_id|add_class:"text-input" }}</td>
-      <td>French Caption: {{ block_form.french|add_class:"text-input caption" }}</td>
-    </tr>
-    <tr>
-      <td></td>
-      <td>Arabic Caption: {{ block_form.arabic|add_class:"text-input caption arabic" }}</td>
-    </tr>
-    </table>
+          {% endif %}
+        </td>
+        <td width="330">Image URL: {{ block_form.link|add_class:"text-input url image-url" }}</td>
+        <td>English Caption: {{ block_form.english|add_class:"text-input caption" }}</td>
+      </tr>
+      <tr>
+        <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
+        <td>Somali Caption: {{ block_form.somali|add_class:"text-input caption" }}</td>
+      </tr>
+      <tr>
+        <td>WordPress ID: {{ block_form.wordpress_image_id|add_class:"text-input" }}</td>
+        <td>French Caption: {{ block_form.french|add_class:"text-input caption" }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Arabic Caption: {{ block_form.arabic|add_class:"text-input caption arabic" }}</td>
+      </tr>
+      </table>
   <span class="form_info">
   {% elif block_form|model_name == 'video' %}
-    <h3 class="block-title">Add/Edit Video:</h3>
-    <button class="delete-block-btn" value="block">X</button>
-    <button class="block-move-btn" value="down">Down</button>
-    <button class="block-move-btn" value="up">Up</button>
-    {{ block_form.link.errors }}
-    {{ block_form.width.errors }}
-    {{ block_form.height.errors }}
-    <table>
-    <tr>
-      <td width="220" rowspan="2"><iframe class="video-preview" src="{{ block_form.link.value|or_blank }}" frameborder="0" width="205" height="165"></iframe></td>
-      <td>Video URL: {{ block_form.link|add_class:"text-input url video-url" }}</td>
-    </tr>
-    <tr>
-      <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
-    </tr>
-    </table>
+    <div class="accordion-handle">
+      <h3 class="block-title">Add/Edit Video:</h3>
+      <button class="delete-block-btn" value="block">X</button>
+      <button class="block-move-btn" value="down">Down</button>
+      <button class="block-move-btn" value="up">Up</button>
+    </div>
+    <div class="accordion-content">
+      {{ block_form.link.errors }}
+      {{ block_form.width.errors }}
+      {{ block_form.height.errors }}
+      <table>
+      <tr>
+        <td width="220" rowspan="2"><iframe class="video-preview" src="{{ block_form.link.value|or_blank }}" frameborder="0" width="205" height="165"></iframe></td>
+        <td>Video URL: {{ block_form.link|add_class:"text-input url video-url" }}</td>
+      </tr>
+      <tr>
+        <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
+      </tr>
+      </table>
   <span class="form_info">
   {% elif block_form|model_name == 'textblock' %}
-    {% if block_form.header.value %}
-    <h3 class="block-title">Add/Edit Header:</h3>
-    {% else %}
-    <h3 class="block-title">Add/Edit Text/Paragraph:</h3>
-    {% endif %}
-    <button class="delete-block-btn" value="block">X</button>
-    <button class="block-move-btn" value="down">Down</button>
-    <button class="block-move-btn" value="up">Up</button>
-    <button class="btn-symbol-keyboard">Add Symbol</button>
-    {{ block_form.english.errors }}
-    {{ block_form.french.errors }}
-    {{ block_form.somali.errors }}
-    {{ block_form.arabic.errors }}
-    <div class="hidden">Header?: {{ block_form.header|add_class:"header-field" }}</div>
-    <table>
-    <tr>
-      <td class="english-textblock" >English: {{ block_form.english|add_class:"text-area english spell" }}</td>
-      <td>
-        <div class="tabs">
-        {% with loc_index=block_form|get_loc %}
-          <ul>
-            <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-french">Français</a></li>
-            <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-somali">Af-Somaali</a></li>
-            <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-arabic">عربي</a></li>
-          </ul>
-          <div class="textblock_div" id="tab_{{ block_form.prefix }}-french">
-            {{ block_form.french|add_class:"text-area spell" }}<br>
-            <span>French Author: {{ block_form.french_author|add_class:"text-input" }}</span>
+    <div class="accordion-handle">
+      {% if block_form.header.value %}
+      <h3 class="block-title">Add/Edit Header:</h3>
+      {% else %}
+      <h3 class="block-title">Add/Edit Text/Paragraph:</h3>
+      {% endif %}
+      <button class="delete-block-btn" value="block">X</button>
+      <button class="block-move-btn" value="down">Down</button>
+      <button class="block-move-btn" value="up">Up</button>
+      <button class="btn-symbol-keyboard">Add Symbol</button>
+    </div>
+    <div class="accordion-content">
+      {{ block_form.english.errors }}
+      {{ block_form.french.errors }}
+      {{ block_form.somali.errors }}
+      {{ block_form.arabic.errors }}
+      <div class="hidden">Header?: {{ block_form.header|add_class:"header-field" }}</div>
+      <table>
+      <tr>
+        <td class="english-textblock" >English: {{ block_form.english|add_class:"text-area english spell" }}</td>
+        <td>
+          <div class="tabs">
+          {% with loc_index=block_form|get_loc %}
+            <ul>
+              <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-french">Français</a></li>
+              <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-somali">Af-Somaali</a></li>
+              <li><a class="textblock_a" href="#tab_{{ block_form.prefix }}-arabic">عربي</a></li>
+            </ul>
+            <div class="textblock_div" id="tab_{{ block_form.prefix }}-french">
+              {{ block_form.french|add_class:"text-area spell" }}<br>
+              <span>French Author: {{ block_form.french_author|add_class:"text-input" }}</span>
+            </div>
+            <div class="textblock_div" id="tab_{{ block_form.prefix }}-somali">
+              {{ block_form.somali|add_class:"text-area spell" }}<br>
+              <span>Somali Author: {{ block_form.somali_author|add_class:"text-input" }}</span>
+            </div>
+            <div class="textblock_div" id="tab_{{ block_form.prefix }}-arabic">
+              {{ block_form.arabic|add_class:"text-area spell arabic" }}<br>
+              <span>Arabic Author: {{ block_form.arabic_author|add_class:"text-input" }}</span>
+            </div>
+          {% endwith %}
           </div>
-          <div class="textblock_div" id="tab_{{ block_form.prefix }}-somali">
-            {{ block_form.somali|add_class:"text-area spell" }}<br>
-            <span>Somali Author: {{ block_form.somali_author|add_class:"text-input" }}</span>
-          </div>
-          <div class="textblock_div" id="tab_{{ block_form.prefix }}-arabic">
-            {{ block_form.arabic|add_class:"text-area spell arabic" }}<br>
-            <span>Arabic Author: {{ block_form.arabic_author|add_class:"text-input" }}</span>
-          </div>
-        {% endwith %}
-        </div>
-      </td>
-    </tr>
-    </table>
+        </td>
+      </tr>
+      </table>
   <span class="form_info">
   {% elif block_form|model_name == 'ingredientblock' %}
-    <h3 class="block-title">Add/Edit Ingredient Set:</h3>
-    <button class="delete-block-btn" value="block">X</button>
-    <button class="block-move-btn" value="down">Down</button>
-    <button class="block-move-btn" value="up">Up</button><br />
-    <span>Ingredient Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
-    {% for ingredient_fs in block_form.nested %}
-    <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
-      {{ ingredient_fs.management_form }}
-      {% for ingredient_form in ingredient_fs %}
-      <li{% if forloop.last %} class="nested_empty" id="empty_{{ ingredient_fs.prefix }}"{% endif %}>
-        <h3 class="nested-title">Add/Edit Ingredient:</h3>
-        <button class="delete-block-btn" value="nested">X</button>
-        <button class="btn-symbol-keyboard">Add Symbol</button>
-        {{ ingredient_form.quantity.errors }}
-        {{ ingredient_form.quantity_units.errors }}
-        {{ ingredient_form.size.errors }}
-        {{ ingredient_form.name.errors }}
-        {{ ingredient_form.english.errors }}
-        {{ ingredient_form.somali.errors }}
-        {{ ingredient_form.french.errors }}
-        {{ ingredient_form.arabic.errors }}
-        <table>
-          <tr>
-            <td>Quantity:</td>
-            <td>Units:</td>
-            <td>Size:</td>
-            <td>Name:</td>
-            <td>English Comment: {{ ingredient_form.english|add_class:"text-input comment spell" }}</td>
-          </tr>
-          <tr>
-            <td>{{ ingredient_form.quantity|add_class:"text-input quantity frac-input calc-intl" }}</td>
-            <td>{{ ingredient_form.quantity_units|add_class:"dict-quant calc-intl" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-quant" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
-            <td>{{ ingredient_form.size|add_class:"dict-size calc-intl" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
-            <td>{{ ingredient_form.name|add_class:"dict-general calc-intl" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
-            <td>Somali Comment: {{ ingredient_form.somali|add_class:"text-input comment spell" }}</td>
-          </tr>
-          <tr>
-            <td>Int'l:</td>
-            <td>Units:</td>
-            <td style="text-align:right">Preparation/Types:</td>
-            <td rowspan="2">{{ ingredient_form.prep_style|add_class:"dict-prep calc-intl" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".dict-prep" data-target="#{{ inredient_form.prep_style.auto_id }}">+</button></td>
-            <td>French Comment: {{ ingredient_form.french|add_class:"text-input comment spell" }}</td>
-          </tr>
-          <tr>
-            <td>{{ ingredient_form.intl|add_class:"text-input quantity intl-quant" }}</td>
-            <td>{{ ingredient_form.intl_units|add_class:"dict-intl calc-intl" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".dict-intl" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
-            <td><button class="lookup-intl" data-target="#id_{{ ingredient_form.prefix }}-">Lookup</button></td>
-            <td>Arabic Comment: {{ ingredient_form.arabic|add_class:"text-input comment spell arabic" }}</td>
-          </tr>
-        </table>
-        <span class="form_info">
-          {{ ingredient_form.DELETE|add_class:"delete-nested" }} Delete?<br />
-          {{ ingredient_form.id }}
-        </span>
-      </li>
+    <div class="accordion-handle">
+      <h3 class="block-title">Add/Edit Ingredient Set:</h3>
+      <button class="delete-block-btn" value="block">X</button>
+      <button class="block-move-btn" value="down">Down</button>
+      <button class="block-move-btn" value="up">Up</button>
+    </div>
+    <div class="accordion-content">
+      <span>Ingredient Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+      {% for ingredient_fs in block_form.nested %}
+      <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
+        {{ ingredient_fs.management_form }}
+        {% for ingredient_form in ingredient_fs %}
+        <li{% if forloop.last %} class="nested_empty" id="empty_{{ ingredient_fs.prefix }}"{% endif %}>
+          <h3 class="nested-title">Add/Edit Ingredient:</h3>
+          <button class="delete-block-btn" value="nested">X</button>
+          <button class="btn-symbol-keyboard">Add Symbol</button>
+          {{ ingredient_form.quantity.errors }}
+          {{ ingredient_form.quantity_units.errors }}
+          {{ ingredient_form.size.errors }}
+          {{ ingredient_form.name.errors }}
+          {{ ingredient_form.english.errors }}
+          {{ ingredient_form.somali.errors }}
+          {{ ingredient_form.french.errors }}
+          {{ ingredient_form.arabic.errors }}
+          <table>
+            <tr>
+              <td>Quantity:</td>
+              <td>Units:</td>
+              <td>Size:</td>
+              <td>Name:</td>
+              <td>English Comment: {{ ingredient_form.english|add_class:"text-input comment spell" }}</td>
+            </tr>
+            <tr>
+              <td>{{ ingredient_form.quantity|add_class:"text-input quantity frac-input calc-intl" }}</td>
+              <td>{{ ingredient_form.quantity_units|add_class:"dict-quant calc-intl" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-quant" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
+              <td>{{ ingredient_form.size|add_class:"dict-size calc-intl" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
+              <td>{{ ingredient_form.name|add_class:"dict-general calc-intl" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
+              <td>Somali Comment: {{ ingredient_form.somali|add_class:"text-input comment spell" }}</td>
+            </tr>
+            <tr>
+              <td>Int'l:</td>
+              <td>Units:</td>
+              <td style="text-align:right">Preparation/Types:</td>
+              <td rowspan="2">{{ ingredient_form.prep_style|add_class:"dict-prep calc-intl" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".dict-prep" data-target="#{{ inredient_form.prep_style.auto_id }}">+</button></td>
+              <td>French Comment: {{ ingredient_form.french|add_class:"text-input comment spell" }}</td>
+            </tr>
+            <tr>
+              <td>{{ ingredient_form.intl|add_class:"text-input quantity intl-quant" }}</td>
+              <td>{{ ingredient_form.intl_units|add_class:"dict-intl calc-intl" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".dict-intl" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
+              <td><button class="lookup-intl" data-target="#id_{{ ingredient_form.prefix }}-">Lookup</button></td>
+              <td>Arabic Comment: {{ ingredient_form.arabic|add_class:"text-input comment spell arabic" }}</td>
+            </tr>
+          </table>
+          <span class="form_info">
+            {{ ingredient_form.DELETE|add_class:"delete-nested" }} Delete?<br />
+            {{ ingredient_form.id }}
+          </span>
+        </li>
+        {% endfor %}
+        <input id="id_{{ ingredient_fs.prefix }}-ADD" name="{{ ingredient_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Ingredient" />
+      </ol>
       {% endfor %}
-      <input id="id_{{ ingredient_fs.prefix }}-ADD" name="{{ ingredient_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Ingredient" />
-    </ol>
-    {% endfor %}
   <span class="formset_info">
   {% elif block_form|model_name == 'directionblock' %}
-    <h3 class="block-title">Add/Edit Direction Set:</h3>
-    <button class="delete-block-btn" value="block">X</button>
-    <button class="block-move-btn" value="down">Down</button>
-    <button class="block-move-btn" value="up">Up</button><br />
-    <span>Direction Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
-    {% for direction_fs in block_form.nested %}
-    <ol id="{{ direction_fs.prefix }}-LIST" class="nested">
-      {{ direction_fs.management_form }}
-      {% for direction_form in direction_fs %}
-      <li{% if forloop.last %} class="nested_empty" id="empty_{{ direction_fs.prefix }}"{% endif %}>
-        <h3 class="nested-title">Add/Edit Direction:</h3>
-        <button class="delete-block-btn" value="nested">X</button>
-        <button class="btn-symbol-keyboard">Add Symbol</button>
-        {{ direction_form.english.errors }}
-        {{ direction_form.somali.errors }}
-        {{ direction_form.french.errors }}
-        {{ direction_form.arabic.errors }}
-        <table>
-          <tr>
-            <td width="15">English:</td>
-            <td>{{ direction_form.english|add_class:"text-input direction spell" }}</td>
-          </tr>
-          <tr>
-            <td width="15">Somali:</td>
-            <td>{{ direction_form.somali|add_class:"text-input direction spell" }}</td>
-          </tr>
-          <tr>
-            <td width="15">French:</td>
-            <td>{{ direction_form.french|add_class:"text-input direction spell" }}</td>
-          </tr>
-          <tr>
-            <td width="15">Arabic:</td>
-            <td>{{ direction_form.arabic|add_class:"text-input direction spell arabic" }}</td>
-          </tr>
-       </table>
-       <span class="form_info">
-          {{ direction_form.DELETE|add_class:"delete-nested" }} Delete?<br />
-          {{ direction_form.id }}
-       </span>
-      </li>
+    <div class="accordion-handle">
+      <h3 class="block-title">Add/Edit Direction Set:</h3>
+      <button class="delete-block-btn" value="block">X</button>
+      <button class="block-move-btn" value="down">Down</button>
+      <button class="block-move-btn" value="up">Up</button>
+    </div>
+    <div class="accordion-content">
+      <span>Direction Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+      {% for direction_fs in block_form.nested %}
+      <ol id="{{ direction_fs.prefix }}-LIST" class="nested">
+        {{ direction_fs.management_form }}
+        {% for direction_form in direction_fs %}
+        <li{% if forloop.last %} class="nested_empty" id="empty_{{ direction_fs.prefix }}"{% endif %}>
+          <h3 class="nested-title">Add/Edit Direction:</h3>
+          <button class="delete-block-btn" value="nested">X</button>
+          <button class="btn-symbol-keyboard">Add Symbol</button>
+          {{ direction_form.english.errors }}
+          {{ direction_form.somali.errors }}
+          {{ direction_form.french.errors }}
+          {{ direction_form.arabic.errors }}
+          <table>
+            <tr>
+              <td width="15">English:</td>
+              <td>{{ direction_form.english|add_class:"text-input direction spell" }}</td>
+            </tr>
+            <tr>
+              <td width="15">Somali:</td>
+              <td>{{ direction_form.somali|add_class:"text-input direction spell" }}</td>
+            </tr>
+            <tr>
+              <td width="15">French:</td>
+              <td>{{ direction_form.french|add_class:"text-input direction spell" }}</td>
+            </tr>
+            <tr>
+              <td width="15">Arabic:</td>
+              <td>{{ direction_form.arabic|add_class:"text-input direction spell arabic" }}</td>
+            </tr>
+         </table>
+         <span class="form_info">
+            {{ direction_form.DELETE|add_class:"delete-nested" }} Delete?<br />
+            {{ direction_form.id }}
+         </span>
+        </li>
+        {% endfor %}
+        <input id="id_{{ direction_fs.prefix }}-ADD" name="{{ direction_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Direction" />
+      </ol>
       {% endfor %}
-      <input id="id_{{ direction_fs.prefix }}-ADD" name="{{ direction_fs.prefix }}-ADD" type="button" class="add-nested" value="Add Direction" />
-    </ol>
-    {% endfor %}
   <span class="formset_info">
   {% endif %}
     Location Index: {{ block_form|loc_field|add_class:"loc-field" }}<br />
@@ -224,5 +239,6 @@
     {{ block_form.id }}
   </span>
   <p>Custom CSS: {{ block_form.inline_styles }}{{ block_form.inline_styles.errors }}</p>
+  </div>
 </li>
 {% endfor %}

@@ -79,6 +79,8 @@
 </div>
 
 <div id="tabbed">
+  <button class="expand-all-btn">Expand All</button>
+  <button class="collapse-all-btn">Collapse All</button>
   <h2>Tabbed Content</h2>
   <ol id="tabbed-list" class="block-list">
   {% include "post_generator/block_form.html" with form_list=tabbed_forms %}
@@ -416,8 +418,22 @@
       }
       blockRow.appendTo($('#deleted-list'));
       updateLoc();
-   });
-
+    });
+    
+    $('.accordion-handle').click(function(){
+      $(this).next().toggle();
+    });
+    
+    $('.collapse-all-btn').click(function(ev){
+      ev.preventDefault();
+      $('.accordion-content:visible').toggle();
+    });
+   
+    $('.expand-all-btn').click(function(ev){
+      ev.preventDefault();
+      $('.accordion-content:not(:visible)').toggle();
+    });
+ 
     Dropzone.autoDiscover = false;
     $('.img-upload').dropzone({
       url: "{% url 'post_generator:wp_upload' %}",

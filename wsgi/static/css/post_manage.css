@@ -82,6 +82,12 @@
   .block-move-btn {
     float: right;
   }
+  .collapse-all-btn {
+    float: right;
+  }
+  .expand-all-btn {
+    float: right;
+  }
   .img-preview {
     border: 1px solid gray;
     border-radius: 3px;
