@@ -76,7 +76,13 @@ def ing_name(ing, lang):
   gender = 'masculine' if ing.name.french else 'feminine'
   join_char = ", "
   if lang == 'arabic': join_char = u'، '
-  if unicodedata.numeric(quant) > 1:
+  try:
+    quant_val = float(quant)
+  except ValueError:
+    quant_val = unicodedata.numeric(quant[-1])
+    if quant[0:-1]:
+      quant_val += float(quant[0:-1])
+  if quant_val > 1:
     quant_units = get_plural(ing.quantity_units, lang)
     size = get_plural(ing.size, lang, gender)
     name = get_plural(ing.name, lang)
