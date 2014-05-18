@@ -50,7 +50,7 @@ def UpdateConversionIngredients(post_id):
     us_obj = ConversionType.objects.get(name__english='US')
     for ingredient_block in post.ingredientblock_set.all():
         for ingredient in ingredient_block.ingredient_set.all():
-            if ingredient.intl_units and ingredient.quant_units:
+            if ingredient.intl_units and ingredient.quantity_units:
                 from_obj = Conversion.objects.get(name__id=ingredient.quantity_units.id, unit_type__name__english='US')
                 to_obj = Conversion.objects.get(name__id=ingredient.intl_units.id, unit_type__name__english='Metric')
                 if ingredient.intl and from_obj.category.id != to_obj.category.id:
