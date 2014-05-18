@@ -50,28 +50,29 @@ def UpdateConversionIngredients(post_id):
     us_obj = ConversionType.objects.get(name__english='US')
     for ingredient_block in post.ingredientblock_set.all():
         for ingredient in ingredient_block.ingredient_set.all():
-            from_obj = Conversion.objects.get(name__id=ingredient.quantity_units.id, unit_type__name__english='US')
-            to_obj = Conversion.objects.get(name__id=ingredient.intl_units.id, unit_type__name__english='Metric')
-            if ingredient.intl and from_obj.category.id != to_obj.category.id:
-                cups = convert(parse_quantity(ingredient.quantity), ingredient.quantity_units.id, 'US', cups_obj.id, 'US')
-                grams_per_cup = float(ingredient.intl) / cups
-                
-                ing_set = ConversionIngredient.objects.filter(name__id=ingredient.name.id)
-                if ingredient.size:
-                    ing_set.filter(size__id=ingredient.size.id)
-                for style in ingredient.prep_style.all():
-                    ing_set.filter(prep_style__id=style.id)
-                if ing_set:
-                    conv_ing = ing_set[0]
-                else:
-                    conv_ing = ConversionIngredient(name=ingredient.name, grams_per_cup=0)
-                    conv_ing.save()
-                    for prep_style in ingredient.prep_style.all():
-                        conv_ing.prep_style.add(prep_style)
+            if ingredient.intl_units and ingredient.quant_units:
+                from_obj = Conversion.objects.get(name__id=ingredient.quantity_units.id, unit_type__name__english='US')
+                to_obj = Conversion.objects.get(name__id=ingredient.intl_units.id, unit_type__name__english='Metric')
+                if ingredient.intl and from_obj.category.id != to_obj.category.id:
+                    cups = convert(parse_quantity(ingredient.quantity), ingredient.quantity_units.id, 'US', cups_obj.id, 'US')
+                    grams_per_cup = float(ingredient.intl) / cups
+                    
+                    ing_set = ConversionIngredient.objects.filter(name__id=ingredient.name.id)
                     if ingredient.size:
-                        conv_ing.size = ingredient.size
-                conv_ing.grams_per_cup = grams_per_cup
-                conv_ing.save()
+                        ing_set.filter(size__id=ingredient.size.id)
+                    for style in ingredient.prep_style.all():
+                        ing_set.filter(prep_style__id=style.id)
+                    if ing_set:
+                        conv_ing = ing_set[0]
+                    else:
+                        conv_ing = ConversionIngredient(name=ingredient.name, grams_per_cup=0)
+                        conv_ing.save()
+                        for prep_style in ingredient.prep_style.all():
+                            conv_ing.prep_style.add(prep_style)
+                        if ingredient.size:
+                            conv_ing.size = ingredient.size
+                    conv_ing.grams_per_cup = grams_per_cup
+                    conv_ing.save()
 
 @login_required
 @csrf_exempt
