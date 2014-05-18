@@ -419,11 +419,11 @@
 
     $('.delete-block-btn').click(function(e){
       e.preventDefault();
-      var blockRow = $(this).parents('li.block-row');
-      var blockList = blockRow.parent();
       if($(this).val() == 'nested'){
+        var blockRow = $(this).parent();
         blockRow.find('.delete-nested').prop('checked', true);
       } else {
+        var blockRow = $(this).parents('li.block-row');
         blockRow.find('.delete-block').prop('checked', true);
       }
       blockRow.appendTo($('#deleted-list'));
