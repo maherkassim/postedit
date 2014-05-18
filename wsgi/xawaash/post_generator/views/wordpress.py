@@ -29,7 +29,6 @@ def WPPostNew(request):
     data = json.dumps({'link':wp_post.link})
     return HttpResponse(data, content_type='application/json')
 
-@login_required
 def get_french(dict_item):
     return dict_item.french or dict_item.french_feminine
 
@@ -37,7 +36,7 @@ def get_french(dict_item):
 @csrf_exempt
 def WPPostUpdate(request, post_id):
     if request.method == 'POST':
-        client = Client(U1, U2, U3)
+        client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
         post_obj = Post.objects.get(pk=post_id)
         post_title = post_obj.title.english
         if post_obj.title.somali:
@@ -67,7 +66,7 @@ def WPPostUpdate(request, post_id):
 @csrf_exempt
 def WPMediaUpload(request):
     if request.method == 'POST':
-        client = Client(U1, U2, U3)
+        client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
         upload_file = request.FILES['file']
         file_buf = upload_file.read()
         upload_name = upload_file.name
