@@ -15,6 +15,12 @@ function addForm(prefix, target, nested){
   newForm.find('select:not(select[multiple=multiple])').each(function(){
     $(this).combobox();
   });
+  newForm.find('select[multiple=multiple]').each(function(){
+    $(this).multipleSelect({
+      filter: true,
+      width: '88%'
+    });
+  });
   newForm.find('.tabs').tabs();
   newForm.find('.img-upload').each(function(){
     $(this).dropzone({

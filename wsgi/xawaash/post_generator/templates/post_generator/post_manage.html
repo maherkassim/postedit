@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.ui.combobox.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/multiple-select.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.timepicker.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/dropzone.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/post_manage.css" />
@@ -284,6 +285,7 @@
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.ui.combobox.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.multiple.select.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.timepicker.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/dropzone.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic-forms.js"></script>
@@ -312,12 +314,15 @@
     // jQuery UI elements initialized
     //   - tabs for languages, buttons, comboboxes, dialogs, & datetimepicker
     $( ".tabs" ).tabs();
-    $( "button" ).button();
+    $( ":button" ).button();
     $( ".date" ).datetimepicker({
       showAnim:'slide',
       showButtonPanel: true,
       dateFormat: 'yy-mm-dd',
       timeFormat: 'HH:mm:ss'
+    });
+    $( "select:not(select[multiple=multiple])" ).each(function(){
+      $(this).html($(this).html().replace("---------", ""));
     });
     $( "select:not(select[multiple=multiple])" ).combobox({
       change: function(){
@@ -327,6 +332,11 @@
         }
       }
     });
+    $( "select[multiple=multiple]:not(:hidden)" ).multipleSelect({
+      filter: true,
+      width: '88%'
+    });
+
     $( "#dict_modal" ).dialog({
       autoOpen: false,
       width: 500,
@@ -603,6 +613,7 @@
         intl.val('');
       }
       $( target ).focus();
+      $('#frac-keyboard').dialog('close');
     });
 
     $( ".btn-add-symbol" ).click(function(ev){
