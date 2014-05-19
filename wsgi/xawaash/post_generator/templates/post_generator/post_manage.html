@@ -321,15 +321,18 @@
       dateFormat: 'yy-mm-dd',
       timeFormat: 'HH:mm:ss'
     });
+    function checkIntl(el){
+      if(el.val() || el.parents('table').find('.intl-units').val()){
+        el.addClass("input-error");
+      }
+    }
     $( "select:not(select[multiple=multiple])" ).each(function(){
       $(this).html($(this).html().replace("---------", ""));
     });
     $( "select:not(select[multiple=multiple])" ).combobox({
       change: function(){
         var intl = $(this).parents('table').find('.intl-quant');
-        if(intl){
-          intl.val('');
-        }
+        checkIntl(intl);
       }
     });
     $( "select[multiple=multiple]:not(:hidden)" ).multipleSelect({
@@ -419,11 +422,10 @@
 
     $('.delete-block-btn').click(function(e){
       e.preventDefault();
+      var blockRow = $(this).parent().parent();
       if($(this).val() == 'nested'){
-        var blockRow = $(this).parent();
         blockRow.find('.delete-nested').prop('checked', true);
       } else {
-        var blockRow = $(this).parents('li.block-row');
         blockRow.find('.delete-block').prop('checked', true);
       }
       blockRow.appendTo($('#deleted-list'));
@@ -434,18 +436,27 @@
       ev.preventDefault();
       var content = $(this).parent().next();
       content.toggle();
+      if(content.is(':hidden')){
+        $(this).button("option", "label", "+");
+      } else {
+        $(this).button("option", "label", "—");
+      }
     });
     
     $('.collapse-all-btn').click(function(ev){
       ev.preventDefault();
       $('.accordion-content:visible').toggle();
-      $('.accordion-toggle-btn').button("option", "label", "Expand");
+      $('.accordion-toggle-btn').each(function(){
+        $(this).button("option", "label", "+");
+      });
     });
    
     $('.expand-all-btn').click(function(ev){
       ev.preventDefault();
       $('.accordion-content:not(:visible)').toggle();
-      $('.accordion-toggle-btn').button("option", "label", "Collapse`");
+      $('.accordion-toggle-btn').each(function(){
+        $(this).button("option", "label", "—");
+      });
     });
  
     Dropzone.autoDiscover = false;
@@ -609,9 +620,7 @@
       var result = initial.substr(0, cursor) + insert + initial.substr(cursor);
       $( target ).val(result);
       var intl = $(this).parents('table').find('.intl-quant');
-      if(intl){
-        intl.val('');
-      }
+      checkIntl(intl);
       $( target ).focus();
       $('#frac-keyboard').dialog('close');
     });
@@ -672,15 +681,20 @@
         success: function(data){
           lookup_button.button( "option", "label", "Lookup" );
           $( target + 'intl' ).val(data['intl']);
+          $( target + 'intl' ).removeClass('input-error');
         }
       });
     });
 
     $('.calc-intl').change(function(){
       var intl = $(this).parents('table').find('.intl-quant');
-      intl.val('');
+      checkIntl(intl);
     });
-
+    $('.intl-quant').change(function(){
+      if($(this).hasClass('input-error')){
+        $(this).removeClass('input-error');
+      }
+    });
     $('.spell').each(function(){
       $(this).attr('spellcheck', 'true');
     });

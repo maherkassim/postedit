@@ -11,6 +11,13 @@ class ConversionType(models.Model):
     to_metric = models.FloatField(
         "Converted to Metric",
     )
+
+    category = models.ForeignKey(
+        DictionaryItem,
+        related_name="type_category",
+        limit_choices_to={'_set':'Conv_Cat'},
+        default=39,
+    )
     
     class Meta:
         app_label = 'post_generator'

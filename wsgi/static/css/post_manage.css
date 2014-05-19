@@ -6,6 +6,10 @@
   table {
     width:100%;
   }
+  .input-error {
+    background-color: red;
+    color: white;
+  }
   ol {
     padding:0 0 0 25px;
   }
