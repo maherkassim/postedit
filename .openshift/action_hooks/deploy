@@ -10,7 +10,7 @@ echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py createinitial
 python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py createinitialrevisions
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py schemamigration post_generator --auto'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --auto
+python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --initial
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py syncdb --noinput'"
 python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py syncdb --noinput
