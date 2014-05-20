@@ -86,4 +86,14 @@ class Ingredient(models.Model):
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return unicode((str(self.quantity) or '') + ' ' + (str(self.quantity_units) or '') + ' (' + (str(self.intl) or '') + ' ' + (str(self.intl_units) or '') + ') ' + (str(self.size) or '') + ' ' + self.name.english)
+        result = ''
+        if self.quantity:
+            result += unicode(self.quantity) + ' '
+        if self.quantity_units:
+            result += unicode(self.quantity_units) + ' '
+        if self.intl and self.intl_units:
+            result += '(' + unicode(self.intl) + \
+                      ' ' + unicode(self.intl_units) + ') '
+        if self.size:
+            result += unicode(self.size) + ' '
+        return result + unicode(self.name.english)

@@ -38,8 +38,10 @@ class Post(models.Model):
         default=True,
     )
     
-    servings = models.IntegerField(
+    servings = models.CharField(
         'Number of servings',
+        max_length="50",
+        default="0",
     )
     
     prep_time = models.TimeField(

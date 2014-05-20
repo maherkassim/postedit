@@ -86,6 +86,14 @@ class IngredientBlockAdmin(reversion.VersionAdmin):
     list_display = ('post', 'header')
     inlines = [IngredientInline, ]
 
+# Conversion Admin
+class ConversionAdmin(reversion.VersionAdmin):
+    list_display = ('name', 'unit_type', 'category', 'to_base')
+
+# ConversionType Admin
+class ConversionTypeAdmin(reversion.VersionAdmin):
+    list_display = ('name', 'category', 'to_metric')
+
 # General Reversion Admin
 class ReversionAdmin(reversion.VersionAdmin):
     pass
@@ -100,6 +108,6 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(DictionaryItem, DictionaryItemAdmin)
 admin.site.register(IngredientBlock, IngredientBlockAdmin)
 admin.site.register(DirectionBlock, DirectionBlockAdmin)
-admin.site.register(Conversion, ReversionAdmin)
-admin.site.register(ConversionType, ReversionAdmin)
+admin.site.register(Conversion, ConversionAdmin)
+admin.site.register(ConversionType, ConversionTypeAdmin)
 admin.site.register(ConversionIngredient, ReversionAdmin)

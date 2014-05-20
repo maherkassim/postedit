@@ -16,14 +16,13 @@ class ConversionType(models.Model):
         DictionaryItem,
         related_name="type_category",
         limit_choices_to={'_set':'Conv_Cat'},
-        default=39,
     )
     
     class Meta:
         app_label = 'post_generator'
     
     def __unicode__(self):
-        return unicode(self.name.english)
+        return unicode(self.name.english) + ' (' + unicode(self.category.english) + ')'
 
 class Conversion(models.Model):
     name = models.ForeignKey(
