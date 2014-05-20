@@ -88,11 +88,11 @@ def parse_quantity(quantity):
             result += float(quantity[0:-1])
     return result
 
-def UpdateConversionIngredients(post_id):
+def update_conversion_ingredients(post_id):
     """
     Update or Create :model:`post_generator.ConversionIngredient` for :model:`post_generator.Ingredient' objects in a :model:`post_generator.Post`.
     
-    Used to Auto-populate ConversionIngredient database for subsequent Lookups in :view:`post_generator.intl_lookup`
+    Used to Auto-populate ConversionIngredient database for subsequent Lookups in :view:`post_generator.views.conversion.ingredient_intl_lookup`
     """
     post = Post.objects.get(pk=post_id)
     
@@ -181,13 +181,14 @@ def UpdateConversionIngredients(post_id):
 
 @login_required
 @csrf_exempt
-def IngredientIntlLookup(request):
+def ingredient_intl_lookup(request):
     """
     Automatically calculates Intl field of :model:`post_generator.Ingredient`.
+    
     Requires:
+    
     - compatible input for convert function above
-    - grams_per_cup if one unit is volume and the other is weight
-      - (auto-populated by UpdateConversionIngredients if previously entered)
+    - grams_per_cup if one unit is volume and the other is weight (auto-populated by :view:`post_generator.views.conversion.update_conversion_ingredients` if previously entered)
     
     :returns response: JSON HttpReponse (for use with AJAX in :model:`post_generator.Post` form)
     :rtype: HttpResponse
@@ -212,54 +213,49 @@ def IngredientIntlLookup(request):
             for style in styles:
                 if style:
                     ing_set = ing_set.filter(prep_style__id=style)
-    
+            
             # If a matching object was found, 
             if ing_set:
-               conv_ing = ing_set[0]
-               error_occurred = False
-               
-               # Determine Quantity Units type (US/Imperial)
-               try:
-                   # US is preferred type for Quantity Units, but Imperial is possible (usually for weight)
-                   Conversion.objects.get(name__id=quantity_units, unit_type__name__english='US')
-                   quantity_type = 'US'
-               except Conversion.DoesNotExist:
-                   try:
-                       Conversion.objects.get(name__id=quantity_units, unit_type__name__english='imperial')
-                       quantity_type = 'imperial'
-                   except Conversion.DoesNotExist:
-                       # Quantity Units specified does not yet have a corresponding Conversion object
-                       # TODO: display an error
-                       error_occurred = True
+                conv_ing = ing_set[0]
+                error_occurred = False
                 
-               # Determine Intl Units type (Metric)
-               try:
-                   Conversion.objects.get(name__id=intl_units, unit_type__name__english='metric')
-                   intl_type = 'metric'
-               except Conversion.DoesNotExist:
-                   # Intl Units specified does not yet have a corresponding Conversion object
-                   # TODO: display an error
-                   error_occurred = True
-               
-               print "Quantity: " + quantity
-               print "Quantity Units: " + quantity_units
-               print "Quantity Type: " + quantity_type
-               print "Intl Units: " + intl_units
-               print "Intl Type: " + intl_type 
-               if not error_occurred:               
-                   if conv_ing.grams_per_cup:
-                       intl = convert(parse_quantity(quantity),
-                                      quantity_units,
-                                      quantity_type,
-                                      intl_units,
-                                      intl_type,
-                                      float(conv_ing.grams_per_cup))
-                   else:
-                       intl = convert(parse_quantity(quantity),
-                                      quantity_units,
-                                      quantity_type,
-                                      intl_units,
-                                      intl_type)
+                # Determine Quantity Units type (US/Imperial)
+                try:
+                    # US is preferred type for Quantity Units, but Imperial is possible (usually for weight)
+                    Conversion.objects.get(name__id=quantity_units, unit_type__name__english='US')
+                    quantity_type = 'US'
+                except Conversion.DoesNotExist:
+                    try:
+                        Conversion.objects.get(name__id=quantity_units, unit_type__name__english='imperial')
+                        quantity_type = 'imperial'
+                    except Conversion.DoesNotExist:
+                        # Quantity Units specified does not yet have a corresponding Conversion object
+                        # TODO: display an error
+                        error_occurred = True
+                
+                # Determine Intl Units type (Metric)
+                try:
+                    Conversion.objects.get(name__id=intl_units, unit_type__name__english='metric')
+                    intl_type = 'metric'
+                except Conversion.DoesNotExist:
+                    # Intl Units specified does not yet have a corresponding Conversion object
+                    # TODO: display an error
+                    error_occurred = True
+                
+                if not error_occurred:               
+                    if conv_ing.grams_per_cup:
+                        intl = convert(parse_quantity(quantity),
+                                       quantity_units,
+                                       quantity_type,
+                                       intl_units,
+                                       intl_type,
+                                       float(conv_ing.grams_per_cup))
+                    else:
+                        intl = convert(parse_quantity(quantity),
+                                       quantity_units,
+                                       quantity_type,
+                                       intl_units,
+                                       intl_type)
     if intl:
         # If there haven't been any errors (invalid input or request type),
         # do some post-processing on the calculated value:

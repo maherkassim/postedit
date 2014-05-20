@@ -3,43 +3,17 @@ from django.conf.urls import patterns, url
 from post_generator import views
 
 urlpatterns = patterns('',
-    # ex: /post/
-    url(r'^$', views.PostIndex, name='post_index'),
-
-    # ex: /post/5    
-    url(r'^(?P<post_id>\d+)/$', views.PostView, name='post_view'),
-
-    # ex: /post/form/
-    url(r'^form/$', views.PostManage, name='post_new'),
-    
-    # ex: /post/form/5/
-    url(r'^form/(?P<post_id>\d+)/$', views.PostManage, name='post_manage'),
-    
-    # ex: post/dict/
-    url(r'^dict/$', views.DictionaryItemIndex, name='dictionary_item_index'),
-     
-    # ex: post/dict/5/
-    url(r'^dict/(?P<pk>\d+)/$', views.DictionaryItemUpdate.as_view(), name='dictionary_item_manage'),
-    
-    # ex: post/dict/form/
-    url(r'^dict/form/$', views.DictionaryItemCreate.as_view(), name='dictionary_item_new'),
-
-    # ex: post/dict/embed/5/
-    url(r'^dict/embed/(?P<pk>\d+)/$', views.DictionaryItemUpdateEmbed.as_view(), name='dictionary_item_manage_embed'),
-    
-    # ex: post/dict/embed/form/
-    url(r'^dict/embed/form/$', views.DictionaryItemCreateEmbed.as_view(), name='dictionary_item_new_embed'),
-
-    # ex: post/wp/new/
-    url(r'^wp/new/$', views.WPPostNew, name='wp_new'),
-
-    # ex: post/wp/update/
-    url(r'^wp/update/(?P<post_id>\d+)/$', views.WPPostUpdate, name='wp_update'),
-
-    # ex: post/wp/upload/
-    url(r'^wp/upload/$', views.WPMediaUpload, name='wp_upload'),
-
-    # ex: post/ing/lookup/
-    url(r'^ing/lookup/$', views.IngredientIntlLookup, name='intl_lookup'),
-
+    url(r'^$', views.post_index, name='post_index'),
+    url(r'^(?P<post_id>\d+)/$', views.post_view, name='post_view'),
+    url(r'^form/$', views.post_manage, name='post_new'),
+    url(r'^form/(?P<post_id>\d+)/$', views.post_manage, name='post_manage'),
+    url(r'^dict/$', views.dictionary_item_index, name='dictionary_item_index'),
+    url(r'^dict/(?P<pk>\d+)/$', views.dictionary_item_update.as_view(), name='dictionary_item_manage'),
+    url(r'^dict/form/$', views.dictionary_item_create.as_view(), name='dictionary_item_new'),
+    url(r'^dict/embed/(?P<pk>\d+)/$', views.dictionary_item_update_embed.as_view(), name='dictionary_item_manage_embed'),
+    url(r'^dict/embed/form/$', views.dictionary_item_create_embed.as_view(), name='dictionary_item_new_embed'),
+    url(r'^wp/new/$', views.wp_post_new, name='wp_new'),
+    url(r'^wp/update/(?P<post_id>\d+)/$', views.wp_post_update, name='wp_update'),
+    url(r'^wp/upload/$', views.wp_image_upload, name='wp_upload'),
+    url(r'^ing/lookup/$', views.ingredient_intl_lookup, name='intl_lookup'),
 )

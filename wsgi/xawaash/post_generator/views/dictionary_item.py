@@ -46,32 +46,32 @@ class LoginRequiredMixin(object):
     def dispatch(self, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
-class DictionaryItemCreateEmbed(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
+class dictionary_item_create_embed(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage_embed.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
-class DictionaryItemUpdateEmbed(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
+class dictionary_item_update_embed(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage_embed.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
-class DictionaryItemCreate(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
+class dictionary_item_create(AjaxableResponseMixin, LoginRequiredMixin, CreateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
-class DictionaryItemUpdate(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
+class dictionary_item_update(AjaxableResponseMixin, LoginRequiredMixin, UpdateView):
     model = DictionaryItem
     form_class = DictionaryItemForm
     template_name = 'post_generator/dictionary_item_manage.html'
     success_url = reverse_lazy('post_generator:dictionary_item_index')
 
 @login_required
-def DictionaryItemIndex(request):
+def dictionary_item_index(request):
     dictionary_items = DictionaryItem.objects.all()
     return render(request, 'post_generator/dictionary_item_index.html',
                            {'dictionary_items':dictionary_items,})

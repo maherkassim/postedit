@@ -4,18 +4,18 @@ from operator import attrgetter
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
-from post_generator.views import UpdateConversionIngredients
+from post_generator.views import update_conversion_ingredients
 from post_generator.models import Post, Language, DictionaryItem
 from post_generator.forms import PostForm, ImageFormSet, VideoFormSet, TextBlockFormSet, IngredientBlockFormSet, DirectionBlockFormSet
 
 @login_required
-def PostIndex(request):
+def post_index(request):
     posts = Post.objects.all().order_by('-pub_date')
     return render(request, 'post_generator/post_index.html',
                               {'posts':posts,})
 
 @login_required
-def PostManage(request, post_id=False):
+def post_manage(request, post_id=False):
     post = Post()
     
     if post_id:
@@ -96,7 +96,7 @@ def PostManage(request, post_id=False):
                                })
 
 @login_required
-def PostView(request, post_id):
+def post_view(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     post_title = "%s (%s) %s %s" % (post.title.english,
                                     post.title.somali,

@@ -18,57 +18,91 @@ from django.contrib.auth.decorators import login_required
 from post_generator.models import Post
 
 @login_required
-def WPPostNew(request):
+def wp_post_new(request):
+    """
+    Create a New Post and returns the link via WordPress XML-RPC API.
+    
+    Populates with temporary information (updated later by :view:`post_generator.views.wordpress.wp_post_update`)
+    """
     client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
+    
+    # Create WP post object and populate with placeholder information
+    # - Updated later by WPPostUpdate (post_generator:wp_update)
     new_post = WordPressPost()
     new_post.title = 'New Post'
     new_post.content = 'New Post'
     new_post.id = client.call(posts.NewPost(new_post))
-
+    
     wp_post = client.call(posts.GetPost(new_post.id))
     data = json.dumps({'link':wp_post.link})
     return HttpResponse(data, content_type='application/json')
 
-def get_french(dict_item):
-    return dict_item.french or dict_item.french_feminine
-
 @login_required
 @csrf_exempt
-def WPPostUpdate(request, post_id):
+def wp_post_update(request, post_id):
+    """
+    Update WordPress post using Post object and HTML
+    
+    Primarily for 'Update This Post' button AJAX function in :view:`post_generator.views.post.post_view`
+    
+    :param post_id: :model:`post_generator.Post` to update WP post with
+    :type post_id: :model:`post_generator.Post`
+    """
+    
+    # TODO: add case for GET request
     if request.method == 'POST':
         client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
         post_obj = Post.objects.get(pk=post_id)
+        
+        # Generate Multilingual title
         post_title = post_obj.title.english
         if post_obj.title.somali:
             post_title += ' (' + post_obj.title.somali + ')'
-        french_title = get_french(post_obj.title)
-        if french_title:
-            post_title += ' ' + french_title
+        if post_obj.title.french or post_obj.title.french_feminine:
+            post_title += ' ' + (post_obj.title.french or post_obj.title.french_feminine)
         if post_obj.title.arabic:
             post_title += ' ' + post_obj.title.arabic
-        post_title += ' - Post Generator'
+        post_title += ' - PostGen'
         
+        # Pull WP post ID from stored link
         matches = re.search('.*=(\d+)$', post_obj.link)
         wp_post_id = matches.group(1)
-        current_post = client.call(posts.GetPost(wp_post_id))
+        
+        # Create new WP post object with data
         wp_post = WordPressPost()
         wp_post.title = post_title
         wp_post.content = request.POST['post-content']
         wp_post.date = post_obj.pub_date
+        
+        # Retrieve current post data via WP XML-RPC API
+        # - Used to determine whether featured_image_id data should be included
+        #   - Avoids error from setting featured_image_id to the one already attached
+        current_post = client.call(posts.GetPost(wp_post_id))
         if current_post.thumbnail['attachment_id'] != str(post_obj.featured_image_id):
             wp_post.thumbnail = str(post_obj.featured_image_id)
-
+        
+        # Update WP post and return status=True via JSON
         client.call(posts.EditPost(wp_post_id, wp_post))
-        data = json.dumps({'status':True})
-        return HttpResponse(data, content_type='application/json')
+        return HttpResponse(json.dumps({'status':True}), content_type='application/json')
 
 @login_required
 @csrf_exempt
-def WPMediaUpload(request):
+def wp_image_upload(request):
+    """
+    Used to upload media (primarily images) to WordPress
+    
+    Primarily for :model:`post_generator.Image` AJAX upload form in :view:`post_generator.views.post.post_manage`
+    """
+    
+    # TODO: add case for GET request
     if request.method == 'POST':
         client = Client(os.environ['POSTGEN_WP_TARGET'], os.environ['POSTGEN_WP_USER'], os.environ['POSTGEN_WP_PASS'])
+        
+        # Read submitted file data into a buffer
         upload_file = request.FILES['file']
         file_buf = upload_file.read()
+        
+        # Upload file data to WP via XML-RPC API
         upload_name = upload_file.name
         upload_type = mimetypes.guess_type(upload_name)[0]
         upload_data = {
@@ -77,8 +111,12 @@ def WPMediaUpload(request):
             'bits':xmlrpc_client.Binary(file_buf),
         }
         response = client.call(media.UploadFile(upload_data))
+        
+        # Determine image width and height
         img = Image.open(cStringIO.StringIO(file_buf))
         width, height = img.size
+        
+        # Combine and return Image data via JSON
         response_data = {
             'id':response['id'],
             'link':response['url'],
@@ -87,3 +125,4 @@ def WPMediaUpload(request):
         }
         data = json.dumps(response_data)
         return HttpResponse(data, content_type='application/json')
+
