@@ -518,6 +518,9 @@
                 $(type).append('<option value="' + len + '">' + eng + '</option>');
                 if($(target).data('uiCombobox')){
                   $(target).combobox("value", len);
+                } else if ($(target).data('multipleSelect')){
+                  $(target).children('option:last').prop("selected", true);
+                  $(target).multipleSelect('refresh');
                 } else {
                   $(target).val(len);
                 }
