@@ -3,45 +3,47 @@
 
 {% block css %}
   <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css">
+  <style>
+    #dictionary-table thead tr th, #dictionary-table tbody tr td {
+      padding: 2px;
+      line-height: 1.5em;
+    }
+  </style>
 {% endblock css %}
 
 {% block content %}
 {% if dictionary_items %}
-    <table id="dictionary-table" class="display" cellspacing="0" width="100%">
+    <table id="dictionary-table" class="display" style="font-size: 10pt;" cellspacing="0">
       <thead>
         <tr>
           <th>English</th>
           <th>Somali</th>
-          <th>French Masculine</th>
-          <th>French Feminine</th>
+          <th>French</th>
           <th>Arabic</th>
           <th>Image Link</th>
           <th>Recipe/Post Link</th>
         </tr>
       </thead>
 
-      <tfoot>
-        <tr>
-          <th>English</th>
-          <th>Somali</th>
-          <th>French Masculine</th>
-          <th>French Feminine</th>
-          <th>Arabic</th>
-          <th>Image Link</th>
-          <th>Recipe/Post Link</th>
-        </tr>
-      </tfoot>
-
       <tbody>
     {% for item in dictionary_items %}
       <tr>
-        <td><a href="{% url 'post_generator:dictionary_item_manage' item.id %}">{{ item.english|title }}</a></td>
-        <td>{{ item.somali|title }}</td>
-        <td>{{ item.french|title }}</td>
-        <td>{{ item.french_feminine|title }}</td>
+        <td>
+          <a href="{% url 'post_generator:dictionary_item_manage' item.id %}">{{ item.english }}</a>
+          {% if item.english_plural %}<br>(p.) {{ item.english_plural }}{% endif %}
+        </td>
+        <td>{{ item.somali }}</td>
+        <td>
+          {% if item.french %}(m.) {{ item.french }} {% endif %}
+          {% if item.french_feminine %}(f.) {{ item.french_feminine }}{% endif %}
+          {% if item.french_masculine_plural or item.french_feminine_plural %}<br>
+            {% if item.french_masculine_plural %}(m.p.) {{ item.french_masculine_plural }} {% endif %}
+            {% if item.french_feminine_plural %}(f.p.) {{ item.french_feminine_plural }}{% endif %}
+          {% endif %}
+        </td>
         <td>{{ item.arabic }}</td>
-        <td>{{ item.image }}</td>
-        <td>{{ item.link }}</td>
+        <td>{% if item.image %}<a href="{{ item.image }}">Image</a>{% endif %}</td>
+        <td>{% if item.link %}<a href="{{ item.link }}">Post</a>{% endif %}</td>
       </tr>
     {% endfor %}
       </tbody>
