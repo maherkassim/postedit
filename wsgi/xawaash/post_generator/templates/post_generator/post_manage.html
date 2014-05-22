@@ -46,7 +46,7 @@
         </div>
         {% endif %}
       </td>
-      <td width="350">Post Title: {{ form.title|add_class:"dict-general" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ form.title.auto_id }}">+</button></td>
+      <td width="350">Post Title: {{ form.title|add_class:"dict-General" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
       <td>Servings: {{ form.servings }}{{ form.servings.errors }}</td>
     </tr>
@@ -541,6 +541,8 @@
         $('#dict_modal').load(url,function(){
             $(this).attr({'data-type':type});
             $(this).attr({'data-target':target});
+            var item_set = type.split('-')[1];
+            $( '#id__set' ).val(item_set);
             if($(target).hasClass('dict-prep')){
               $( '#id_word_type' ).val('Adj.');
             }

@@ -131,7 +131,7 @@
       <button class="accordion-toggle-btn">—</button>
     </div>
     <div class="accordion-content">
-      <span>Ingredient Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+      <span>Ingredient Set Header: {{ block_form.header|add_class:"dict-General" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
       {% for ingredient_fs in block_form.nested %}
       <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
         {{ ingredient_fs.management_form }}
@@ -162,9 +162,9 @@
               </tr>
               <tr>
                 <td>{{ ingredient_form.quantity|add_class:"text-input quantity frac-input calc-intl" }}</td>
-                <td>{{ ingredient_form.quantity_units|add_class:"dict-quant calc-intl" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-quant" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
-                <td>{{ ingredient_form.size|add_class:"dict-size calc-intl" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
-                <td>{{ ingredient_form.name|add_class:"dict-general calc-intl" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
+                <td>{{ ingredient_form.quantity_units|add_class:"dict-Quant_Unit calc-intl" }} <button id="{{ ingredient_form.quantity_units.auto_id }}button" name="{{ ingredient_form.quantity_units.html_name }}button" class="add-item" data-type=".dict-Quant_Unit" data-target="#{{ ingredient_form.quantity_units.auto_id }}">+</button></td>
+                <td>{{ ingredient_form.size|add_class:"dict-Size calc-intl" }} <button id="{{ ingredient_form.size.auto_id }}button" name="{{ ingredient_form.size.html_name }}button" class="add-item" data-type=".dict-Size" data-target="#{{ ingredient_form.size.auto_id }}">+</button></td>
+                <td>{{ ingredient_form.name|add_class:"dict-General calc-intl" }} <button id="{{ ingredient_form.name.auto_id }}button" name="{{ ingredient_form.name.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ ingredient_form.name.auto_id }}">+</button></td>
                 <td>Somali Comment: {{ ingredient_form.somali|add_class:"text-input comment spell" }}</td>
               </tr>
               <tr>
@@ -175,8 +175,8 @@
               </tr>
               <tr>
                 <td>{{ ingredient_form.intl|add_class:"text-input quantity intl-quant" }}</td>
-                <td>{{ ingredient_form.intl_units|add_class:"dict-intl calc-intl intl-units" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".dict-intl" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
-                <td colspan="2">{{ ingredient_form.prep_style|add_class:"dict-prep calc-intl" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".dict-prep" data-target="#{{ ingredient_form.prep_style.auto_id }}">+</button></td>
+                <td>{{ ingredient_form.intl_units|add_class:"dict-Intl_Unit calc-intl intl-units" }} <button id="{{ ingredient_form.intl_units.auto_id }}button" name="{{ ingredient_form.intl_units.html_name }}button" class="add-item" data-type=".dict-Intl_Unit" data-target="#{{ ingredient_form.intl_units.auto_id }}">+</button></td>
+                <td colspan="2">{{ ingredient_form.prep_style|add_class:"dict-Prep_Type calc-intl" }} <button id="{{ ingredient_form.prep_style.auto_id }}button" name="{{ ingredient_form.prep_style.html_name }}button" class="add-item" data-type=".dict-Prep_Type" data-target="#{{ ingredient_form.prep_style.auto_id }}">+</button></td>
                 <td>Arabic Comment: {{ ingredient_form.arabic|add_class:"text-input comment spell arabic" }}</td>
               </tr>
               <tr>
@@ -203,7 +203,7 @@
       <button class="accordion-toggle-btn">—</button>
     </div>
     <div class="accordion-content">
-      <span>Direction Set Header: {{ block_form.header|add_class:"dict-general" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-general" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+      <span>Direction Set Header: {{ block_form.header|add_class:"dict-General" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
       {% for direction_fs in block_form.nested %}
       <ol id="{{ direction_fs.prefix }}-LIST" class="nested">
         {{ direction_fs.management_form }}
