@@ -680,8 +680,6 @@
       request_data['quantity_units'] = $( target + 'quantity_units' ).combobox('value');
       request_data['intl_units'] = $( target + 'intl_units' ).combobox('value');
       request_data['styles'] = $( target + 'prep_style' ).val();
-      console.log(target + 'name');
-      console.log(request_data);
       $.ajax({
         type: "POST",
         url: "{% url 'post_generator:intl_lookup' %}",

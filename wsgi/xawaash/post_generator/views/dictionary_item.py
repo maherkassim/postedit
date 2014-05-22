@@ -3,6 +3,7 @@ import json
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import render, redirect, get_object_or_404
@@ -75,3 +76,11 @@ def dictionary_item_index(request):
     dictionary_items = DictionaryItem.objects.all()
     return render(request, 'post_generator/dictionary_item_index.html',
                            {'dictionary_items':dictionary_items,})
+
+@login_required
+@csrf_exempt
+def dictionary_item_delete(request):
+    if request.POST and request.is_ajax():
+        item_id = request.POST['item_id']
+        DictionaryItem.objects.filter(pk=item_id).delete()
+        return HttpResponse(json.dumps({'success':True}), content_type='application/json')

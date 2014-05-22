@@ -2,11 +2,16 @@
 {% block title %}Dictionary Item List - Xawaash Post Generator{% endblock %}
 
 {% block css %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.dataTables.min.css">
   <style>
     #dictionary-table thead tr th, #dictionary-table tbody tr td {
       padding: 2px;
       line-height: 1.5em;
+    }
+    .ui-button-text-only .ui-button-text {
+      padding: 2px 8px;
+      font-size: 8pt;
     }
   </style>
 {% endblock css %}
@@ -16,6 +21,7 @@
     <table id="dictionary-table" class="display" style="font-size: 10pt;" cellspacing="0">
       <thead>
         <tr>
+          <th>Modify</th>
           <th>English</th>
           <th>Somali</th>
           <th>French</th>
@@ -29,7 +35,11 @@
     {% for item in dictionary_items %}
       <tr>
         <td>
-          <a href="{% url 'post_generator:dictionary_item_manage' item.id %}">{{ item.english }}</a>
+          <a href="{% url 'post_generator:dictionary_item_manage' item.id %}"><button class="edit-item">Edit</button></a>
+          <button class="delete-item" value="{{ item.id }}">X</button>
+        </td>
+        <td>
+          {{ item.english }}
           {% if item.english_plural %}<br>(p.) {{ item.english_plural }}{% endif %}
         </td>
         <td>{{ item.somali }}</td>
@@ -55,13 +65,33 @@
 
 {% block javascript_library %}
     {{ block.super }}
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.dataTables.min.js"></script>
 {% endblock javascript_library %}
 
 {% block javascript %}
   <script>
   $(function(){
-    $('#dictionary-table').dataTable();
+    $('#dictionary-table').dataTable({
+      "order": [ 1, 'desc' ],
+      "fnDrawCallback": drawCallback()
+    });
+    function drawCallback(){
+      $(':button').button();
+      $('.delete-item').click(function(ev){
+        var item_id = $(this).val();
+        var item_row = $(this).closest('tr').get(0);
+        ev.preventDefault();
+        $.ajax({
+          type: "POST",
+          url: "{% url 'post_generator:dictionary_item_delete' %}",
+          data: { 'item_id': item_id },
+          success: function(){
+            $('#dictionary-table').DataTable().row(item_row).remove().draw();
+          }
+        });
+      });
+    }
   });
   </script>
 {% endblock javascript %}
