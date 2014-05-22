@@ -21,23 +21,21 @@
     <table id="dictionary-table" class="display" style="font-size: 10pt;" cellspacing="0">
       <thead>
         <tr>
-          <th>Edit</th>
+          <th>Del</th>
           <th>English</th>
           <th>Somali</th>
           <th>French</th>
           <th>Arabic</th>
           <th>Image Link</th>
           <th>Recipe Link</th>
-          <th>Del</th>
+          <th>Edit</th>
         </tr>
       </thead>
 
       <tbody>
     {% for item in dictionary_items %}
       <tr>
-        <td>
-          <a href="{% url 'post_generator:dictionary_item_manage' item.id %}"><button class="edit-item">Edit</button></a>
-        </td>
+        <td><button class="delete-item" value="{{ item.id }}">X</button></td>
         <td>
           {{ item.english }}
           {% if item.english_plural %}<br>(p.) {{ item.english_plural }}{% endif %}
@@ -54,7 +52,7 @@
         <td>{{ item.arabic }}</td>
         <td>{% if item.image %}<a href="{{ item.image }}">Image</a>{% endif %}</td>
         <td>{% if item.link %}<a href="{{ item.link }}">Post</a>{% endif %}</td>
-        <td><button class="delete-item" value="{{ item.id }}">X</button></td>
+        <td><a href="{% url 'post_generator:dictionary_item_manage' item.id %}"><button class="edit-item">Edit</button></a></td>
       </tr>
     {% endfor %}
       </tbody>
@@ -74,7 +72,7 @@
   <script>
   $(function(){
     $('#dictionary-table').dataTable({
-      "order": [ 1, 'desc' ],
+      "order": [ 1, 'asc' ],
       "fnDrawCallback": drawCallback()
     });
     function drawCallback(){
