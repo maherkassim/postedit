@@ -21,13 +21,14 @@
     <table id="dictionary-table" class="display" style="font-size: 10pt;" cellspacing="0">
       <thead>
         <tr>
-          <th>Modify</th>
+          <th>Edit</th>
           <th>English</th>
           <th>Somali</th>
           <th>French</th>
           <th>Arabic</th>
           <th>Image Link</th>
-          <th>Recipe/Post Link</th>
+          <th>Recipe Link</th>
+          <th>Del</th>
         </tr>
       </thead>
 
@@ -36,7 +37,6 @@
       <tr>
         <td>
           <a href="{% url 'post_generator:dictionary_item_manage' item.id %}"><button class="edit-item">Edit</button></a>
-          <button class="delete-item" value="{{ item.id }}">X</button>
         </td>
         <td>
           {{ item.english }}
@@ -54,6 +54,7 @@
         <td>{{ item.arabic }}</td>
         <td>{% if item.image %}<a href="{{ item.image }}">Image</a>{% endif %}</td>
         <td>{% if item.link %}<a href="{{ item.link }}">Post</a>{% endif %}</td>
+        <td><button class="delete-item" value="{{ item.id }}">X</button></td>
       </tr>
     {% endfor %}
       </tbody>
