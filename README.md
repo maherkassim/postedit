@@ -1,6 +1,6 @@
-Xawaash Django Project
+Post Generator Django Project
 
 Cloud9 IDE Workspace
 
 Post Generator
-	Simplified Input and Automatic Formatting into HTML designed for Xawaash.com
+	Simplified Input and Automatic Formatting into HTML
