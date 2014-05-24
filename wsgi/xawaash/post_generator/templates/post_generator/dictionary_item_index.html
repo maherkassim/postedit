@@ -18,10 +18,10 @@
 
 {% block content %}
 {% if dictionary_items %}
+    <button id="delete-item">Delete Selected</button>
     <table id="dictionary-table" class="display" style="font-size: 10pt;" cellspacing="0">
       <thead>
         <tr>
-          <th>Del</th>
           <th>English</th>
           <th>Somali</th>
           <th>French</th>
@@ -34,8 +34,7 @@
 
       <tbody>
     {% for item in dictionary_items %}
-      <tr>
-        <td><button class="delete-item" value="{{ item.id }}">X</button></td>
+      <tr data-id="{{ item.id }}">
         <td>
           {{ item.english }}
           {% if item.english_plural %}<br>(p.) {{ item.english_plural }}{% endif %}
@@ -72,25 +71,27 @@
   <script>
   $(function(){
     $('#dictionary-table').dataTable({
-      "order": [ 1, 'asc' ],
-      "fnDrawCallback": drawCallback()
+      "fnDrawCallback": function (){$(':button').button();}
     });
-    function drawCallback(){
-      $(':button').button();
-      $('.delete-item').click(function(ev){
-        var item_id = $(this).val();
-        var item_row = $(this).closest('tr').get(0);
-        ev.preventDefault();
-        $.ajax({
-          type: "POST",
-          url: "{% url 'post_generator:dictionary_item_delete' %}",
-          data: { 'item_id': item_id },
-          success: function(){
-            $('#dictionary-table').DataTable().row(item_row).remove().draw();
-          }
-        });
+    $('#dictionary-table tbody').on( 'click', 'tr', function () {
+        $(this).toggleClass('selected');
+    } );
+    $('#delete-item').click(function(ev){
+      ev.preventDefault();
+      var rows = $('#dictionary-table').DataTable().rows('.selected').nodes();
+      var item_ids = [];
+      for (var i=0; i < rows.length; i++) {
+        item_ids.push( $(rows[i]).data('id') );
+      }
+      $.ajax({
+        type: "POST",
+        url: "{% url 'post_generator:dictionary_item_delete' %}",
+        data: { 'item_ids': item_ids },
+        success: function(){
+          $('#dictionary-table').DataTable().rows('.selected').remove().draw(false);
+        }
       });
-    }
+    });
   });
   </script>
 {% endblock javascript %}

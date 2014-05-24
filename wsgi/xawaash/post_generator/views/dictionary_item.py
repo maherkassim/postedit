@@ -81,6 +81,7 @@ def dictionary_item_index(request):
 @csrf_exempt
 def dictionary_item_delete(request):
     if request.POST and request.is_ajax():
-        item_id = request.POST['item_id']
-        DictionaryItem.objects.filter(pk=item_id).delete()
+        item_ids = request.POST.getlist('item_ids[]')
+        for item_id in item_ids:
+            DictionaryItem.objects.filter(pk=item_id).delete()
         return HttpResponse(json.dumps({'success':True}), content_type='application/json')
