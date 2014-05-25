@@ -1,5 +1,5 @@
 import imp, os;
-# Django settings for xawaash project.
+# Django settings for postedit project.
 
 ON_OPENSHIFT = False
 if os.environ.has_key('OPENSHIFT_REPO_DIR'):
