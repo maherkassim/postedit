@@ -40,7 +40,7 @@ def post_manage(request, post_id=False):
                 # When Ingredient objects are added to a Post, ensure that any new
                 # or existing gram->cup conversion information is updated for each
                 ingredient_block_fs.save_all()
-                UpdateConversionIngredients(post.id)
+                update_conversion_ingredients(post.id)
                 
                 direction_block_fs.save_all()
                 return redirect('post_generator:post_view', post_id=post.id)

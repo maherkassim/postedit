@@ -106,7 +106,7 @@
   {% else %}
   <div class="block block-image print-hide">
   {% endif %}
-  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{% for lang in languages %}{% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name }}{% if lang.name == 'somali' %}){% endif %} {% endfor %}[/caption]
+  [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{% for lang in languages %}{% if lang.name == 'somali' %}({% endif %}{{ block|dict_val:lang.name|safe }}{% if lang.name == 'somali' %}){% endif %} {% endfor %}[/caption]
   {% endif %}
   </div>
 {% endfor %}
@@ -128,7 +128,7 @@
   {% else %}
   <div class="block block-image print-hide" style="{{ block.inline_styles }}">
   {% endif %}
-    [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{{ block|dict_val:lang_name }}[/caption]
+    [caption id="attachment_{{ block.wordpress_image_id }}" align="aligncenter" width="{{ block.width }}"]<a href="{{ block.link }}"><img class="size-full wp-image-{{ block.wordpress_image_id }}" src="{{ block.link }}" width="{{ block.width }}" height="{{ block.height }}" /></a>{{ block|dict_val:lang_name|safe }}[/caption]
 
   {% elif block|class_name == 'Video' %}
   <div class="block block-video print-hide" style="{{ block.inline_styles }}">
@@ -137,9 +137,9 @@
   {% elif block|class_name == 'TextBlock' %}
   <div class="block block-text print-hide" style="{{ block.inline_styles }}">
     {% if block.header %}
-    <h2>{{ block|dict_val:lang_name }}</h2>
+    <h2>{{ block|dict_val:lang_name|safe }}</h2>
     {% else %}
-    <p>{{ block|dict_val:lang_name }}</p>
+    <p>{{ block|dict_val:lang_name|safe }}</p>
     {% endif %}
 
   {% elif block|class_name == 'IngredientBlock' %}
@@ -147,7 +147,7 @@
     <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
     <ul class="ingredient-list">
     {% for ing in block.ingredient_set.all %}
-      <li class="ingredient">{{ ing|ing_name:lang_name }}</li>
+      <li class="ingredient">{{ ing|ing_name:lang_name|safe }}</li>
     {% endfor %}
     </ul>
 
@@ -156,7 +156,7 @@
     <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
     <ol class="direction-list">
     {% for dir in block.direction_set.all %}
-      <li class="direction">{{ dir|dict_val:lang_name }}</li>
+      <li class="direction">{{ dir|dict_val:lang_name|safe }}</li>
     {% endfor %}
     </ol>
   {% endif %}
@@ -173,6 +173,7 @@
 {% block javascript_library %}
     {{ block.super }}
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/wz_tooltip.js"></script>
 {% endblock javascript_library %}
 
 {% block javascript %}
