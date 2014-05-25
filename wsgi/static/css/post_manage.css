@@ -85,6 +85,7 @@
   }
   .block-row {
     background-color: white;
+    padding-top: 0px;
   }
   .block-move-btn {
     float: right;
@@ -200,4 +201,19 @@
   .textblock_div span {
     text-align: right;
     display: block;
+  }
+  .accordion-handle {
+    padding-top: 10px;
+  }
+  .accordion-content {
+    border-top: 1px solid gainsboro;
+    padding-top: 7px;
+  }
+  .textblock-editable {
+    width:98%;
+    padding: 3px;
+    min-height:62px;
+    line-height: 12pt;
+    border-radius: 3px;
+    border: 1px solid #aaa;
   }

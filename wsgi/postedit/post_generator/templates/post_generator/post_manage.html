@@ -35,16 +35,13 @@
     <tr>
       <td rowspan="4" width="220" style="padding-left: 20px;">
         <span>Featured Image Preview:</span><br>
-        {% if form.featured_image.value %}
-        <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview" width="200" height="132" src="{{ form.featured_image.value }}" />
-        {% else %}
-        <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview hidden" width="200" height="132" />
-        <div class="img-upload dropzone" data-target="featured-image">
+        <img id="{{ form.featured_image.auto_id }}_preview" class="img-preview{% if not form.featured_image.value %} hidden{% endif %}"{% if form.featured_image.value %}  width="200" height="132" src="{{ form.featured_image.value }}"{% endif %} />
+        <button class="delete-image{% if not form.featured_image.value %} hidden{% endif %}">Re-upload</button>
+        <div class="img-upload dropzone{% if form.featured_image.value %} hidden{% endif %}" data-target="featured-image">
           <div class="dz-default dz-message">
             <span>Drop Files Here<br />(or Click)<br />to Upload</span>
           </div>
         </div>
-        {% endif %}
       </td>
       <td width="350">Post Title: {{ form.title|add_class:"dict-General" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
@@ -288,6 +285,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery.multiple.select.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/jquery-ui.timepicker.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/dropzone.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/vendor/wz_tooltip.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/dynamic-forms.js"></script>
 {% endblock javascript_library %}
 
@@ -373,20 +371,23 @@
         loc.val($(this).index());
       });
     }
-   $( "#tabbed-list" ).sortable({
+    $('.accordion-handle').disableSelection();
+    $( "#tabbed-list" ).sortable({
       connectWith:'.block-list',
+      handle: 'div.accordion-handle',
       distance: 15,
       stop: function(event, ui) {
         updateLoc();
       }
-    }).disableSelection();
+    });
     $( "#pretab-list" ).sortable({
       connectWith:'.block-list',
+      handle: 'div.accordion-handle',
       distance: 15,
       stop: function(event, ui) {
         updateLoc();
       }
-    }).disableSelection();
+    });
     function moveUp(item) {
         var prev = item.prev();
         if (prev.length == 0)
@@ -467,7 +468,7 @@
         if(target == 'featured-image'){
           $('#{{ form.featured_image.auto_id }}').val(response.link);
           $('#{{ form.featured_image_id.auto_id }}').val(response.id);
-          $('#{{ form.featured_image.auto_id }}_preview').attr({'src':response.link}).removeClass('hidden');
+          $('#{{ form.featured_image.auto_id }}_preview').attr({'src':response.link}).removeClass('hidden').next().removeClass('hidden');
           $(this.element).addClass('hidden');
         } else {
           $(target + 'wordpress_image_id').val(response.id);
@@ -483,7 +484,13 @@
         }
       },
     });
+    $('.delete-image').click(function(ev){
+      ev.preventDefault();
+      $(this).prev().addClass('hidden');
+      $(this).addClass('hidden');
+      $(this).next().removeClass('hidden');
 
+    });
     $( '.video-url' ).change(function(){
       var preview = $(this).parents('tr').find('.video-preview')
       $(preview).attr('src', $(this).val());

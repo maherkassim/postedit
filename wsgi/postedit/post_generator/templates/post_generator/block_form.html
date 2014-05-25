@@ -24,16 +24,13 @@
       <table>
       <tr>
         <td rowspan="4" width="220">
-          {% if block_form.link.value %}
-          <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview" width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value|or_blank }}" />
-          {% else %}
-          <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview hidden"/>
-          <div id="id_{{ block_form.prefix }}-dz" name="{{ block_form.prefix }}-dz" class="img-upload dropzone" data-target="#id_{{ block_form.prefix }}-">
+          <img id="id_{{ block_form.prefix }}-img" name="{{ block_form.prefix }}-img" class="img-preview{% if not block_form.link.value %} hidden{% endif %}" {% if block_form.link.value %} width="{{ block_form.width.value|scale }}" height="{{ block_form.height.value|scale }}" src="{{ block_form.link.value }}" {% endif %} />
+          <button class="delete-image{% if not block_form.link.value %} hidden{% endif %}">Re-upload</button>
+          <div id="id_{{ block_form.prefix }}-dz" name="{{ block_form.prefix }}-dz" class="img-upload dropzone{% if block_form.link.value %} hidden{% endif %}" data-target="#id_{{ block_form.prefix }}-">
             <div class="dz-default dz-message">
               <span>Drop Files Here<br />(or Click)<br />to Upload</span>
             </div>
           </div>
-          {% endif %}
         </td>
         <td width="330">Image URL: {{ block_form.link|add_class:"text-input url image-url" }}</td>
         <td>English Caption: {{ block_form.english|add_class:"text-input caption" }}</td>
