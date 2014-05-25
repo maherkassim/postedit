@@ -6,15 +6,15 @@
 
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py createinitialrevisions'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py createinitialrevisions
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py createinitialrevisions'"
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py createinitialrevisions
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py schemamigration post_generator --auto'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py schemamigration post_generator --initial
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py schemamigration post_generator --auto'"
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py schemamigration post_generator --initial
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py syncdb --noinput'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py syncdb --noinput
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py syncdb --noinput'"
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py syncdb --noinput
 
-echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/xawaash/manage.py migrate --noinput'"
-python "$OPENSHIFT_REPO_DIR"wsgi/xawaash/manage.py migrate --noinput
+echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py migrate --noinput'"
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py migrate --noinput
 
