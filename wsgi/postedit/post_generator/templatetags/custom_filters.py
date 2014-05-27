@@ -72,6 +72,16 @@ def get_single(dictionary, lang, gender=''):
     else:
       return dictionary.__dict__[lang]
 
+def dict_item_title(item):
+  item_title = item.english
+  if item.somali:
+    item_title += ' (' + item.somali + ')'
+  if item.french or item.french_feminine:
+    item_title += ' ' + (item.french or item.french_feminine)
+  if item.arabic:
+    item_title += ' ' + item.arabic
+  return item_title.title()
+
 @register.filter(name='ing_name')
 def ing_name(ing, lang):
   quant = ing.quantity
@@ -107,7 +117,16 @@ def ing_name(ing, lang):
     intl_units = get_plural(ing.intl_units, lang)
   else:
     intl_units = get_single(ing.intl_units, lang)
-
+  
+  if ing.name.link or ing.name.image:
+    anchor = '<a'
+    if ing.name.link:
+      anchor += ' href="' + ing.name.link + '" target="_blank"'
+    if ing.name.image:
+      anchor += " onmouseover=\"Tip(\'" + dict_item_title(ing.name) + '<br><img src=' + ing.name.image + " width=200>\', WIDTH, 200, PADDING, 6, BGCOLOR, \'#ffffff\')\" onmouseout=\"UnTip()\""
+    anchor += '>' + name + '</a>'
+    name = anchor
+  
   result = []
   if quant: result.append(quant)
   if quant_units: result.append(quant_units)
