@@ -79,6 +79,27 @@ def dictionary_item_index(request):
 
 @login_required
 @csrf_exempt
+def dictionary_item_object(request):
+    if request.POST and request.is_ajax():
+        # TODO: verify item_id exists
+        item_id = request.POST['item_id']
+        dict_item = DictionaryItem.objects.get(pk=item_id)
+        data = json.dumps({
+            'id': dict_item.id,
+            'english': dict_item.english,
+            'somali': dict_item.somali,
+            'french_masculine': dict_item.french,
+            'french_masculine_plural': dict_item.french_masculine_plural,
+            'french_feminine': dict_item.french_feminine,
+            'french_feminine_plural': dict_item.french_feminine_plural,
+            'arabic': dict_item.arabic,
+            'image': dict_item.image,
+            'link': dict_item.link,
+        })
+        return HttpResponse(data, content_type='application/json')
+
+@login_required
+@csrf_exempt
 def dictionary_item_delete(request):
     if request.POST and request.is_ajax():
         item_ids = request.POST.getlist('item_ids[]')

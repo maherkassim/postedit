@@ -33,19 +33,24 @@
           </div>
         </td>
         <td width="330">Image URL: {{ block_form.link|add_class:"text-input url image-url" }}</td>
-        <td>English Caption: {{ block_form.english|add_class:"text-input caption" }}</td>
+        <td>English Caption: {{ block_form.english|add_class:"text-input caption english" }}</td>
       </tr>
       <tr>
         <td>Dimensions: {{ block_form.width|add_class:"text-input dimensions" }} X {{ block_form.height|add_class:"text-input dimensions" }}</td>
-        <td>Somali Caption: {{ block_form.somali|add_class:"text-input caption" }}</td>
+        <td>Somali Caption: {{ block_form.somali|add_class:"text-input caption somali" }}</td>
       </tr>
       <tr>
         <td>WordPress ID: {{ block_form.wordpress_image_id|add_class:"text-input" }}</td>
-        <td>French Caption: {{ block_form.french|add_class:"text-input caption" }}</td>
+        <td>French Caption: {{ block_form.french|add_class:"text-input caption french" }}</td>
       </tr>
       <tr>
         <td></td>
         <td>Arabic Caption: {{ block_form.arabic|add_class:"text-input caption arabic" }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td><button class="title-caption" style="float:right;">Use Post Title</button></td>
       </tr>
       </table>
   <span class="form_info">

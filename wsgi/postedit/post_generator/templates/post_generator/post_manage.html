@@ -484,13 +484,31 @@
         }
       },
     });
+
     $('.delete-image').click(function(ev){
       ev.preventDefault();
       $(this).prev().addClass('hidden');
       $(this).addClass('hidden');
       $(this).next().removeClass('hidden');
-
     });
+
+    $('.title-caption').click(function(ev){
+      ev.preventDefault();
+      var titleId = $('#id_title').combobox("value");
+      var blockRow = $(this).parents('li.block-row');
+      $.ajax({
+        type: "POST",
+        url: "{% url 'post_generator:dictionary_item_object' %}",
+        data: {'item_id': titleId},
+        success: function(data){
+          blockRow.find('.caption.english').val(data.english);
+          blockRow.find('.caption.somali').val(data.somali);
+          blockRow.find('.caption.french').val(data.french_masculine);
+          blockRow.find('.caption.arabic').val(data.arabic);
+        },
+      });
+    });
+
     $( '.video-url' ).change(function(){
       var preview = $(this).parents('tr').find('.video-preview')
       $(preview).attr('src', $(this).val());

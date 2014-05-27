@@ -44,7 +44,7 @@ def convert(from_quant, from_units, from_type, to_units, to_type, grams_per_cup=
         
         # Convert and update the from_obj and from_quant to match the type of to_obj
         if from_obj.category.english == 'volume' and to_obj.category.english == 'weight':
-            cups = convert(from_quant, from_obj, from_type, cups_obj, 'US')
+            cups = convert(from_quant, from_obj.name.id, from_type, cups_obj.name.id, 'US')
             from_quant = cups * grams_per_cup
             from_obj = grams_obj
         elif from_obj.category.english == 'weight' and to_obj.category.english == 'volume':
@@ -214,7 +214,7 @@ def ingredient_intl_lookup(request):
                 if style:
                     ing_set = ing_set.filter(prep_style__id=style)
             
-            # If a matching object was found, 
+            # Check if a matching object was found
             if ing_set:
                 conv_ing = ing_set[0]
             

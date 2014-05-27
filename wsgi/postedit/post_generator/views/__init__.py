@@ -7,6 +7,7 @@ from dictionary_item import dictionary_item_index
 from dictionary_item import dictionary_item_create
 from dictionary_item import dictionary_item_update
 from dictionary_item import dictionary_item_delete
+from dictionary_item import dictionary_item_object
 from dictionary_item import dictionary_item_create_embed
 from dictionary_item import dictionary_item_update_embed
 from wordpress import wp_post_new
