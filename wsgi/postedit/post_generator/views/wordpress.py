@@ -78,7 +78,7 @@ def wp_post_update(request, post_id):
         # - Used to determine whether featured_image_id data should be included
         #   - Avoids error from setting featured_image_id to the one already attached
         current_post = client.call(posts.GetPost(wp_post_id))
-        if current_post.thumbnail['attachment_id'] != str(post_obj.featured_image_id):
+        if not current_post.thumbnail or current_post.thumbnail['attachment_id'] != str(post_obj.featured_image_id):
             wp_post.thumbnail = str(post_obj.featured_image_id)
         
         # Update WP post and return status=True via JSON
