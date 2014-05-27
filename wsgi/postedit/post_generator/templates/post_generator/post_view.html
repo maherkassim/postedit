@@ -187,7 +187,7 @@
     $( ".block-text p" ).each(function(){
       $(this).html($(this).html().replace(/\n/gm, '<br>'));
     });
-    $( '#post-html' ).text($( '#tabs-preview' ).html().replace(/\n+/gm, '\n').replace(/(\n\s*\n)+/gm, '\n'));
+    $( '#post-html' ).text($( '#tabs-preview' ).html().replace(/\n+/gm, '\n').replace(/(\n\s*\n)+/gm, '\n').replace(/&amp;\\lt;/gm, '&lt;').replace(/&amp;\\gt;/gm, '&gt;'));
     $( ".tabs" ).tabs();
     $( '#edit-post' ).button();
     $( '#update-wp' ).button().click(function(e){
