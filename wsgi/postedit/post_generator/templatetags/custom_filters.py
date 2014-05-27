@@ -8,6 +8,10 @@ register = template.Library()
 def dict_val(dictionary, key):
     return dictionary.__dict__[key]
 
+@register.filter(name='dictionary_item_val')
+def dictionary_item_val(dict_item, lang):
+    return (dict_item.french or dict_item.french_feminine) if lang == 'french' else dict_item.__dict__[lang]
+
 @register.filter(name='get_loc')
 def get_loc(block):
     return block['_loc_index'].value

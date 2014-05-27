@@ -135,17 +135,18 @@
     <iframe src="{{ block.link }}" frameborder="0" width="{{ block.width }}" height="{{ block.height }}"></iframe>
 
   {% elif block|class_name == 'TextBlock' %}
-  <div class="block block-text print-hide" style="{{ block.inline_styles }}">
     {% if block.header %}
+  <div class="block block-text print-show" style="{{ block.inline_styles }}">
     <h2>{{ block|dict_val:lang_name|safe }}</h2>
     {% else %}
+  <div class="block block-text print-hide" style="{{ block.inline_styles }}">
     <p>{{ block|dict_val:lang_name|safe }}</p>
-    {% if lang_name == 'somali' and block.somali_author %}<span style="font-style: italic; float: right;">Waxaa af-Somaali u tarjumay: {{ block.somali_author }}</span>{% endif %}
+    {% if lang_name == 'somali' and block.somali_author %}<p style="font-style: italic; text-align: right;">Waxaa af-Somaali u tarjumay: {{ block.somali_author }}</p>{% endif %}
     {% endif %}
 
   {% elif block|class_name == 'IngredientBlock' %}
   <div class="block block-ingredient print-show" style="{{ block.inline_styles }}">
-    <h3>{{ block.header|dict_val:lang_name|title }}:</h3>
+    <h3>{{ block.header|dictionary_item_val:lang_name|title }}:</h3>
     <ul class="ingredient-list">
     {% for ing in block.ingredient_set.all %}
       <li class="ingredient">{{ ing|ing_name:lang_name|safe }}</li>
