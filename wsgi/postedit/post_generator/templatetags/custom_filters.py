@@ -123,7 +123,7 @@ def ing_name(ing, lang):
     if ing.name.link:
       anchor += ' href="' + ing.name.link + '" target="_blank"'
     if ing.name.image:
-      anchor += " onmouseover=\"Tip(\'" + dict_item_title(ing.name) + "&\lt;br&\gt;&\lt;img src=" + ing.name.image + " width=200&\gt;\', WIDTH, 200, PADDING, 6, BGCOLOR, \'#ffffff\')\" onmouseout=\"UnTip()\""
+      anchor += " onmouseover=\"Tip(\'" + dict_item_title(ing.name) + "_<img src=" + ing.name.image + " width=200_>\', WIDTH, 200, PADDING, 6, BGCOLOR, \'#ffffff\')\" onmouseout=\"UnTip()\""
     anchor += '>' + name + '</a>'
     name = anchor
   
