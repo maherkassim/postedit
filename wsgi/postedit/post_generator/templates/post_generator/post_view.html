@@ -140,6 +140,7 @@
     <h2>{{ block|dict_val:lang_name|safe }}</h2>
     {% else %}
     <p>{{ block|dict_val:lang_name|safe }}</p>
+    {% if lang_name == 'somali' and block.somali_author %}<span style="font-style: italic; float: right;">Waxaa af-Somaali u tarjumay: {{ block.somali_author }}</span>{% endif %}
     {% endif %}
 
   {% elif block|class_name == 'IngredientBlock' %}
