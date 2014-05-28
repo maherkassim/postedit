@@ -92,4 +92,7 @@ class DictionaryItem(models.Model):
         )
     
     def __unicode__(self):
-        return unicode(self.english)
+        text = self.english
+        if self._set == 'Prep_Type' and (self.french or self.french_feminine):
+            text += ' (' + (self.french or self.french_feminine) + ')'
+        return unicode(text)
