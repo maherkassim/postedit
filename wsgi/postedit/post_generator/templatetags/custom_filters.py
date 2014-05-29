@@ -82,6 +82,12 @@ def dict_item_title(item):
     item_title += ' ' + item.arabic
   return item_title.title()
 
+def add_de(text):
+  if text[0].lower() in ('a', 'e', 'i', 'o', 'u'):
+    return "d'" + text
+  else:
+    return "de " + text
+
 @register.filter(name='ing_name')
 def ing_name(ing, lang):
   quant = ing.quantity
@@ -101,22 +107,20 @@ def ing_name(ing, lang):
   if quant_val > 1:
     quant_units = get_plural(ing.quantity_units, lang)
     name = get_plural(ing.name, lang)
-    if name == get_single(ing.name, lang):
-      size = get_single(ing.size, lang, gender)
-      styles = join_char.join(map(lambda style: get_single(style, lang, gender), ing.prep_style.all()))
-    else:
-      size = get_plural(ing.size, lang, gender)
-      styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
   else:
     quant_units = get_single(ing.quantity_units, lang)
     if quant_units:
       name = get_plural(ing.name, lang)
-      size = get_plural(ing.size, lang, gender)
-      styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
     else:
       name = get_single(ing.name, lang)
-      size = get_single(ing.size, lang, gender)
-      styles = join_char.join(map(lambda style: get_single(style, lang, gender), ing.prep_style.all()))
+  if name == get_single(ing.name, lang):
+    size = get_single(ing.size, lang, gender)
+    styles = join_char.join(map(lambda style: get_single(style, lang, gender), ing.prep_style.all()))
+  else:
+    size = get_plural(ing.size, lang, gender)
+    styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
+  if quant_units and lang == 'french':
+    name = add_de(name)
   if intl and float(intl) > 1:
     intl_units = get_plural(ing.intl_units, lang)
   else:
