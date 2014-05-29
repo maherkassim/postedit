@@ -100,9 +100,13 @@ def ing_name(ing, lang):
         quant_val += float(quant[0:-1])
   if quant_val > 1:
     quant_units = get_plural(ing.quantity_units, lang)
-    size = get_plural(ing.size, lang, gender)
     name = get_plural(ing.name, lang)
-    styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
+    if name == get_single(ing.name, lang):
+      size = get_single(ing.size, lang, gender)
+      styles = join_char.join(map(lambda style: get_single(style, lang, gender), ing.prep_style.all()))
+    else:
+      size = get_plural(ing.size, lang, gender)
+      styles = join_char.join(map(lambda style: get_plural(style, lang, gender), ing.prep_style.all()))
   else:
     quant_units = get_single(ing.quantity_units, lang)
     if quant_units:
