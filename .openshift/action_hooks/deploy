@@ -6,15 +6,20 @@
 
 source $OPENSHIFT_HOMEDIR/python/virtenv/bin/activate
 
+echo "Copying existing migrations from data directory"
+cp -r "${OPENSHIFT_DATA_DIR}"migrations "${OPENSHIFT_REPO_DIR}"wsgi/post_edit/post_generator
+
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py createinitialrevisions'"
 python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py createinitialrevisions
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py schemamigration post_generator --auto'"
-python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py schemamigration post_generator --initial
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py schemamigration post_generator --auto
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py syncdb --noinput'"
 python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py syncdb --noinput
 
 echo "Executing 'python $OPENSHIFT_REPO_DIR/wsgi/postedit/manage.py migrate --noinput'"
-python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py migrate --noinput
+python "$OPENSHIFT_REPO_DIR"wsgi/postedit/manage.py migrate post_generator --noinput
 
+echo "Copying new migrations back to data directory"
+cp -r "${OPENSHIFT_REPO_DIR}"wsgi/post_edit/post_generator/migrations "${OPENSHIFT_DATA_DIR}"

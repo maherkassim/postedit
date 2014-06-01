@@ -45,28 +45,23 @@
       </td>
       <td width="350">Post Title: {{ form.title|add_class:"dict-General" }}{{ form.title.errors }} <button name="{{ form.title.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ form.title.auto_id }}">+</button></td>
       <td>{{ form.include_somali }} Include Somali Tab</td>
-      <td>Servings: {{ form.servings }}{{ form.servings.errors }}</td>
     </tr>
     <tr>
       <td>Post URL: {{ form.link|add_class:"text-input post-url" }} <button id="generate-post-link">New</button>{{ form.link.errors }}</td>
       <td>{{ form.include_french }} Include French Tab</td>
-      <td>Preparation Time: {{ form.prep_time|add_class:"time-field" }}{{ form.prep_time.errors }}</td>
     </tr>
     <tr>
       <td>Publication Date: {{ form.pub_date|add_class:"text-input date" }}{{ form.pub_date.errors }}</td>
       <td>{{ form.include_arabic }} Include Arabic Tab</td>
-      <td>Cooking Time: {{ form.cook_time|add_class:"time-field" }}{{ form.cook_time.errors }}</td>
     </tr>
     <tr>
       <td>Featured Image: {{ form.featured_image|add_class:"text-input url image-url" }}{{ form.featured_image.errors }}</td>
       <td>Featured Image WP ID: {{ form.featured_image_id|add_class:"text-input" }}{{ form.featured_image_id.errors }}</td>
-      {% if form.initial.id %}
-      <td><button id="post-preview"><a href="{% url 'post_generator:post_view' form.initial.id %}">Back to Post Preview</a></button></td>
-      {% else %}
-      <td></td>
-      {% endif %}
     </tr>
   </table>
+  {% if form.initial.id %}
+  <button style="float: right;" id="post-preview"><a href="{% url 'post_generator:post_view' form.initial.id %}">Back to Post Preview</a></button></td>
+  {% endif %}
 </div>
 
 <div id="pre-tab">

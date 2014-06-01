@@ -1,4 +1,3 @@
-from datetime import time
 from django.db import models
 from post_generator.models import DictionaryItem
 
@@ -36,22 +35,6 @@ class Post(models.Model):
     include_arabic = models.BooleanField(
         'Include Arabic tab in post?',
         default=True,
-    )
-    
-    servings = models.CharField(
-        'Number of servings',
-        max_length="50",
-        default="0",
-    )
-    
-    prep_time = models.TimeField(
-        'Preparation Time',
-        default=time(0,0),
-    )
-
-    cook_time = models.TimeField(
-        'Cooking Time',
-        default=time(0,0),
     )
     
     class Meta:

@@ -134,6 +134,9 @@
     </div>
     <div class="accordion-content">
       <span>Ingredient Set Header: {{ block_form.header|add_class:"dict-General" }} <button id="{{ block_form.header.auto_id }}button" name="{{ block_form.header.html_name }}button" class="add-item" data-type=".dict-General" data-target="#{{ block_form.header.auto_id }}">+</button>{{ block_form.header.errors }}</span>
+      <span>Prep Time: {{ block_form.prep_time }}</span>
+      <span>Total Time: {{ block_form.total_time }}</span>
+      <span>Servings: {{ block_form.servings }}</span>
       {% for ingredient_fs in block_form.nested %}
       <ol id="{{ ingredient_fs.prefix }}-LIST" class="nested">
         {{ ingredient_fs.management_form }}
